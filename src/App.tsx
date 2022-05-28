@@ -1,5 +1,12 @@
+import { Route, Routes } from 'react-router-dom';
+import { Login } from './pages/Login';
+
 export default function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-center">Hello world!</h1>
+    <div>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </div>
   );
 }
