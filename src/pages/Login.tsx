@@ -1,10 +1,10 @@
-import React, { FormEvent, useRef } from 'react';
+import React, { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { login } from '../services/auth';
 
 export const Login = () => {
-  const { setToken } = useAuth();
+  const { token, setToken } = useAuth();
   const navigate = useNavigate();
 
   const username = useRef<HTMLInputElement>(null);
@@ -22,6 +22,10 @@ export const Login = () => {
       navigate('/');
     });
   };
+
+  useEffect(() => {
+    if (token) navigate('/');
+  }, [token]);
 
   return (
     <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">

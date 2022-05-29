@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { useLocation, Navigate, Outlet } from 'react-router-dom';
+import { useLocation, Navigate, useNavigate, Outlet } from 'react-router-dom';
 
 const RequireAuth = () => {
-  const { token } = useAuth();
+  const token = localStorage.getItem('token');
   const location = useLocation();
+  const { setToken } = useAuth();
+
+  useEffect(() => {
+    if (token) {
+      setToken(token);
+    }
+  }, []);
+
   return token ? (
     <Outlet />
   ) : (
