@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { FormEvent, useRef } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { login } from '../services/auth';
 
 export const Login = () => {
+  const { setToken } = useAuth();
+
+  const username = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = {
+      username: username.current?.value,
+      password: password.current?.value,
+    };
+    login(data).then((res) => {
+      setToken(res.data.token);
+      localStorage.setItem('token', res.data.token);
+    });
+  };
+
   return (
     <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">
       <div className="container mx-auto">
@@ -14,19 +33,20 @@ export const Login = () => {
             </p>
           </div>
           <div className="m-7">
-            <form action="">
+            <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label
-                  htmlFor="email"
+                  htmlFor="username"
                   className="block mb-2 text-sm text-gray-600 dark:text-gray-400"
                 >
-                  Email Address
+                  Username
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="you@company.com"
+                  type="text"
+                  name="username"
+                  id="username"
+                  ref={username}
+                  placeholder="D1211"
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                 />
               </div>
@@ -49,13 +69,14 @@ export const Login = () => {
                   type="password"
                   name="password"
                   id="password"
+                  ref={password}
                   placeholder="Your Password"
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                 />
               </div>
               <div className="mb-6">
                 <button
-                  type="button"
+                  type="submit"
                   className="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none"
                 >
                   Sign in
