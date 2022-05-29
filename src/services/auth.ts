@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://ta-similarity-ide.herokuapp.com/';
+export const BASE_URL = 'https://ta-similarity-ide.herokuapp.com/';
 
 export type loginPayload = {
   username: string | undefined;
