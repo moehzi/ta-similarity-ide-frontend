@@ -1,9 +1,12 @@
 import React, { FormEvent, useRef } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { login } from '../services/auth';
 
 export const Login = () => {
-  const { setToken } = useAuth();
+  const { token, setToken } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
@@ -17,6 +20,7 @@ export const Login = () => {
     login(data).then((res) => {
       setToken(res.data.token);
       localStorage.setItem('token', res.data.token);
+      navigate('/');
     });
   };
 
