@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { useNavigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import RequireAuth from './components/ProtectedRoutes';
-import { AuthProvider, useAuth } from './hooks/useAuth';
+import { AuthProvider } from './hooks/useAuth';
 import { Dashboard } from './pages/dashboard';
 import { Login } from './pages/Login';
 

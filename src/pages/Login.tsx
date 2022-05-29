@@ -1,12 +1,11 @@
 import React, { FormEvent, useRef } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { login } from '../services/auth';
 
 export const Login = () => {
-  const { token, setToken } = useAuth();
+  const { setToken } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
