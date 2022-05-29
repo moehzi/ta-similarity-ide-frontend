@@ -1,16 +1,18 @@
+import { Button, CircularProgress } from '@mui/material';
 import React, { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { login } from '../services/auth';
 
 export const Login = () => {
-  const { token, setToken } = useAuth();
+  const { token, setToken, isLoading, setIsLoading } = useAuth();
   const navigate = useNavigate();
 
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
     const data = {
       username: username.current?.value,
@@ -20,6 +22,7 @@ export const Login = () => {
       setToken(res.data.token);
       localStorage.setItem('token', res.data.token);
       navigate('/');
+      setIsLoading(false);
     });
   };
 
@@ -82,12 +85,15 @@ export const Login = () => {
                 />
               </div>
               <div className="mb-6">
-                <button
+                <Button
+                  disabled={isLoading}
                   type="submit"
-                  className="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none"
+                  variant="contained"
+                  size="large"
+                  fullWidth
                 >
-                  Sign in
-                </button>
+                  {isLoading ? <CircularProgress size={24} /> : <>Sign in</>}
+                </Button>
               </div>
               <p className="text-sm text-center text-gray-400">
                 Don&#x27;t have an account yet?{' '}

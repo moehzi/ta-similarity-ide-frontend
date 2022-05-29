@@ -8,8 +8,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string>(
     localStorage.getItem('token') || ''
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
+    <AuthContext.Provider value={{ token, setToken, isLoading, setIsLoading }}>
       {children}
     </AuthContext.Provider>
   );
