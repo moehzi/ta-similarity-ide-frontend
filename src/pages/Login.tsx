@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from '@mui/material';
+import { Stack, Button } from '@chakra-ui/react';
 import React, { FormEvent, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
@@ -84,27 +84,29 @@ export const Login = () => {
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                 />
               </div>
-              <div className="mb-6">
-                <Button
-                  disabled={isLoading}
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  fullWidth
-                >
-                  {isLoading ? <CircularProgress size={24} /> : <>Sign in</>}
-                </Button>
+              <div className="w-full mb-6">
+                <Stack direction="row" className="w-full">
+                  {isLoading ? (
+                    <Button
+                      sx={{ width: '100%' }}
+                      isLoading
+                      colorScheme="teal"
+                      variant="outline"
+                    >
+                      Log in
+                    </Button>
+                  ) : (
+                    <Button
+                      sx={{ width: '100%' }}
+                      colorScheme="teal"
+                      variant="outline"
+                      type="submit"
+                    >
+                      Log in
+                    </Button>
+                  )}
+                </Stack>
               </div>
-              <p className="text-sm text-center text-gray-400">
-                Don&#x27;t have an account yet?{' '}
-                <a
-                  href="#!"
-                  className="text-indigo-400 focus:outline-none focus:underline focus:text-indigo-500 dark:focus:border-indigo-800"
-                >
-                  Sign up
-                </a>
-                .
-              </p>
             </form>
           </div>
         </div>
