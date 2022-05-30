@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import {
   IconButton,
   Avatar,
@@ -21,16 +21,16 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Img,
 } from '@chakra-ui/react';
 import {
   FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
+  FiBook,
   FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiFileText,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
@@ -41,9 +41,8 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
+  { name: 'Courses', icon: FiBook },
+  { name: 'Assignments', icon: FiFileText },
   { name: 'Settings', icon: FiSettings },
 ];
 
@@ -51,10 +50,12 @@ export default function SidebarWithHeader({
   children,
   name,
   role,
+  handleLogout,
 }: {
   children: ReactNode;
   name: string;
   role: string;
+  handleLogout: MouseEventHandler;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -77,7 +78,12 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} name={name} role={role} />
+      <MobileNav
+        onOpen={onOpen}
+        name={name}
+        role={role}
+        handleLogout={handleLogout}
+      />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
@@ -101,9 +107,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+      <Flex h="24" alignItems="center" mx="8" justifyContent="center">
+        <Img src="/assets/images/univ-logo.png" width={'80px'} />
+        <Text fontSize={'18px'} fontWeight={'bold'}>
+          Spell Master IDE
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -160,8 +167,15 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
   name: string;
   role: string;
+  handleLogout: MouseEventHandler;
 }
-const MobileNav = ({ onOpen, name, role, ...rest }: MobileProps) => {
+const MobileNav = ({
+  onOpen,
+  name,
+  role,
+  handleLogout,
+  ...rest
+}: MobileProps) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -188,7 +202,7 @@ const MobileNav = ({ onOpen, name, role, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Logo
+        Spell Master IDE
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
@@ -236,7 +250,7 @@ const MobileNav = ({ onOpen, name, role, ...rest }: MobileProps) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleLogout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

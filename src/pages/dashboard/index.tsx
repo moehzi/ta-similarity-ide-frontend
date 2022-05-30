@@ -4,29 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
+import { DashboardStudent } from './DashboardStudent';
+import { DashboardTeacher } from './DashboardTeacher';
 
 export const Dashboard = () => {
-  const { user, isLoading } = useContext(UserContext);
-  const { setToken } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+
   return (
-    <SidebarWithHeader name={user.name} role={user.role}>
-      {isLoading ? (
-        <div>loading...</div>
-      ) : (
-        <div>
-          {user.username} {user.role}
-        </div>
-      )}
-      <Button
-        onClick={(e: React.MouseEvent) => {
-          e.preventDefault();
-          localStorage.clear();
-          setToken('');
-        }}
-      >
-        Logout
-      </Button>
-    </SidebarWithHeader>
+    <div>
+      {user.role === 'teacher' && <DashboardTeacher />}
+      {user.role === 'student' && <DashboardStudent />}
+    </div>
   );
 };
