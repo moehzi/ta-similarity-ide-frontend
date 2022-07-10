@@ -34,14 +34,16 @@ import {
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LinkItemProps {
   name: string;
+  link?: string;
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Courses', icon: FiBook },
+  { name: 'Home', icon: FiHome, link: '/' },
+  { name: 'Courses', icon: FiBook, link: '/courses' },
   { name: 'Assignments', icon: FiFileText },
   { name: 'Settings', icon: FiSettings },
 ];
@@ -115,7 +117,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} link={link.link}>
           {link.name}
         </NavItem>
       ))}
@@ -124,13 +126,15 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 interface NavItemProps extends FlexProps {
+  link?: string | '';
   icon: IconType;
   children: ReactText;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, link, children, ...rest }: NavItemProps) => {
+  const navigate = useNavigate();
   return (
     <Link
-      href="#"
+      onClick={() => navigate(`${link}`)}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
     >
@@ -176,6 +180,7 @@ const MobileNav = ({
   handleLogout,
   ...rest
 }: MobileProps) => {
+  const navigate = useNavigate();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -246,7 +251,7 @@ const MobileNav = ({
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
