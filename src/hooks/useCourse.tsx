@@ -53,6 +53,14 @@ export const CourseProvider = ({ children }: CourseContextProps) => {
     fetchData();
   }, [token, user.role]);
 
+  useEffect(() => {
+    getMyCourse(token).then((res) => {
+      setMyCourse(res.data.courses);
+      setIsLoading(false);
+      setRefetch(false);
+    });
+  }, [refecth, token]);
+
   return (
     <CourseContext.Provider
       value={{
