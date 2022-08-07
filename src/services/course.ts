@@ -9,3 +9,20 @@ export const getAllCourse = async (token: string) => {
   });
   return res.data;
 };
+
+export const getMyCourse = async (token: string) => {
+  const res = await axios.get(`${BASE_URL}courses/my-course`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return res.data;
+};
+
+export const joinCourse = async (token: string, courseId: string) => {
+  return axios.post(
+    `${BASE_URL}join-course/${courseId}`,
+    {},
+    { headers: { Authorization: token } }
+  );
+};

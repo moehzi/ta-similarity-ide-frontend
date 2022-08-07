@@ -1,72 +1,77 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import {
-  Box,
-  Center,
-  Heading,
-  Text,
-  Stack,
-  Avatar,
-  useColorModeValue,
-} from '@chakra-ui/react';
-
+import { useDisclosure } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
+import { Works } from '../../pages/course';
+import ModalJoin from './Modal';
 interface CardCourseProps {
+  id: string;
   name: string;
+  author: string;
+  total_assignment: number;
+  recent_assignment?: string;
+  works: Works[];
+  isMyCourses: boolean;
+  onJoinCourse?: (e: React.MouseEvent) => void;
 }
 
-export const CardCourse = ({ name }: CardCourseProps) => {
+export const CardCourse = ({
+  id,
+  name,
+  author,
+  total_assignment,
+  recent_assignment,
+  works,
+  isMyCourses,
+  onJoinCourse,
+}: CardCourseProps) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const cancelRef = React.useRef();
   return (
-    <Center py={6}>
-      <Box
-        maxW={'445px'}
-        w={'full'}
-        bg={useColorModeValue('white', 'gray.900')}
-        boxShadow={'2xl'}
-        rounded={'md'}
-        p={6}
-        overflow={'hidden'}
-      >
-        <Box
-          h={'210px'}
-          bg={'gray.100'}
-          mt={-6}
-          mx={-6}
-          mb={6}
-          pos={'relative'}
-        >
-          <img
-            src={
-              'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
-            }
-            alt="test"
-          />
-        </Box>
-        <Stack>
-          <Text
-            color={'green.500'}
-            textTransform={'uppercase'}
-            fontWeight={800}
-            fontSize={'sm'}
-            letterSpacing={1.1}
-          >
-            Blog
-          </Text>
-          <Heading
-            color={useColorModeValue('gray.700', 'white')}
-            fontSize={'2xl'}
-            fontFamily={'body'}
-          >
-            Boost your conversion rate
-          </Heading>
-          <Text color={'gray.500'}>{name}</Text>
-        </Stack>
-        <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
-          <Avatar src="https://avatars0.githubusercontent.com/u/1164541?v=4" />
-          <Stack direction={'column'} spacing={0} fontSize={'sm'}>
-            <Text fontWeight={600}>Achim Rolle</Text>
-            <Text color={'gray.500'}>Feb 08, 2021 · 6min read</Text>
-          </Stack>
-        </Stack>
-      </Box>
-    </Center>
+    <div>
+      <div className="flex flex-col justify-between items-center overflow-hidden duration-200 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl w-[350px]">
+        <div className="flex flex-col w-full p-4 font-semibold text-indigo-600 ">
+          <h1 className="text-lg font-semibold">{name}</h1>
+          <p className="mb-4 text-xs text-gray-400">Lecturer: {author}</p>
+
+          {isMyCourses && (
+            <div className="mt-4">
+              <p className="text-xs font-semibold text-gray-600">Most Recent</p>
+              <p className="mt-2 text-sm">
+                {recent_assignment?.length
+                  ? recent_assignment
+                  : 'No recent assignment'}
+              </p>
+            </div>
+          )}
+
+          {!isMyCourses && (
+            <>
+              <button
+                className="py-2 text-indigo-100 text-xs font-semibold duration-75 bg-indigo-600 rounded-md hover:bg-indigo-500 hover:shadow-md w-[100px] ml-auto mr-0"
+                onClick={onOpen}
+              >
+                Join Course
+              </button>
+              <ModalJoin
+                id={id}
+                handleJoinCourse={onJoinCourse}
+                isOpen={isOpen}
+                cancelRef={cancelRef}
+                onClose={onClose}
+              />
+            </>
+          )}
+        </div>
+        {isMyCourses && (
+          <div className="w-full p-4 text-indigo-100 bg-indigo-600">
+            <p>
+              {total_assignment}{' '}
+              {total_assignment > 1 ? 'assignments' : 'assignment'}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
