@@ -18,19 +18,25 @@ const ModalJoin = ({ isOpen, cancelRef, onClose, handleJoinCourse, id }) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Delete Customer
+            Join Class
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Are you sure? You can't undo this action afterwards.
+            Are you sure want to join this class? You can't undo this action
+            afterwards.
           </AlertDialogBody>
 
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={handleJoinCourse} ml={3} id={id}>
-              Delete
+            <Button
+              colorScheme={'purple'}
+              onClick={handleJoinCourse}
+              ml={3}
+              id={id}
+            >
+              Join Course
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
