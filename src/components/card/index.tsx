@@ -13,6 +13,9 @@ interface CardCourseProps {
   works: Works[];
   isMyCourses: boolean;
   onJoinCourse?: (e: React.MouseEvent) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
 }
 
 export const CardCourse = ({
@@ -24,8 +27,10 @@ export const CardCourse = ({
   works,
   isMyCourses,
   onJoinCourse,
+  onClose,
+  isOpen,
+  onOpen,
 }: CardCourseProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const cancelRef = React.useRef();
   return (
     <div>

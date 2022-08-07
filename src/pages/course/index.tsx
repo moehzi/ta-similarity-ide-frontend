@@ -11,6 +11,7 @@ import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
+import { useCourse } from '../../hooks/useCourse';
 import { getAllCourse, getMyCourse, joinCourse } from '../../services/course';
 
 interface courses {
@@ -31,25 +32,10 @@ export interface Works {
 
 export const Course = () => {
   const { user } = useContext(UserContext);
-  const { setToken, token } = useAuth();
-  const [courses, setCourses] = useState<courses[]>([]);
-  const [myCourse, setMyCourse] = useState<courses[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setToken, token, isLoading: loading } = useAuth();
   const toast = useToast();
-  const { onClose } = useDisclosure();
-  const [refetech, setRefetch] = useState(false);
-
-  useEffect(() => {
-    if (token) {
-      setIsLoading(true);
-      getAllCourse(token).then((res) => setCourses(res.data));
-      getMyCourse(token).then((res) => {
-        setMyCourse(res.data.courses);
-        setIsLoading(false);
-        setRefetch(false);
-      });
-    }
-  }, [token, courses.length, refetech]);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { myCourse, courses, setRefetch, isLoading } = useCourse();
 
   const handleJoinCourse = (e: React.MouseEvent) => {
     const button = e.target as HTMLButtonElement;
@@ -61,10 +47,40 @@ export const Course = () => {
         duration: 9000,
         isClosable: true,
       });
+
       onClose();
       setRefetch(true);
     });
+    onClose();
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="purple.600"
+          size="xl"
+        />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="purple.600"
+          size="xl"
+        />
+      </div>
+    );
+  }
 
   return (
     <SidebarWithHeader
@@ -76,57 +92,55 @@ export const Course = () => {
         setToken('');
       }}
     >
-      {isLoading ? (
-        <div className="flex items-center justify-center h-screen">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="purple.600"
-            size="xl"
-          />
+      <div className="p-4">
+        <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
+        <div className="flex flex-wrap gap-8 mb-8">
+          {myCourse.map((v: courses, i: number) => {
+            return (
+              <CardCourse
+                id={`card-course-${i}`}
+                key={`card-course-${i}`}
+                name={v.name}
+                recent_assignment={v.works[v.works.length - 1]?.name}
+                author={v.author[0]?.name}
+                total_assignment={v.works.length}
+                works={v.works}
+                isMyCourses
+              />
+            );
+          })}
         </div>
-      ) : (
-        <div className="p-4">
-          <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
-          <div className="flex flex-wrap gap-8 mb-8">
-            {myCourse.map((v, i) => {
-              return (
-                <CardCourse
-                  id={`card-course-${i}`}
-                  key={`card-course-${i}`}
-                  name={v.name}
-                  recent_assignment={v.works[v.works.length - 1]?.name}
-                  author={v.author[0]?.name}
-                  total_assignment={v.works.length}
-                  works={v.works}
-                  isMyCourses
-                />
-              );
-            })}
-          </div>
 
-          <h1 className="mb-4 text-2xl font-bold">List of all course</h1>
-          <div className="flex flex-wrap gap-y-8 gap-x-6">
-            {courses
-              .filter((v, i) => !myCourse.some((v2) => v._id === v2._id))
-              .map((course, i) => {
-                return (
-                  <CardCourse
-                    id={course._id}
-                    key={`card-course-${i}`}
-                    onJoinCourse={handleJoinCourse}
-                    name={course.name}
-                    isMyCourses={false}
-                    author={course.author[0]?.name}
-                    total_assignment={course.works.length}
-                    works={[]}
-                  />
-                );
-              })}
-          </div>
-        </div>
-      )}
+        {user.role === 'student' && (
+          <>
+            <h1 className="mb-4 text-2xl font-bold">List of all course</h1>
+            <div className="flex flex-wrap gap-y-8 gap-x-6">
+              {courses
+                .filter(
+                  (v: courses, i: number) =>
+                    !myCourse.some((v2: courses) => v._id === v2._id)
+                )
+                .map((course: courses, i: number) => {
+                  return (
+                    <CardCourse
+                      onClose={onClose}
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      id={course._id}
+                      key={`card-course-${i}`}
+                      onJoinCourse={handleJoinCourse}
+                      name={course.name}
+                      isMyCourses={false}
+                      author={course.author[0]?.name}
+                      total_assignment={course.works.length}
+                      works={[]}
+                    />
+                  );
+                })}
+            </div>
+          </>
+        )}
+      </div>
     </SidebarWithHeader>
   );
 };
