@@ -26,3 +26,6 @@ export const joinCourse = async (token: string, courseId: string) => {
     { headers: { Authorization: token } }
   );
 };
+
+export const GET_ALL_COURSE = `${BASE_URL}courses`;
+export const GET_MY_COURSE = `${BASE_URL}courses/my-course`;

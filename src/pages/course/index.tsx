@@ -1,18 +1,12 @@
-import { Spinner, useDisclosure, useToast } from '@chakra-ui/react';
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-  HTMLAttributes,
-  MouseEventHandler,
-} from 'react';
+import { useDisclosure, useToast } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
+import { Loader } from '../../components/spinner';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useCourse } from '../../hooks/useCourse';
-import { getAllCourse, getMyCourse, joinCourse } from '../../services/course';
+import { joinCourse } from '../../services/course';
 
 interface courses {
   _id: string;
@@ -32,10 +26,20 @@ export interface Works {
 
 export const Course = () => {
   const { user } = useContext(UserContext);
-  const { setToken, token, isLoading: loading } = useAuth();
+  const { setToken, token } = useAuth();
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { myCourse, courses, setRefetch, isLoading } = useCourse();
+  const { myCourse, courses, refetch, loading } = useCourse();
+  const [myCourses, setMyCourses] = useState([]);
+
+  useEffect(() => {
+    if (user?.role === 'student') {
+      setMyCourses(myCourse.courses);
+    }
+    if (user?.role === 'teacher') {
+      setMyCourses(myCourse);
+    }
+  }, [myCourse, user?.role]);
 
   const handleJoinCourse = (e: React.MouseEvent) => {
     const button = e.target as HTMLButtonElement;
@@ -49,43 +53,19 @@ export const Course = () => {
       });
 
       onClose();
-      setRefetch(true);
+      refetch();
     });
     onClose();
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="purple.600"
-          size="xl"
-        />
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="purple.600"
-          size="xl"
-        />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
     <SidebarWithHeader
-      name={user.name}
-      role={user.role}
+      name={user?.name}
+      role={user?.role}
       handleLogout={(e: React.MouseEvent) => {
         e.preventDefault();
         localStorage.clear();
@@ -95,7 +75,7 @@ export const Course = () => {
       <div className="p-4">
         <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
         <div className="flex flex-wrap gap-8 mb-8">
-          {myCourse.map((v: courses, i: number) => {
+          {(myCourses || []).map((v: courses, i: number) => {
             return (
               <CardCourse
                 id={`card-course-${i}`}
@@ -111,14 +91,14 @@ export const Course = () => {
           })}
         </div>
 
-        {user.role === 'student' && (
+        {user?.role === 'student' && (
           <>
             <h1 className="mb-4 text-2xl font-bold">List of all course</h1>
             <div className="flex flex-wrap gap-y-8 gap-x-6">
               {courses
                 .filter(
                   (v: courses, i: number) =>
-                    !myCourse.some((v2: courses) => v._id === v2._id)
+                    !myCourses.some((v2: courses) => v._id === v2._id)
                 )
                 .map((course: courses, i: number) => {
                   return (

@@ -28,7 +28,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (token) navigate('/');
-  }, [token]);
+  }, [navigate, token]);
 
   return (
     <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">

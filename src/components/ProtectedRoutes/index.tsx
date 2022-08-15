@@ -11,7 +11,7 @@ const RequireAuth = () => {
     if (token) {
       setToken(token);
     }
-  }, []);
+  }, [setToken, token]);
 
   return token ? (
     <Outlet />

@@ -1,19 +1,23 @@
-import { Button } from '@chakra-ui/react';
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SidebarWithHeader from '../../components/Sidebar';
+import { Loader } from '../../components/spinner';
 import { UserContext } from '../../context/UserContext';
-import { useAuth } from '../../hooks/useAuth';
 import { DashboardStudent } from './DashboardStudent';
+
 import { DashboardTeacher } from './DashboardTeacher';
 
 export const Dashboard = () => {
-  const { user } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div>
-      {user.role === 'teacher' && <DashboardTeacher />}
-      {user.role === 'student' && <DashboardStudent />}
+      {user?.role === 'teacher' && <DashboardTeacher />}
+      {user?.role === 'student' && <DashboardStudent />}
+      {user?.name}
+      {console.log(user)}
     </div>
   );
 };

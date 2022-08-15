@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import RequireAuth from './components/ProtectedRoutes';
 import { UserProvider } from './context/UserContext';
-import { AuthProvider, useAuth } from './hooks/useAuth';
+import { useAuth } from './hooks/useAuth';
 import { Course } from './pages/course';
 import { Dashboard } from './pages/dashboard';
 import { Login } from './pages/Login';

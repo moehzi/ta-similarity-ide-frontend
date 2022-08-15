@@ -1,20 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { UserContext } from '../context/UserContext';
-import { getAllCourse, getMyCourse } from '../services/course';
-import { useAuth } from './useAuth';
+import React, { createContext, useContext } from 'react';
+import { GET_ALL_COURSE, GET_MY_COURSE } from '../services/course';
+import useFetch from './useFetch';
 
 type CourseContextProps = React.PropsWithChildren<{}>;
-
-interface courses {
-  _id: string;
-  name: string;
-  author: [
-    {
-      name: string;
-    }
-  ];
-  works: Works[];
-}
 
 export interface Works {
   name: string;
@@ -24,53 +12,16 @@ export interface Works {
 export const CourseContext = createContext<any>(null);
 
 export const CourseProvider = ({ children }: CourseContextProps) => {
-  const [courses, setCourses] = useState<courses[]>([]);
-  const [myCourse, setMyCourse] = useState<courses[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { token } = useAuth();
-  const [refecth, setRefetch] = useState(false);
-
-  const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (token) {
-        getAllCourse(token).then((res) => setCourses(res.data));
-        if (user.role === 'student') {
-          getMyCourse(token).then((res) => {
-            setMyCourse(res.data.courses);
-            setIsLoading(false);
-          });
-        }
-        if (user.role === 'teacher') {
-          getMyCourse(token).then((res) => {
-            setMyCourse(res.data);
-            setIsLoading(false);
-          });
-        }
-      }
-    };
-    fetchData();
-  }, [token, user.role]);
-
-  useEffect(() => {
-    getMyCourse(token).then((res) => {
-      setMyCourse(res.data.courses);
-      setIsLoading(false);
-      setRefetch(false);
-    });
-  }, [refecth, token]);
+  const { data: courses, loading, refetch } = useFetch(GET_ALL_COURSE);
+  const { data: myCourse } = useFetch(GET_MY_COURSE);
 
   return (
     <CourseContext.Provider
       value={{
         courses,
-        setCourses,
-        refecth,
         myCourse,
-        setMyCourse,
-        setRefetch,
-        isLoading,
+        refetch,
+        loading,
       }}
     >
       {children}

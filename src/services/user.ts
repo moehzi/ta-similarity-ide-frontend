@@ -9,3 +9,5 @@ export const getProfile = async (token: string) => {
   });
   return res.data;
 };
+
+export const GET_PROFILE = `${BASE_URL}profile`;
