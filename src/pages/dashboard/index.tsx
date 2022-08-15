@@ -16,8 +16,6 @@ export const Dashboard = () => {
     <div>
       {user?.role === 'teacher' && <DashboardTeacher />}
       {user?.role === 'student' && <DashboardStudent />}
-      {user?.name}
-      {console.log(user)}
     </div>
   );
 };

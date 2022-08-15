@@ -10,7 +10,6 @@ const useFetch = (url: string) => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(token);
     if (token) {
       axios
         .get(url, {
