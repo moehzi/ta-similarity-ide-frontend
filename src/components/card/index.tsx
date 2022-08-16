@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useDisclosure } from '@chakra-ui/react';
+import { Heading, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { Works } from '../../pages/course';
@@ -35,14 +35,18 @@ export const CardCourse = ({
   return (
     <div>
       <div className="flex flex-col justify-between items-center overflow-hidden duration-200 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl w-[350px]">
-        <div className="flex flex-col w-full p-4 font-semibold ">
-          <h1 className="text-lg font-semibold">{name}</h1>
-          <p className="mb-4 text-xs text-gray-400">Lecturer: {author}</p>
+        <div className="flex flex-col w-full p-6 font-semibold ">
+          <Text noOfLines={1} fontSize="lg">
+            {name}
+          </Text>
+          <p className="my-2 text-xs font-light text-gray-400">
+            Lecturer : {author}
+          </p>
 
           {isMyCourses && (
             <div className="mt-4">
-              <p className="text-xs font-semibold text-gray-600">Most Recent</p>
-              <p className="mt-2 text-sm">
+              <p className="text-xs">Most Recent</p>
+              <p className="mt-2 font-semibold text-md">
                 {recent_assignment?.length
                   ? recent_assignment
                   : 'No recent assignment'}
