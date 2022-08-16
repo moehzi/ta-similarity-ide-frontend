@@ -5,12 +5,20 @@ import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider } from './hooks/useAuth';
+import { extendTheme } from '@chakra-ui/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const theme = extendTheme({
+  fonts: {
+    heading: `'Open Sans', sans-serif`,
+    body: `'Poppins', sans-serif`,
+  },
+});
+
 root.render(
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <Router>
       <AuthProvider>
         <App />

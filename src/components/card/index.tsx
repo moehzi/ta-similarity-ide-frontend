@@ -35,7 +35,7 @@ export const CardCourse = ({
   return (
     <div>
       <div className="flex flex-col justify-between items-center overflow-hidden duration-200 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl w-[350px]">
-        <div className="flex flex-col w-full p-4 font-semibold text-indigo-600 ">
+        <div className="flex flex-col w-full p-4 font-semibold ">
           <h1 className="text-lg font-semibold">{name}</h1>
           <p className="mb-4 text-xs text-gray-400">Lecturer: {author}</p>
 
@@ -69,7 +69,7 @@ export const CardCourse = ({
           )}
         </div>
         {isMyCourses && (
-          <div className="w-full p-4 text-indigo-100 bg-indigo-600">
+          <div className="w-full p-4 text-indigo-100 bg-[#1C3879]">
             <p>
               {total_assignment}{' '}
               {total_assignment > 1 ? 'assignments' : 'assignment'}
