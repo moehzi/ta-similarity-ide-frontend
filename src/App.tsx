@@ -7,6 +7,8 @@ import { Course } from './pages/course';
 import { Dashboard } from './pages/dashboard';
 import { Login } from './pages/Login';
 import { CourseProvider } from './hooks/useCourse';
+import { WorkArea } from './pages/workarea';
+import { CodeProvider } from './context/CodeContext';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -22,15 +24,18 @@ export default function App() {
   return (
     <UserProvider>
       <CourseProvider>
-        <div>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route element={<RequireAuth />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/courses" element={<Course />} />
-            </Route>
-          </Routes>
-        </div>
+        <CodeProvider>
+          <div>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route element={<RequireAuth />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/courses" element={<Course />} />
+              </Route>
+              <Route path="/text-editor" element={<WorkArea />} />
+            </Routes>
+          </div>
+        </CodeProvider>
       </CourseProvider>
     </UserProvider>
   );

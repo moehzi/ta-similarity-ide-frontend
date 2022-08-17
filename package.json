@@ -5,6 +5,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.1",
     "@chakra-ui/react": "^2.1.2",
+    "@codemirror/lang-javascript": "^6.0.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@testing-library/jest-dom": "^5.14.1",
@@ -14,6 +15,8 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@uiw/codemirror-theme-dracula": "^4.11.4",
+    "@uiw/react-codemirror": "^4.11.4",
     "antd": "^4.22.5",
     "axios": "^0.27.2",
     "framer-motion": "^6",
