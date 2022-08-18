@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { LOCAL_URL } from './course';
 
 export const BASE_URL = 'https://ta-similarity-ide.herokuapp.com/';
 
@@ -8,6 +9,6 @@ export type loginPayload = {
 };
 
 export const login = async (payload: loginPayload) => {
-  const res = await axios.post(`${BASE_URL}login`, payload);
+  const res = await axios.post(`${LOCAL_URL}login`, payload);
   return res.data;
 };

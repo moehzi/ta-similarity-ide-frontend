@@ -1,4 +1,5 @@
-import { useDisclosure, useToast } from '@chakra-ui/react';
+import { PlusSquareIcon } from '@chakra-ui/icons';
+import { Button, useDisclosure, useToast } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
@@ -7,6 +8,7 @@ import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useCourse } from '../../hooks/useCourse';
 import { joinCourse } from '../../services/course';
+import ModalAddCourse from './ModalAddCourse';
 
 interface courses {
   _id: string;
@@ -29,7 +31,7 @@ export const Course = () => {
   const { setToken, token } = useAuth();
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { myCourse, courses, refetch, loading } = useCourse();
+  const { myCourse, courses, refetch, loading, refetchMyCourse } = useCourse();
   const [myCourses, setMyCourses] = useState([]);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export const Course = () => {
     if (user?.role === 'teacher') {
       setMyCourses(myCourse);
     }
-  }, [myCourse, user?.role]);
+  }, [myCourse, user?.role, refetch, refetchMyCourse]);
 
   const handleJoinCourse = (e: React.MouseEvent) => {
     const button = e.target as HTMLButtonElement;
@@ -55,7 +57,6 @@ export const Course = () => {
       onClose();
       refetch();
     });
-    onClose();
   };
 
   if (loading) {
@@ -73,6 +74,18 @@ export const Course = () => {
       }}
     >
       <div className="p-4">
+        {user.role === 'teacher' && (
+          <div className="flex justify-end">
+            <Button
+              leftIcon={<PlusSquareIcon />}
+              colorScheme="facebook"
+              onClick={onOpen}
+            >
+              Add Course
+            </Button>
+            <ModalAddCourse isOpen={isOpen} onClose={onClose} />
+          </div>
+        )}
         <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
         <div className="flex flex-wrap gap-8 mb-8">
           {(myCourses || []).map((v: courses, i: number) => {

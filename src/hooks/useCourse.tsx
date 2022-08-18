@@ -12,8 +12,12 @@ export interface Works {
 export const CourseContext = createContext<any>(null);
 
 export const CourseProvider = ({ children }: CourseContextProps) => {
-  const { data: courses, loading, refetch } = useFetch(GET_ALL_COURSE);
-  const { data: myCourse } = useFetch(GET_MY_COURSE);
+  const { data: courses, refetch } = useFetch(GET_ALL_COURSE);
+  const {
+    data: myCourse,
+    refetch: refetchMyCourse,
+    loading,
+  } = useFetch(GET_MY_COURSE);
 
   return (
     <CourseContext.Provider
@@ -22,6 +26,7 @@ export const CourseProvider = ({ children }: CourseContextProps) => {
         myCourse,
         refetch,
         loading,
+        refetchMyCourse,
       }}
     >
       {children}

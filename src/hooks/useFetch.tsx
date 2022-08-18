@@ -31,22 +31,25 @@ const useFetch = (url: string) => {
 
   const refetch = () => {
     setLoading(true);
-    axios
-      .get(url, {
-        headers: {
-          Autrhorization: token,
-        },
-      })
-      .then((res) => {
-        setData(res.data.data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (token) {
+      axios
+        .get(url, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
+
   return { data, loading, error, refetch };
 };
 

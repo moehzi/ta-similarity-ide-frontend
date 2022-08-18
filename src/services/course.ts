@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { BASE_URL } from './auth';
 
+export const LOCAL_URL = `http://localhost:8080/`;
+
 export const getAllCourse = async (token: string) => {
-  const res = await axios.get(`${BASE_URL}courses`, {
+  const res = await axios.get(`${LOCAL_URL}courses`, {
     headers: {
       Autrhorization: token,
     },
@@ -11,7 +13,7 @@ export const getAllCourse = async (token: string) => {
 };
 
 export const getMyCourse = async (token: string) => {
-  const res = await axios.get(`${BASE_URL}courses/my-course`, {
+  const res = await axios.get(`${LOCAL_URL}courses/my-course`, {
     headers: {
       Authorization: token,
     },
@@ -21,11 +23,18 @@ export const getMyCourse = async (token: string) => {
 
 export const joinCourse = async (token: string, courseId: string) => {
   return axios.post(
-    `${BASE_URL}join-course/${courseId}`,
+    `${LOCAL_URL}join-course/${courseId}`,
     {},
     { headers: { Authorization: token } }
   );
 };
 
-export const GET_ALL_COURSE = `${BASE_URL}courses`;
-export const GET_MY_COURSE = `${BASE_URL}courses/my-course`;
+export const createCourse = async (token: string, payload: any) => {
+  // TODO dont forget to change the URL
+  return axios.post(`${LOCAL_URL}courses`, payload, {
+    headers: { Authorization: token },
+  });
+};
+
+export const GET_ALL_COURSE = `${LOCAL_URL}courses`;
+export const GET_MY_COURSE = `${LOCAL_URL}courses/my-course`;
