@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.0.0",
     "@uiw/codemirror-theme-dracula": "^4.11.4",
     "@uiw/react-codemirror": "^4.11.4",
+    "@uiw/react-markdown-preview": "^4.0.24",
     "antd": "^4.22.5",
     "axios": "^0.27.2",
     "framer-motion": "^6",

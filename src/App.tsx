@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import RequireAuth from './components/ProtectedRoutes';
 import { UserProvider } from './context/UserContext';
 import { useAuth } from './hooks/useAuth';
@@ -13,11 +13,14 @@ import { CodeProvider } from './context/CodeContext';
 export default function App() {
   const { setToken } = useAuth();
   const access_token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!access_token) {
-      localStorage.setItem('token', access_token as string);
+    if (access_token) {
       setToken(access_token);
+    }
+    if (!access_token) {
+      navigate('/login');
     }
   }, [access_token, setToken]);
 
