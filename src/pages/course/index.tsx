@@ -56,6 +56,7 @@ export const Course = () => {
 
       onClose();
       refetch();
+      refetchMyCourse();
     });
   };
 
