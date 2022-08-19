@@ -16,6 +16,7 @@ interface CardCourseProps {
   isOpen?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
+  onClick?: () => void;
 }
 
 export const CardCourse = ({
@@ -25,6 +26,7 @@ export const CardCourse = ({
   total_assignment,
   recent_assignment,
   works,
+  onClick,
   isMyCourses,
   onJoinCourse,
   onClose,
@@ -33,7 +35,7 @@ export const CardCourse = ({
 }: CardCourseProps) => {
   const cancelRef = React.useRef();
   return (
-    <div>
+    <div onClick={onClick}>
       <div className="flex flex-col justify-between items-center overflow-hidden duration-200 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl w-[350px]">
         <div className="flex flex-col w-full p-6 font-semibold ">
           <Text noOfLines={1} fontSize="lg">
@@ -59,6 +61,7 @@ export const CardCourse = ({
               <button
                 className="py-2 text-indigo-100 text-xs font-semibold duration-75 bg-indigo-600 rounded-md hover:bg-indigo-500 hover:shadow-md w-[100px] ml-auto mr-0"
                 onClick={onOpen}
+                id={id}
               >
                 Join Course
               </button>

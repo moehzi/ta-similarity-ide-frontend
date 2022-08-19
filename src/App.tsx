@@ -9,6 +9,7 @@ import { Login } from './pages/Login';
 import { CourseProvider } from './hooks/useCourse';
 import { WorkArea } from './pages/workarea';
 import { CodeProvider } from './context/CodeContext';
+import { Works } from './pages/works';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -31,6 +32,7 @@ export default function App() {
           <div>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/courses/:courseId" element={<Works />} />
               <Route element={<RequireAuth />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/courses" element={<Course />} />

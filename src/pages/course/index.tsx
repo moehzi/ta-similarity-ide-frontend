@@ -1,6 +1,7 @@
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure, useToast } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
@@ -33,6 +34,7 @@ export const Course = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { myCourse, courses, refetch, loading, refetchMyCourse } = useCourse();
   const [myCourses, setMyCourses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.role === 'student') {
@@ -92,7 +94,7 @@ export const Course = () => {
           {(myCourses || []).map((v: courses, i: number) => {
             return (
               <CardCourse
-                id={`card-course-${i}`}
+                id={v._id}
                 key={`card-course-${i}`}
                 name={v.name}
                 recent_assignment={v.works[v.works.length - 1]?.name}
@@ -100,6 +102,7 @@ export const Course = () => {
                 total_assignment={v.works.length}
                 works={v.works}
                 isMyCourses
+                onClick={() => navigate(`/courses/${v._id}`)}
               />
             );
           })}

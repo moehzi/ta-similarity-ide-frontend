@@ -38,3 +38,5 @@ export const createCourse = async (token: string, payload: any) => {
 
 export const GET_ALL_COURSE = `${LOCAL_URL}courses`;
 export const GET_MY_COURSE = `${LOCAL_URL}courses/my-course`;
+export const DETAIL_COURSE = (courseId: string) =>
+  `${LOCAL_URL}courses/${courseId}/works`;

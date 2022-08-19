@@ -32,7 +32,7 @@ const useFetch = (url: string) => {
   const refetch = () => {
     setLoading(true);
     if (token) {
-      axios
+      return axios
         .get(url, {
           headers: {
             Authorization: token,
