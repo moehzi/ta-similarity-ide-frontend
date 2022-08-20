@@ -6,19 +6,26 @@ import { Space, Table, Tag } from 'antd';
 import { useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { DETAIL_COURSE } from '../../services/course';
+import { Button, Heading, Text } from '@chakra-ui/react';
+import { Loader } from '../../components/spinner';
+import { PlusSquareIcon } from '@chakra-ui/icons';
+import { useCourse } from '../../hooks/useCourse';
+import { DetailCourseContext } from '../../context/DetailCourseContext';
 
 export const Works = () => {
   const { user } = useContext(UserContext);
   const { setToken, token } = useAuth();
   const { courseId } = useParams();
-  const { data, loading } = useFetch(DETAIL_COURSE(courseId));
+  //   const { data, loading } = useFetch(DETAIL_COURSE(courseId));
+  const { detailCourse, refetchDetailCourse, loadingDetailCourse } =
+    useContext(DetailCourseContext);
 
   const columns = [
     {
-      title: 'Id',
+      title: 'No. ',
       dataIndex: 'name',
       key: '_id',
-      render: (text) => <a>{text}</a>,
+      render: (item, record, index) => <Text>{index + 1}</Text>,
     },
     {
       title: 'Name',
@@ -31,7 +38,9 @@ export const Works = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a>Invite {record.name}</a>
+          <Button colorScheme="whatsapp" size="sm">
+            Detail
+          </Button>
           <a>Delete</a>
         </Space>
       ),
@@ -62,6 +71,10 @@ export const Works = () => {
   //     },
   //   ];
 
+  if (loadingDetailCourse) {
+    return <Loader />;
+  }
+
   return (
     <SidebarWithHeader
       name={user?.name}
@@ -72,7 +85,26 @@ export const Works = () => {
         setToken('');
       }}
     >
-      <Table columns={columns} dataSource={data?.works} />
+      <div className="p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <Heading size="md" mb={2}>
+              {detailCourse?.name}
+            </Heading>
+            <Text mb={4} opacity={'70%'}>
+              Lecturer : {detailCourse?.author[0].name}
+            </Text>
+          </div>
+          <Button
+            leftIcon={<PlusSquareIcon />}
+            colorScheme="facebook"
+            // onClick={onOpen}
+          >
+            Add Course
+          </Button>
+        </div>
+        <Table columns={columns} dataSource={detailCourse?.works} />
+      </div>
     </SidebarWithHeader>
   );
 };

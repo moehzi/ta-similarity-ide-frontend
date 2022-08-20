@@ -10,6 +10,7 @@ import { CourseProvider } from './hooks/useCourse';
 import { WorkArea } from './pages/workarea';
 import { CodeProvider } from './context/CodeContext';
 import { Works } from './pages/works';
+import { DetailCourseProvider } from './context/DetailCourseContext';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -27,21 +28,33 @@ export default function App() {
 
   return (
     <UserProvider>
-      <CourseProvider>
-        <CodeProvider>
-          <div>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/courses/:courseId" element={<Works />} />
-              <Route element={<RequireAuth />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/courses" element={<Course />} />
-              </Route>
-              <Route path="/text-editor" element={<WorkArea />} />
-            </Routes>
-          </div>
-        </CodeProvider>
-      </CourseProvider>
+      <CodeProvider>
+        <div>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/courses/:courseId"
+              element={
+                <DetailCourseProvider>
+                  <Works />
+                </DetailCourseProvider>
+              }
+            />
+            <Route element={<RequireAuth />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route
+                path="/courses"
+                element={
+                  <CourseProvider>
+                    <Course />
+                  </CourseProvider>
+                }
+              />
+            </Route>
+            <Route path="/text-editor" element={<WorkArea />} />
+          </Routes>
+        </div>
+      </CodeProvider>
     </UserProvider>
   );
 }

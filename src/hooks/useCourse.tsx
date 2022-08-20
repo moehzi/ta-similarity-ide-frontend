@@ -1,5 +1,10 @@
 import React, { createContext, useContext } from 'react';
-import { GET_ALL_COURSE, GET_MY_COURSE } from '../services/course';
+import { useParams } from 'react-router-dom';
+import {
+  DETAIL_COURSE,
+  GET_ALL_COURSE,
+  GET_MY_COURSE,
+} from '../services/course';
 import useFetch from './useFetch';
 
 type CourseContextProps = React.PropsWithChildren<{}>;
@@ -12,7 +17,11 @@ export interface Works {
 export const CourseContext = createContext<any>(null);
 
 export const CourseProvider = ({ children }: CourseContextProps) => {
-  const { data: courses, refetch } = useFetch(GET_ALL_COURSE);
+  const {
+    data: courses,
+    refetch,
+    loading: loadingCourse,
+  } = useFetch(GET_ALL_COURSE);
   const {
     data: myCourse,
     refetch: refetchMyCourse,
@@ -26,6 +35,7 @@ export const CourseProvider = ({ children }: CourseContextProps) => {
         myCourse,
         refetch,
         loading,
+        loadingCourse,
         refetchMyCourse,
       }}
     >

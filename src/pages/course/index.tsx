@@ -32,13 +32,20 @@ export const Course = () => {
   const { setToken, token } = useAuth();
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { myCourse, courses, refetch, loading, refetchMyCourse } = useCourse();
+  const {
+    myCourse,
+    courses,
+    refetch,
+    loading,
+    refetchMyCourse,
+    loadingCourse,
+  } = useCourse();
   const [myCourses, setMyCourses] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.role === 'student') {
-      setMyCourses(myCourse.courses);
+      setMyCourses(myCourse?.courses);
     }
     if (user?.role === 'teacher') {
       setMyCourses(myCourse);
@@ -66,6 +73,10 @@ export const Course = () => {
     return <Loader />;
   }
 
+  if (loadingCourse) {
+    return <Loader />;
+  }
+
   return (
     <SidebarWithHeader
       name={user?.name}
@@ -76,68 +87,70 @@ export const Course = () => {
         setToken('');
       }}
     >
-      <div className="p-4">
-        {user.role === 'teacher' && (
-          <div className="flex justify-end">
-            <Button
-              leftIcon={<PlusSquareIcon />}
-              colorScheme="facebook"
-              onClick={onOpen}
-            >
-              Add Course
-            </Button>
-            <ModalAddCourse isOpen={isOpen} onClose={onClose} />
-          </div>
-        )}
-        <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
-        <div className="flex flex-wrap gap-8 mb-8">
-          {(myCourses || []).map((v: courses, i: number) => {
-            return (
-              <CardCourse
-                id={v._id}
-                key={`card-course-${i}`}
-                name={v.name}
-                recent_assignment={v.works[v.works.length - 1]?.name}
-                author={v.author[0]?.name}
-                total_assignment={v.works.length}
-                works={v.works}
-                isMyCourses
-                onClick={() => navigate(`/courses/${v._id}`)}
-              />
-            );
-          })}
-        </div>
-
-        {user?.role === 'student' && (
-          <>
-            <h1 className="mb-4 text-2xl font-bold">List of all course</h1>
-            <div className="flex flex-wrap gap-y-8 gap-x-6">
-              {courses
-                .filter(
-                  (v: courses, i: number) =>
-                    !myCourses.some((v2: courses) => v._id === v2._id)
-                )
-                .map((course: courses, i: number) => {
-                  return (
-                    <CardCourse
-                      onClose={onClose}
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      id={course._id}
-                      key={`card-course-${i}`}
-                      onJoinCourse={handleJoinCourse}
-                      name={course.name}
-                      isMyCourses={false}
-                      author={course.author[0]?.name}
-                      total_assignment={course.works.length}
-                      works={[]}
-                    />
-                  );
-                })}
+      {myCourses?.length > 0 && courses.length > 0 && (
+        <div className="p-4">
+          {user.role === 'teacher' && (
+            <div className="flex justify-end">
+              <Button
+                leftIcon={<PlusSquareIcon />}
+                colorScheme="facebook"
+                onClick={onOpen}
+              >
+                Add Course
+              </Button>
+              <ModalAddCourse isOpen={isOpen} onClose={onClose} />
             </div>
-          </>
-        )}
-      </div>
+          )}
+          <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
+          <div className="flex flex-wrap gap-8 mb-8">
+            {myCourses.map((v: courses, i: number) => {
+              return (
+                <CardCourse
+                  id={v._id}
+                  key={`card-course-${i}`}
+                  name={v.name}
+                  recent_assignment={v.works[v.works.length - 1]?.name}
+                  author={v.author[0]?.name}
+                  total_assignment={v.works?.length}
+                  works={v.works}
+                  isMyCourses
+                  onClick={() => navigate(`/courses/${v._id}`)}
+                />
+              );
+            })}
+          </div>
+
+          {user?.role === 'student' && (
+            <>
+              <h1 className="mb-4 text-2xl font-bold">List of all course</h1>
+              <div className="flex flex-wrap gap-y-8 gap-x-6">
+                {courses
+                  .filter(
+                    (v: courses, i: number) =>
+                      !myCourses?.some((v2: courses) => v._id === v2._id)
+                  )
+                  .map((course: courses, i: number) => {
+                    return (
+                      <CardCourse
+                        onClose={onClose}
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        id={course._id}
+                        key={`card-course-${i}`}
+                        onJoinCourse={handleJoinCourse}
+                        name={course.name}
+                        isMyCourses={false}
+                        author={course.author[0]?.name}
+                        total_assignment={course.works.length}
+                        works={[]}
+                      />
+                    );
+                  })}
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </SidebarWithHeader>
   );
 };
