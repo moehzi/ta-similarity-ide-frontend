@@ -1,29 +1,35 @@
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
 import CodeMirror from '@uiw/react-codemirror';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import { javascript } from '@codemirror/lang-javascript';
 
-const ResultMessage = () => {
-  const { result, testOutput } = useContext(CodeContext);
+const ResultMessage = ({ expectedOutput }) => {
+  const { result, isCorrect, setIsCorrect } = useContext(CodeContext);
   const terminal = useRef();
 
-  const getValue = () => {
-    let resultA = '';
-    try {
-      resultA = `${eval(result)}`;
-    } catch (error) {
-      resultA = `${error}`;
+  useEffect(() => {
+    const getValue = () => {
+      let resultA = '';
+      try {
+        resultA = `${eval(result)}`;
+      } catch (error) {
+        resultA = `${error}`;
+      }
+      return resultA;
+    };
+
+    if (getValue() === expectedOutput) {
+      setIsCorrect(true);
+    } else {
+      setIsCorrect(false);
     }
-    return resultA;
-  };
+  }, [expectedOutput, result, setIsCorrect]);
 
   return (
     <CodeMirror
-      value={
-        getValue() === testOutput ? 'Correct Answer ✅' : 'Wrong answer :( ❌'
-      }
+      value={isCorrect ? 'Correct Answer ✅' : 'Wrong answer :( ❌'}
       basicSetup={{
         defaultKeymap: true,
         lineNumbers: false,

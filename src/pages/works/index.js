@@ -8,6 +8,7 @@ import { Loader } from '../../components/spinner';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { DetailCourseContext } from '../../context/DetailCourseContext';
 import ModalAddWork from './ModalAddWork';
+import { useNavigate } from 'react-router-dom';
 
 export const Works = () => {
   const { user } = useContext(UserContext);
@@ -15,6 +16,7 @@ export const Works = () => {
   const { detailCourse, loadingDetailCourse, refetchDetailCourse } =
     useContext(DetailCourseContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -27,8 +29,11 @@ export const Works = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => (
-        <Link color="teal.500" href="#">
+      render: (text, record) => (
+        <Link
+          color="teal.500"
+          onClick={() => navigate(`/text-editor/${record._id}`)}
+        >
           {text}
         </Link>
       ),
@@ -71,7 +76,7 @@ export const Works = () => {
               Lecturer : {detailCourse?.author[0].name}
             </Text>
           </div>
-          {user.role === 'teacher' && (
+          {user?.role === 'teacher' && (
             <Button
               leftIcon={<PlusSquareIcon />}
               colorScheme="facebook"

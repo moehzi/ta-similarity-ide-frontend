@@ -12,6 +12,7 @@ import { CodeProvider } from './context/CodeContext';
 import { Works } from './pages/works';
 import { DetailCourseProvider } from './context/DetailCourseContext';
 import 'antd/dist/antd.min.css';
+import { DetailWorkProvider } from './context/DetailWorkContext';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -52,7 +53,14 @@ export default function App() {
                 }
               />
             </Route>
-            <Route path="/text-editor" element={<WorkArea />} />
+            <Route
+              path="/text-editor/:workId"
+              element={
+                <DetailWorkProvider>
+                  <WorkArea />
+                </DetailWorkProvider>
+              }
+            />
           </Routes>
         </div>
       </CodeProvider>

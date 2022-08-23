@@ -30,6 +30,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   //   const { refetchMyCourse } = useCourse();
   const { courseId } = useParams();
   const workName = useRef();
+  const expectedOutput = useRef();
   const [workDesc, setWorkDesc] = useState();
   const [testCode, setTestCode] = useState(`function main() {
 // Write your test code here
@@ -70,6 +71,7 @@ main();`);
       name: workName.current?.value,
       description: workDesc,
       codeTest: testCode,
+      expectedOutput: expectedOutput.current?.value,
     };
 
     createWork(token, payload, courseId).then((res) => {
@@ -125,6 +127,11 @@ main();`);
               onChange={onChange}
               minHeight={'400px'}
               className={'font-code mb-4'}
+            />
+            <FormLabel>Expected Output</FormLabel>
+            <Input
+              ref={expectedOutput}
+              placeholder="Enter your work expected output"
             />
           </FormControl>
         </ModalBody>

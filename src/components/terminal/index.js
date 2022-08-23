@@ -6,11 +6,10 @@ import { dracula } from '@uiw/codemirror-theme-dracula';
 import { javascript } from '@codemirror/lang-javascript';
 import { Text } from '@chakra-ui/react';
 
-const Terminal = () => {
+const Terminal = ({ expectedOutput }) => {
   const { result } = useContext(CodeContext);
   const terminal = useRef();
 
-  const testOutput = 'true';
   const getValue = () => {
     let resultA = '';
     try {
@@ -52,7 +51,7 @@ const Terminal = () => {
       <div className="mt-2">
         <Text fontSize="md">Expected Output: </Text>
         <CodeMirror
-          value={testOutput}
+          value={expectedOutput}
           basicSetup={{
             defaultKeymap: true,
             lineNumbers: true,

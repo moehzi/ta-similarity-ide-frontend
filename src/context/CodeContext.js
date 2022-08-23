@@ -11,7 +11,7 @@ export const CodeProvider = ({ children }) => {
   const [code, setCode] = useState(``);
   const [result, setResult] = useState('');
   const [description, setDescription] = useState('');
-  const testOutput = 'true';
+  const [isCorrect, setIsCorrect] = useState(false);
 
   return (
     <CodeContext.Provider
@@ -21,8 +21,9 @@ export const CodeProvider = ({ children }) => {
         result,
         setResult,
         description,
+        isCorrect,
+        setIsCorrect,
         setDescription,
-        testOutput,
       }}
     >
       {children}
