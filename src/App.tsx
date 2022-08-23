@@ -11,6 +11,7 @@ import { WorkArea } from './pages/workarea';
 import { CodeProvider } from './context/CodeContext';
 import { Works } from './pages/works';
 import { DetailCourseProvider } from './context/DetailCourseContext';
+import 'antd/dist/antd.min.css';
 
 export default function App() {
   const { setToken } = useAuth();

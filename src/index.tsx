@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider } from './hooks/useAuth';
 import { extendTheme } from '@chakra-ui/react';
-import 'antd/dist/antd.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,24 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { Space, Table, Tag } from 'antd';
-import { useParams } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch';
-import { DETAIL_COURSE } from '../../services/course';
-import { Button, Heading, Text } from '@chakra-ui/react';
+import { Space, Table } from 'antd';
+import { Button, Heading, Link, Text, useDisclosure } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { PlusSquareIcon } from '@chakra-ui/icons';
-import { useCourse } from '../../hooks/useCourse';
 import { DetailCourseContext } from '../../context/DetailCourseContext';
+import ModalAddWork from './ModalAddWork';
 
 export const Works = () => {
   const { user } = useContext(UserContext);
-  const { setToken, token } = useAuth();
-  const { courseId } = useParams();
-  //   const { data, loading } = useFetch(DETAIL_COURSE(courseId));
-  const { detailCourse, refetchDetailCourse, loadingDetailCourse } =
+  const { setToken } = useAuth();
+  const { detailCourse, loadingDetailCourse, refetchDetailCourse } =
     useContext(DetailCourseContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const columns = [
     {
@@ -31,7 +27,11 @@ export const Works = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => <a>{text}</a>,
+      render: (text) => (
+        <Link color="teal.500" href="#">
+          {text}
+        </Link>
+      ),
     },
     {
       title: 'Action',
@@ -46,30 +46,6 @@ export const Works = () => {
       ),
     },
   ];
-
-  //   const data = [
-  //     {
-  //       key: '1',
-  //       name: 'John Brown',
-  //       age: 32,
-  //       address: 'New York No. 1 Lake Park',
-  //       tags: ['nice', 'developer'],
-  //     },
-  //     {
-  //       key: '2',
-  //       name: 'Jim Green',
-  //       age: 42,
-  //       address: 'London No. 1 Lake Park',
-  //       tags: ['loser'],
-  //     },
-  //     {
-  //       key: '3',
-  //       name: 'Joe Black',
-  //       age: 32,
-  //       address: 'Sidney No. 1 Lake Park',
-  //       tags: ['cool', 'teacher'],
-  //     },
-  //   ];
 
   if (loadingDetailCourse) {
     return <Loader />;
@@ -95,15 +71,22 @@ export const Works = () => {
               Lecturer : {detailCourse?.author[0].name}
             </Text>
           </div>
-          <Button
-            leftIcon={<PlusSquareIcon />}
-            colorScheme="facebook"
-            // onClick={onOpen}
-          >
-            Add Course
-          </Button>
+          {user.role === 'teacher' && (
+            <Button
+              leftIcon={<PlusSquareIcon />}
+              colorScheme="facebook"
+              onClick={onOpen}
+            >
+              Add New Work
+            </Button>
+          )}
         </div>
         <Table columns={columns} dataSource={detailCourse?.works} />
+        <ModalAddWork
+          isOpen={isOpen}
+          onClose={onClose}
+          refetch={refetchDetailCourse}
+        />
       </div>
     </SidebarWithHeader>
   );
