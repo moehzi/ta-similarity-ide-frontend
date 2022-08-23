@@ -4,10 +4,14 @@ import { CodeContext } from '../../context/CodeContext';
 import CodeMirror from '@uiw/react-codemirror';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import { javascript } from '@codemirror/lang-javascript';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
+import { submitWork } from '../../services/work';
+import { useAuth } from '../../hooks/useAuth';
 
-const CodeEditor = ({ codeTest }) => {
+const CodeEditor = ({ codeTest, workId }) => {
   const { code, setCode, setResult, isCorrect } = useContext(CodeContext);
+  const { token } = useAuth();
+  const toast = useToast();
 
   //   const testCode = `// Don't delete this
   //   function main() {
@@ -32,8 +36,23 @@ const CodeEditor = ({ codeTest }) => {
     setCode(value);
   }, []);
 
-  const submitCode = () => {
+  const runCode = () => {
     setResult(`${code} ${codeTest}`);
+  };
+
+  const submitCode = () => {
+    const payload = {
+      code: code,
+    };
+    submitWork(token, workId, payload).then((res) => {
+      toast({
+        title: 'Submit Work',
+        description: res.data.message,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+    });
   };
 
   return (
@@ -49,7 +68,7 @@ const CodeEditor = ({ codeTest }) => {
         minHeight={'400px'}
         className={'font-code mb-4'}
       />
-      <Button onClick={submitCode} colorScheme={'whatsapp'}>
+      <Button onClick={runCode} colorScheme={'whatsapp'}>
         Run Code
       </Button>
 
