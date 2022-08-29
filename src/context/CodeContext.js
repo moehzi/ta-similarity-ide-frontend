@@ -11,11 +11,24 @@ export const CodeProvider = ({ children }) => {
   const [code, setCode] = useState(``);
   const [result, setResult] = useState('');
   const [description, setDescription] = useState('');
+  const [html, setHtml] = useState('');
+  const [css, setCss] = useState('');
+  const [js, setJs] = useState('');
+  const [srcDoc, setSrcDoc] = useState('');
+
   const [isCorrect, setIsCorrect] = useState(false);
 
   return (
     <CodeContext.Provider
       value={{
+        html,
+        setHtml,
+        css,
+        setCss,
+        js,
+        setJs,
+        srcDoc,
+        setSrcDoc,
         code,
         setCode,
         result,

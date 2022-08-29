@@ -5,6 +5,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.1",
     "@chakra-ui/react": "^2.1.2",
+    "@codemirror/lang-css": "^6.0.0",
+    "@codemirror/lang-html": "^6.1.0",
     "@codemirror/lang-javascript": "^6.0.2",
     "@codemirror/lang-markdown": "^6.0.1",
     "@emotion/react": "^11",
