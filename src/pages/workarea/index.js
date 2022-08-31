@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import CodeEditor from '../../components/codeEditor';
 import { Pane } from '../../components/pane';
 import ResultMessage from '../../components/ResultMessage';
 import { Loader } from '../../components/spinner';
@@ -11,7 +10,7 @@ import { CodeContext } from '../../context/CodeContext';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
 
 export const WorkArea = () => {
-  const { result } = useContext(CodeContext);
+  const { result, isCorrect } = useContext(CodeContext);
   const { detailWork, loadingDetailWork } = useContext(DetailWorkContext);
   const { workId } = useParams();
 
@@ -21,18 +20,29 @@ export const WorkArea = () => {
 
   return (
     detailWork && (
-      <div className="p-8">
-        {/* <WorkDescription source={detailWork.description} /> */}
-        <div className="flex">
-          <WebEditor codeTest={detailWork.codeTest} workId={workId} />
-          <Pane />
-        </div>
+      <div className="p-4">
+        {/* <div className="flex"> */}
+        <WorkDescription source={detailWork.description} />
+        <WebEditor workId={workId} />
+
+        {!!result?.expected_output?.[0] &&
+          result.expected_output?.length > 0 && <Terminal />}
         {result && (
-          <div className="max-w-lg p-4 mt-4 bg-gray-100">
-            <ResultMessage expectedOutput={detailWork.expectedOutput} />
-            <Terminal expectedOutput={detailWork.expectedOutput} />
-          </div>
+          <ResultMessage
+            display={'Result Message'}
+            value={isCorrect ? 'Correct Answer ✅' : 'Wrong answer :( ❌'}
+          />
         )}
+        {result.error_msg?.length > 0 && (
+          <ResultMessage
+            value={result.error_msg[0]}
+            display={'Compiler Message'}
+          />
+        )}
+
+        <Pane />
+
+        {/* </div> */}
       </div>
     )
   );

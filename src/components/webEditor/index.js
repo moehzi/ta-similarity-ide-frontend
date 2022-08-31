@@ -1,17 +1,16 @@
 import { useCallback, useContext, useEffect } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
-import CodeMirror from '@uiw/react-codemirror';
-import { dracula } from '@uiw/codemirror-theme-dracula';
 import { javascript } from '@codemirror/lang-javascript';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { Button, useToast } from '@chakra-ui/react';
-import { submitWork } from '../../services/work';
+import { submitWork, testWork } from '../../services/work';
 import { useAuth } from '../../hooks/useAuth';
-import { Pane } from '../pane';
 
-const WebEditor = ({ codeTest, workId }) => {
+import CodeEditor from '../codeEditor';
+
+const WebEditor = ({ workId }) => {
   const {
     setHtml,
     code,
@@ -23,6 +22,7 @@ const WebEditor = ({ codeTest, workId }) => {
     setResult,
     isCorrect,
     setSrcDoc,
+    setIsCorrect,
   } = useContext(CodeContext);
   const { token } = useAuth();
   const toast = useToast();
@@ -46,6 +46,27 @@ const WebEditor = ({ codeTest, workId }) => {
   // }
 
   // main();`;
+
+  const testCode = `mocha.run()
+  .on('test', function(test) {
+    console.log('Test started: ' + test.title);
+  })
+  .on('test end', function(test) {
+    console.log('Test ended: ' + test.title);
+  })
+  .on('pass', function(test) {
+    console.log('Test passed');
+  })
+  .on('fail', function(test, err) {
+    console.log('Test failed');
+    console.log(test);
+    console.log(err);
+	return err.message;
+  })
+  .on('end', function() {
+    console.log('All tests done');
+  })`;
+
   const onChangeHTML = useCallback((value, viewUpdate) => {
     setHtml(value);
   }, []);
@@ -59,7 +80,71 @@ const WebEditor = ({ codeTest, workId }) => {
   }, []);
 
   const runCode = () => {
-    setResult(`${js} ${codeTest}`);
+    // setResult(`
+    // <html>
+    //   <head>
+    // 	<title>Mocha Tests</title>
+    // 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.0.0/mocha.css" />
+    //   </head>
+    //   <body>
+    // 	<div id="mocha"></div>
+    // 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.0.1/mocha.min.js"></script>
+    // 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js"></script>
+    // 	<script>
+    // 	  mocha.setup('bdd');
+    // 	</script>
+
+    // 	<!-- load code you want to test here -->
+    // 	<script>
+    // 	  ${js}
+
+    // 	  describe('test', () => {
+    // 		it('Should return 6', () => {
+    // 		  chai.expect(sum(4, 2)).to.eql(6);
+    // 		});
+
+    // 		it('Should return 7',()=>{
+    // 			chai.expect(sum(5,2)).to.eql(7);
+    // 		})
+    // 	  });
+    // 	</script>
+
+    // 	<!-- load your test files here -->
+
+    // 	<script>
+    // 	   mocha
+    // 		.run()
+    // 		.on('test', function (test) {
+    // 		  console.log('Test started: ' + test.title);
+    // 		})
+    // 		.on('test end', function (test) {
+    // 		  console.log('Test ended: ',test);
+    // 		})
+    // 		.on('pass', function (test) {
+    // 		  console.log('Test passed');
+    // 		  console.log(test)
+    // 		  window.localStorage.setItem('success',test.title)
+    // 		})
+    // 		.on('fail', function (test, err) {
+    // 			window.localStorage.setItem('error',err.message)
+    // 			window.localStorage.removeItem('success');
+    // 		})
+    // 		.on('end', function () {
+    // 		  console.log('All tests done');
+    // 		});
+    // 	</script>
+    //   </body>
+    // </html>`);
+    const payload = {
+      code: `${js}`,
+    };
+    testWork(token, workId, payload).then((res) => {
+      console.log(res, 'mantap');
+
+      setResult(res.data.data);
+      setIsCorrect(res.data.solution);
+    });
+
     setSrcDoc(`
 	<html>
 	<body>${HTML}</body>
@@ -84,49 +169,38 @@ const WebEditor = ({ codeTest, workId }) => {
   };
 
   return (
-    <div className="flex-1">
-      <CodeMirror
-        value={HTML}
-        basicSetup={{
-          defaultKeymap: true,
-        }}
-        extensions={[html()]}
-        theme={dracula}
-        onChange={onChangeHTML}
-        className={'font-code mb-4'}
-        minHeight={'25vh'}
-      />
-      <CodeMirror
-        value={CSS}
-        basicSetup={{
-          defaultKeymap: true,
-        }}
-        extensions={[css()]}
-        theme={dracula}
-        onChange={onChangeCss}
-        className={'font-code mb-4'}
-        minHeight={'25vh'}
-      />
-      <CodeMirror
-        value={js}
-        basicSetup={{
-          defaultKeymap: true,
-        }}
-        extensions={[javascript()]}
-        theme={dracula}
-        onChange={onChangeJs}
-        className={'font-code mb-4'}
-        minHeight={'25vh'}
-      />
-      <Button onClick={runCode} colorScheme={'whatsapp'}>
-        Run Code
-      </Button>
-
-      {isCorrect && (
-        <Button ml={4} onClick={submitCode} colorScheme={'gray'}>
-          Submit Code
+    <div className="mt-4">
+      <div className="flex gap-4 mb-4">
+        <CodeEditor
+          display={'HTML'}
+          value={HTML}
+          language={html()}
+          onChange={onChangeHTML}
+        />
+        <CodeEditor
+          display={'CSS'}
+          value={CSS}
+          language={css()}
+          onChange={onChangeCss}
+        />
+        <CodeEditor
+          display={'JavaScript'}
+          value={js}
+          language={javascript()}
+          onChange={onChangeJs}
+        />
+      </div>
+      <div className="flex gap-4">
+        <Button onClick={runCode} colorScheme={'whatsapp'}>
+          Run Code
         </Button>
-      )}
+
+        {isCorrect && (
+          <Button onClick={submitCode} colorScheme={'gray'}>
+            Submit Code
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

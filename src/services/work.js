@@ -7,3 +7,9 @@ export const submitWork = (token, workId, payload) => {
     headers: { Authorization: token },
   });
 };
+
+export const testWork = (token, workId, payload) => {
+  return axios.post(`${LOCAL_URL}works/${workId}/test-work`, payload, {
+    headers: { Authorization: token },
+  });
+};

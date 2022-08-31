@@ -4,11 +4,11 @@ import { CodeContext } from '../../context/CodeContext';
 export const Pane = () => {
   const { srcDoc } = useContext(CodeContext);
   return (
-    <div className="flex-1 ">
+    <div className="h-[50vh]">
       <iframe
         srcDoc={srcDoc}
         title="output"
-        sandbox="allow-scripts"
+        sandbox="allow-same-origin allow-scripts"
         frameBorder="0"
         width="100%"
         height="100%"

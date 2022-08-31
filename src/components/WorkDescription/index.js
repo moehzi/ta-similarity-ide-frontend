@@ -13,7 +13,11 @@ const WorkDescription = ({ source }) => {
 
   //   `;
 
-  return <MarkdownPreview source={source} />;
+  return (
+    <div className="flex-[0.75]">
+      <MarkdownPreview source={source} />
+    </div>
+  );
 };
 
 export default WorkDescription;
