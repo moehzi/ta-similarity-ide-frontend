@@ -27,46 +27,6 @@ const WebEditor = ({ workId }) => {
   const { token } = useAuth();
   const toast = useToast();
 
-  //   const testCode = `// Don't delete this
-  //   function main() {
-  // 	let boolRes = false;
-  // 	const testCase = [[1,2,3],[1,4,5],[1,5,6]]
-  // 	for(let i =0;i<testCase.length;i++){
-  // 		const a = testCase[i][0]
-  // 		const b = testCase[i][1]
-  // 		const result = testCase[i][2]
-  // 		const res = solveFirst(a, b);
-  // 		if(res===result){
-  // 			boolRes = true;
-  // 		}else{
-  // 			boolRes = false;
-  // 		}
-  // 	}
-  // 	return boolRes;
-  // }
-
-  // main();`;
-
-  const testCode = `mocha.run()
-  .on('test', function(test) {
-    console.log('Test started: ' + test.title);
-  })
-  .on('test end', function(test) {
-    console.log('Test ended: ' + test.title);
-  })
-  .on('pass', function(test) {
-    console.log('Test passed');
-  })
-  .on('fail', function(test, err) {
-    console.log('Test failed');
-    console.log(test);
-    console.log(err);
-	return err.message;
-  })
-  .on('end', function() {
-    console.log('All tests done');
-  })`;
-
   const onChangeHTML = useCallback((value, viewUpdate) => {
     setHtml(value);
   }, []);
@@ -80,61 +40,6 @@ const WebEditor = ({ workId }) => {
   }, []);
 
   const runCode = () => {
-    // setResult(`
-    // <html>
-    //   <head>
-    // 	<title>Mocha Tests</title>
-    // 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.0.0/mocha.css" />
-    //   </head>
-    //   <body>
-    // 	<div id="mocha"></div>
-    // 	<script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/8.0.1/mocha.min.js"></script>
-    // 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js"></script>
-    // 	<script>
-    // 	  mocha.setup('bdd');
-    // 	</script>
-
-    // 	<!-- load code you want to test here -->
-    // 	<script>
-    // 	  ${js}
-
-    // 	  describe('test', () => {
-    // 		it('Should return 6', () => {
-    // 		  chai.expect(sum(4, 2)).to.eql(6);
-    // 		});
-
-    // 		it('Should return 7',()=>{
-    // 			chai.expect(sum(5,2)).to.eql(7);
-    // 		})
-    // 	  });
-    // 	</script>
-
-    // 	<!-- load your test files here -->
-
-    // 	<script>
-    // 	   mocha
-    // 		.run()
-    // 		.on('test', function (test) {
-    // 		  console.log('Test started: ' + test.title);
-    // 		})
-    // 		.on('test end', function (test) {
-    // 		  console.log('Test ended: ',test);
-    // 		})
-    // 		.on('pass', function (test) {
-    // 		  console.log('Test passed');
-    // 		  console.log(test)
-    // 		  window.localStorage.setItem('success',test.title)
-    // 		})
-    // 		.on('fail', function (test, err) {
-    // 			window.localStorage.setItem('error',err.message)
-    // 			window.localStorage.removeItem('success');
-    // 		})
-    // 		.on('end', function () {
-    // 		  console.log('All tests done');
-    // 		});
-    // 	</script>
-    //   </body>
-    // </html>`);
     const payload = {
       code: `${js}`,
     };

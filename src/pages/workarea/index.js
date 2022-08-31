@@ -21,24 +21,25 @@ export const WorkArea = () => {
   return (
     detailWork && (
       <div className="p-4">
-        {/* <div className="flex"> */}
         <WorkDescription source={detailWork.description} />
         <WebEditor workId={workId} />
 
-        {!!result?.expected_output?.[0] &&
-          result.expected_output?.length > 0 && <Terminal />}
-        {result && (
-          <ResultMessage
-            display={'Result Message'}
-            value={isCorrect ? 'Correct Answer ✅' : 'Wrong answer :( ❌'}
-          />
-        )}
-        {result.error_msg?.length > 0 && (
-          <ResultMessage
-            value={result.error_msg[0]}
-            display={'Compiler Message'}
-          />
-        )}
+        <div className="p-4 mt-8 rounded bg-slate-300">
+          {!!result?.expected_output?.[0] &&
+            result.expected_output?.length > 0 && <Terminal />}
+          {result && (
+            <ResultMessage
+              display={'Result Message'}
+              value={isCorrect ? 'Correct Answer ✅' : 'Wrong answer :( ❌'}
+            />
+          )}
+          {result.error_msg?.length > 0 && (
+            <ResultMessage
+              value={result.error_msg[0]}
+              display={'Compiler Message'}
+            />
+          )}
+        </div>
 
         <Pane />
 
