@@ -29,14 +29,19 @@ export const Works = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => (
-        <Link
-          color="teal.500"
-          onClick={() => navigate(`/text-editor/${record.workId._id}`)}
-        >
-          {user.role === 'teacher' ? record.name : record.workId.name}
-        </Link>
-      ),
+      render: (text, record) =>
+        record.status === 'Not Completed' ? (
+          <Link
+            color="teal.500"
+            onClick={() => navigate(`/text-editor/${record.workId._id}`)}
+          >
+            {record.workId.name}
+          </Link>
+        ) : (
+          <span>
+            {user.role === 'teacher' ? record.name : record.workId.name}
+          </span>
+        ),
     },
     {
       title: 'Status',
@@ -49,6 +54,8 @@ export const Works = () => {
           record.status === 'Not ready to review'
         )
           color = 'volcano';
+
+        if (record.status === 'Completed') color = 'green';
         return (
           <Tag color={color} key={record.status}>
             {record.status.toUpperCase()}
