@@ -69,8 +69,8 @@ const Terminal = ({ expectedOutput }) => {
         <CodeMirror
           value={
             result?.actual_output?.length > 0
-              ? result?.actual_output[0]
-              : result?.error_msg[0]
+              ? `${result?.actual_output[0]}`
+              : `${result?.error_msg[0]}`
           }
           basicSetup={{
             defaultKeymap: true,
@@ -87,7 +87,7 @@ const Terminal = ({ expectedOutput }) => {
       <div>
         <Text fontSize="md">Expected Output: </Text>
         <CodeMirror
-          value={result?.expected_output[0]}
+          value={`${result?.expected_output[0]}`}
           basicSetup={{
             defaultKeymap: true,
             lineNumbers: true,

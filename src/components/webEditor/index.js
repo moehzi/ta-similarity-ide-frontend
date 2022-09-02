@@ -41,7 +41,7 @@ const WebEditor = ({ workId }) => {
 
   const runCode = () => {
     const payload = {
-      code: `${js}`,
+      jsCode: `${js}`,
     };
     testWork(token, workId, payload).then((res) => {
       console.log(res, 'mantap');
@@ -60,7 +60,9 @@ const WebEditor = ({ workId }) => {
 
   const submitCode = () => {
     const payload = {
-      code: code,
+      jsCode: js,
+      cssCode: CSS,
+      htmlCode: HTML,
     };
     submitWork(token, workId, payload).then((res) => {
       toast({

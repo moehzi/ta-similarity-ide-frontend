@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { Space, Table } from 'antd';
+import { Space, Table, Tag } from 'antd';
 import { Button, Heading, Link, Text, useDisclosure } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { PlusSquareIcon } from '@chakra-ui/icons';
@@ -21,7 +21,7 @@ export const Works = () => {
   const columns = [
     {
       title: 'No. ',
-      dataIndex: 'name',
+      dataIndex: 'no',
       key: '_id',
       render: (item, record, index) => <Text>{index + 1}</Text>,
     },
@@ -32,11 +32,29 @@ export const Works = () => {
       render: (text, record) => (
         <Link
           color="teal.500"
-          onClick={() => navigate(`/text-editor/${record._id}`)}
+          onClick={() => navigate(`/text-editor/${record.workId._id}`)}
         >
-          {text}
+          {user.role === 'teacher' ? record.name : record.workId.name}
         </Link>
       ),
+    },
+    {
+      title: 'Status',
+      key: 'tags',
+      dataIndex: 'tags',
+      render: (_, record) => {
+        let color = '';
+        if (
+          record.status === 'Not Completed' ||
+          record.status === 'Not ready to review'
+        )
+          color = 'volcano';
+        return (
+          <Tag color={color} key={record.status}>
+            {record.status.toUpperCase()}
+          </Tag>
+        );
+      },
     },
     {
       title: 'Action',
@@ -73,7 +91,10 @@ export const Works = () => {
               {detailCourse?.name}
             </Heading>
             <Text mb={4} opacity={'70%'}>
-              Lecturer : {detailCourse?.author[0].name}
+              Lecturer :{' '}
+              {user?.role === 'teacher'
+                ? detailCourse?.author[0]?.name
+                : detailCourse?.author}
             </Text>
           </div>
           {user?.role === 'teacher' && (
