@@ -44,8 +44,6 @@ const WebEditor = ({ workId }) => {
       jsCode: `${js}`,
     };
     testWork(token, workId, payload).then((res) => {
-      console.log(res, 'mantap');
-
       setResult(res.data.data);
       setIsCorrect(res.data.solution);
     });

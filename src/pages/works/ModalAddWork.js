@@ -32,32 +32,14 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const workName = useRef();
   const expectedOutput = useRef();
   const [workDesc, setWorkDesc] = useState();
-  const [testCode, setTestCode] = useState(`function main() {
-// Write your test code here
-}
-		  
-main();`);
+  const [testCode, setTestCode] = useState(`describe('Masukkan judul test',()=>{
+	it('Masukkan spesifik test',()=>{
+	  // Tuliskan testnya disini
+	  // Contoh:
+	  // chai.expect(sum(5,2)).to.eql(7)
+	})
+})`);
   const [preview, setPreview] = useState(false);
-
-  //   const handleCreate = () => {
-  //     const payload = {
-  //       name: workName.current.value,
-  //       description: workDescription.current.value,
-  //       codeTest: codeTest.current.value,
-  //     };
-
-  //     createCourse(token, payload).then((res) => {
-  //       toast({
-  //         title: 'Sucessfully create course',
-  //         description: res.data.message,
-  //         status: 'success',
-  //         duration: 9000,
-  //         isClosable: true,
-  //       });
-  //       onClose();
-  //       refetchMyCourse();
-  //     });
-  //   };
 
   const onChange = useCallback((value, viewUpdate) => {
     setTestCode(value);
@@ -91,13 +73,13 @@ main();`);
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create course</ModalHeader>
+        <ModalHeader>Create assignment</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
             <FormLabel>Name</FormLabel>
             <Input ref={workName} placeholder="Enter your work name" />
-            <FormLabel>Description</FormLabel>
+            <FormLabel mt={4}>Description</FormLabel>
             <Link onClick={() => setPreview(!preview)}>Preview</Link>
             {preview ? (
               <MarkdownPreview source={workDesc} />
@@ -116,7 +98,7 @@ main();`);
               />
             )}
 
-            <FormLabel mt={4}>Code Test</FormLabel>
+            <FormLabel mt={8}>Code Test</FormLabel>
             <CodeMirror
               value={testCode}
               basicSetup={{
@@ -127,11 +109,6 @@ main();`);
               onChange={onChange}
               minHeight={'400px'}
               className={'font-code mb-4'}
-            />
-            <FormLabel>Expected Output</FormLabel>
-            <Input
-              ref={expectedOutput}
-              placeholder="Enter your work expected output"
             />
           </FormControl>
         </ModalBody>

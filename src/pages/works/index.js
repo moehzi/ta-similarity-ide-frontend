@@ -35,11 +35,11 @@ export const Works = () => {
             color="teal.500"
             onClick={() => navigate(`/text-editor/${record.workId._id}`)}
           >
-            {record.workId.name}
+            {record.workId?.name}
           </Link>
         ) : (
           <span>
-            {user.role === 'teacher' ? record.name : record.workId.name}
+            {user.role === 'teacher' ? record?.name : record.workId?.name}
           </span>
         ),
     },
@@ -110,7 +110,7 @@ export const Works = () => {
               colorScheme="facebook"
               onClick={onOpen}
             >
-              Add New Work
+              Add New Assignment
             </Button>
           )}
         </div>
