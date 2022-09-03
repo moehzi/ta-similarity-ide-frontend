@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
 import { javascript } from '@codemirror/lang-javascript';
@@ -9,6 +9,7 @@ import { submitWork, testWork } from '../../services/work';
 import { useAuth } from '../../hooks/useAuth';
 
 import CodeEditor from '../codeEditor';
+import { useNavigate } from 'react-router-dom';
 
 const WebEditor = ({ workId }) => {
   const {
@@ -39,14 +40,23 @@ const WebEditor = ({ workId }) => {
     setJs(value);
   }, []);
 
+  const [loadingTest, setLoadingTest] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+
+  const navigate = useNavigate();
+
   const runCode = () => {
     const payload = {
       jsCode: `${js}`,
     };
-    testWork(token, workId, payload).then((res) => {
-      setResult(res.data.data);
-      setIsCorrect(res.data.solution);
-    });
+    setLoadingTest(true);
+    testWork(token, workId, payload)
+      .then((res) => {
+        setResult(res.data.data);
+        setIsCorrect(res.data.solution);
+      })
+      .catch((err) => setLoadingTest(false))
+      .finally(() => setLoadingTest(false));
 
     setSrcDoc(`
 	<html>
@@ -62,6 +72,7 @@ const WebEditor = ({ workId }) => {
       cssCode: CSS,
       htmlCode: HTML,
     };
+    setLoadingSubmit(true);
     submitWork(token, workId, payload).then((res) => {
       toast({
         title: 'Submit Work',
@@ -70,6 +81,8 @@ const WebEditor = ({ workId }) => {
         duration: 9000,
         isClosable: true,
       });
+      setLoadingSubmit(false);
+      navigate(`/courses/${res.data.data.courseId}`);
     });
   };
 
@@ -96,12 +109,20 @@ const WebEditor = ({ workId }) => {
         />
       </div>
       <div className="flex gap-4">
-        <Button onClick={runCode} colorScheme={'whatsapp'}>
+        <Button
+          onClick={runCode}
+          colorScheme={'whatsapp'}
+          isLoading={loadingTest}
+        >
           Run Code
         </Button>
 
         {isCorrect && (
-          <Button onClick={submitCode} colorScheme={'gray'}>
+          <Button
+            onClick={submitCode}
+            colorScheme={'gray'}
+            isLoading={loadingSubmit}
+          >
             Submit Code
           </Button>
         )}
