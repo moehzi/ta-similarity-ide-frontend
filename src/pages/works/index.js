@@ -69,7 +69,13 @@ export const Works = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button colorScheme="whatsapp" size="sm">
+          <Button
+            colorScheme="whatsapp"
+            size="sm"
+            onClick={() =>
+              user.role === 'teacher' && navigate(`/work/${record._id}`)
+            }
+          >
             Detail
           </Button>
           <a>Delete</a>

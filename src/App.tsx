@@ -13,6 +13,7 @@ import { Works } from './pages/works';
 import { DetailCourseProvider } from './context/DetailCourseContext';
 import 'antd/dist/antd.min.css';
 import { DetailWorkProvider } from './context/DetailWorkContext';
+import { DetailWork } from './pages/DetailWork';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -52,15 +53,23 @@ export default function App() {
                   </CourseProvider>
                 }
               />
+              <Route
+                path="/work/:workId"
+                element={
+                  <DetailWorkProvider>
+                    <DetailWork />
+                  </DetailWorkProvider>
+                }
+              />
+              <Route
+                path="/text-editor/:workId"
+                element={
+                  <DetailWorkProvider>
+                    <WorkArea />
+                  </DetailWorkProvider>
+                }
+              />
             </Route>
-            <Route
-              path="/text-editor/:workId"
-              element={
-                <DetailWorkProvider>
-                  <WorkArea />
-                </DetailWorkProvider>
-              }
-            />
           </Routes>
         </div>
       </CodeProvider>

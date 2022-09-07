@@ -22,7 +22,6 @@ import { markdown } from '@codemirror/lang-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { createWork } from '../../services/course';
 import { useParams } from 'react-router-dom';
-import { DetailCourseContext } from '../../context/DetailCourseContext';
 
 const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const { token } = useAuth();

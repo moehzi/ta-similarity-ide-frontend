@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
 import { javascript } from '@codemirror/lang-javascript';
@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 const WebEditor = ({ workId }) => {
   const {
     setHtml,
-    code,
     setCss,
     setJs,
     js,
