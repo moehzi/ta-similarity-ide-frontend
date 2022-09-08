@@ -13,3 +13,11 @@ export const testWork = (token, workId, payload) => {
     headers: { Authorization: token },
   });
 };
+
+export const checkSimilarityStudent = (token, workId) => {
+  return axios.post(
+    `${LOCAL_URL}check-similarity/${workId}`,
+    {},
+    { headers: { Authorization: token } }
+  );
+};

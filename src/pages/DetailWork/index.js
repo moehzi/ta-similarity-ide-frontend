@@ -1,19 +1,24 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { Space, Table, Tag } from 'antd';
-import { Button, Heading, Text } from '@chakra-ui/react';
+import { Button, Heading, Text, useToast } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { CheckCircleIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
+import { checkSimilarityStudent } from '../../services/work';
 
 export const DetailWork = () => {
   const { user } = useContext(UserContext);
-  const { setToken } = useAuth();
-  const { detailWork, loadingDetailWork } = useContext(DetailWorkContext);
+  const { setToken, token } = useAuth();
+  const { detailWork, loadingDetailWork, refetchDetailWork } =
+    useContext(DetailWorkContext);
+  const { workId } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const columns = [
     {
@@ -45,17 +50,19 @@ export const DetailWork = () => {
       },
     },
     {
-      title: 'Result',
-      key: 'result',
-      dataIndex: 'result',
+      title: 'Highest Result',
+      key: 'highestPercentage',
+      dataIndex: 'highestPercentage',
       render: (_, record) => {
-        if (!record.result) {
+        if (!record?.highestPercentage) {
           return (
-            <Tag color="volcano" key={record.result}>
+            <Tag color="volcano" key={record?.highestPercentage}>
               NO RESULT
             </Tag>
           );
         }
+
+        return <span>{record?.highestPercentage} %</span>;
       },
     },
     {
@@ -66,7 +73,6 @@ export const DetailWork = () => {
           <Button colorScheme="whatsapp" size="sm">
             Detail
           </Button>
-          <a>Delete</a>
         </Space>
       ),
     },
@@ -75,6 +81,35 @@ export const DetailWork = () => {
   if (loadingDetailWork) {
     return <Loader />;
   }
+
+  const checkSimilarity = () => {
+    setIsLoading(true);
+    checkSimilarityStudent(token, workId)
+      .then((res) => {
+        toast({
+          title: 'Check Similarity',
+          description: res.data.message,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+        refetchDetailWork();
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const color = () => {
+    let color = '';
+    if (detailWork?.status === 'Ready to review') {
+      color = 'blue';
+    } else if (detailWork?.status === 'Finished') {
+      color = 'green';
+    } else {
+      color = 'volcano';
+    }
+
+    return color;
+  };
 
   return (
     <SidebarWithHeader
@@ -92,18 +127,15 @@ export const DetailWork = () => {
             <Heading size="lg" mb={4}>
               {detailWork?.name}
             </Heading>
-            <Tag
-              color={
-                detailWork?.status === 'Not ready to review'
-                  ? 'volcano'
-                  : 'green'
-              }
-            >
-              {detailWork?.status}
-            </Tag>
+            <Tag color={color()}>{detailWork?.status}</Tag>
           </div>
           {detailWork?.status === 'Ready to review' && (
-            <Button leftIcon={<CheckCircleIcon />} colorScheme="facebook">
+            <Button
+              leftIcon={<CheckCircleIcon />}
+              isLoading={isLoading}
+              colorScheme="facebook"
+              onClick={checkSimilarity}
+            >
               Check similarity
             </Button>
           )}

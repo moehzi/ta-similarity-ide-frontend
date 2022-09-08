@@ -55,7 +55,8 @@ export const Works = () => {
         )
           color = 'volcano';
 
-        if (record.status === 'Completed') color = 'green';
+        if (record.status === 'Completed' || record.status === 'Finished')
+          color = 'green';
         if (record.status === 'Ready to review') color = 'blue';
         return (
           <Tag color={color} key={record.status}>
