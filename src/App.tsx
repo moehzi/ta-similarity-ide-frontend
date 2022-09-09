@@ -14,6 +14,8 @@ import { DetailCourseProvider } from './context/DetailCourseContext';
 import 'antd/dist/antd.min.css';
 import { DetailWorkProvider } from './context/DetailWorkContext';
 import { DetailWork } from './pages/DetailWork';
+import { DetailStudentWork } from './pages/DetailStudentWork';
+import { DetailStudentWorkProvider } from './context/DetailStudentWorkContext';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -67,6 +69,14 @@ export default function App() {
                   <DetailWorkProvider>
                     <WorkArea />
                   </DetailWorkProvider>
+                }
+              />
+              <Route
+                path="/detail-work/:workId/student/:studentId"
+                element={
+                  <DetailStudentWorkProvider>
+                    <DetailStudentWork />
+                  </DetailStudentWorkProvider>
                 }
               />
             </Route>

@@ -62,7 +62,11 @@ export const DetailWork = () => {
           );
         }
 
-        return <span>{record?.highestPercentage} %</span>;
+        return (
+          <Tag color={Number(record?.highestPercentage) > 90 ? 'red' : 'green'}>
+            {record?.highestPercentage} %
+          </Tag>
+        );
       },
     },
     {
@@ -70,7 +74,15 @@ export const DetailWork = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button colorScheme="whatsapp" size="sm">
+          <Button
+            colorScheme="whatsapp"
+            size="sm"
+            onClick={() =>
+              navigate(
+                `/detail-work/${record?.workId}/student/${record?.author._id}`
+              )
+            }
+          >
             Detail
           </Button>
         </Space>
