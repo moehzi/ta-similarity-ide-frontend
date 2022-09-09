@@ -2,7 +2,6 @@ import { useContext, useRef } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
 import CodeMirror from '@uiw/react-codemirror';
-import { dracula } from '@uiw/codemirror-theme-dracula';
 import { javascript } from '@codemirror/lang-javascript';
 import { Text } from '@chakra-ui/react';
 import { createTheme } from '@uiw/codemirror-themes';

@@ -1,4 +1,3 @@
-import { BASE_URL } from './auth';
 import axios from 'axios';
 import { LOCAL_URL } from './course';
 

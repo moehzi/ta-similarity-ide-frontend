@@ -1,8 +1,6 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import { CodeContext } from '../../context/CodeContext';
 import CodeMirror from '@uiw/react-codemirror';
-import { dracula } from '@uiw/codemirror-theme-dracula';
 import { html } from '@codemirror/lang-html';
 import { Text } from '@chakra-ui/react';
 import { createTheme } from '@uiw/codemirror-themes';

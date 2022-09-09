@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Heading, Text, useDisclosure } from '@chakra-ui/react';
-import React, { useContext } from 'react';
-import { UserContext } from '../../context/UserContext';
+import { Text } from '@chakra-ui/react';
+import React from 'react';
 import { Works } from '../../pages/course';
 import ModalJoin from './Modal';
 interface CardCourseProps {

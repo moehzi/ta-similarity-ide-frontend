@@ -29,7 +29,7 @@ export default function App() {
     if (!access_token) {
       navigate('/login');
     }
-  }, [access_token, setToken]);
+  }, [access_token, navigate, setToken]);
 
   return (
     <UserProvider>

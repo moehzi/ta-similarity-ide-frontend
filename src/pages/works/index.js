@@ -79,7 +79,7 @@ export const Works = () => {
           >
             Detail
           </Button>
-          <a>Delete</a>
+          {/* <a>Delete</a> */}
         </Space>
       ),
     },

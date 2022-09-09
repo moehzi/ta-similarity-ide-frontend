@@ -1,11 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 import { DETAIL_COURSE } from '../services/course';
-// import useFetch from '../hooks/useFetch';
-// import { GET_PROFILE } from '../services/user';
-
-// type UserProviderProps = React.PropsWithChildren<{}>;
 
 export const DetailCourseContext = createContext(null);
 

@@ -1,4 +1,5 @@
-import { useCallback, useContext, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
 import { javascript } from '@codemirror/lang-javascript';
@@ -37,6 +38,12 @@ const WebEditor = ({ workId }) => {
 
   const onChangeJs = useCallback((value, viewUpdate) => {
     setJs(value);
+  }, []);
+
+  useEffect(() => {
+    setJs('');
+    setHtml('');
+    setCss('');
   }, []);
 
   const [loadingTest, setLoadingTest] = useState(false);

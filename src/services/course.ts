@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { BASE_URL } from './auth';
 
 export const LOCAL_URL = `http://localhost:8080/`;
 

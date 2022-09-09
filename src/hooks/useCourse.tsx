@@ -1,10 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import {
-  DETAIL_COURSE,
-  GET_ALL_COURSE,
-  GET_MY_COURSE,
-} from '../services/course';
+import { GET_ALL_COURSE, GET_MY_COURSE } from '../services/course';
 import useFetch from './useFetch';
 
 type CourseContextProps = React.PropsWithChildren<{}>;

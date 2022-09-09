@@ -1,12 +1,6 @@
-import { useCallback, useContext } from 'react';
-
-import { CodeContext } from '../../context/CodeContext';
 import CodeMirror from '@uiw/react-codemirror';
 import { dracula } from '@uiw/codemirror-theme-dracula';
-import { javascript } from '@codemirror/lang-javascript';
-import { Button, Text, useToast } from '@chakra-ui/react';
-import { submitWork } from '../../services/work';
-import { useAuth } from '../../hooks/useAuth';
+import { Text } from '@chakra-ui/react';
 
 const CodeEditor = ({ value, onChange, language, display }) => {
   return (
