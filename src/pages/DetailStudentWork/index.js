@@ -3,25 +3,19 @@ import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { Card, Space, Table, Tag } from 'antd';
-import { Button, Heading, Text, useToast } from '@chakra-ui/react';
+import { Button, Heading, Text } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
-import { CheckCircleIcon } from '@chakra-ui/icons';
-import { useNavigate, useParams } from 'react-router-dom';
-import { DetailWorkContext } from '../../context/DetailWorkContext';
-import { checkSimilarityStudent } from '../../services/work';
 import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
-import Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 
 export const DetailStudentWork = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
-  const { data, refetch, loading } = useContext(DetailStudentWorkContext);
+  const { data, loading } = useContext(DetailStudentWorkContext);
   const [student, setStudent] = useState('');
   const [code, setCode] = useState('');
   const [esprima, setEsprima] = useState([]);
-  const navigate = useNavigate();
   const [isUpdated, setIsUpdated] = useState(false);
 
   useEffect(() => {
