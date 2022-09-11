@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 
 const useFetch = (url: string) => {
@@ -7,6 +8,7 @@ const useFetch = (url: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -22,12 +24,16 @@ const useFetch = (url: string) => {
         })
         .catch((err) => {
           setError(err);
+          if (err.response.data.data.message === 'jwt expired') {
+            localStorage.removeItem('token');
+            navigate('/login');
+          }
         })
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [url, token]);
+  }, []);
 
   const refetch = () => {
     setLoading(true);

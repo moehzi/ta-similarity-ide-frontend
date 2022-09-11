@@ -7,7 +7,6 @@ import { Button, Heading, Text } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
-import 'prismjs/components/prism-json';
 
 export const DetailStudentWork = () => {
   const { user } = useContext(UserContext);
@@ -26,7 +25,7 @@ export const DetailStudentWork = () => {
     if (data?.length > 0) {
       setCode(data[0]?.similarityResult[0]?.jsCode);
       setStudent(data[0]?.similarityResult[0]?.name);
-      setEsprima(data[0]?.similarityResult[0]?.esprimaCode.split(''));
+      setEsprima(data[0]?.similarityResult[0]?.esprimaCode?.split(''));
     }
   }, [data, data?.length]);
 
@@ -41,7 +40,7 @@ export const DetailStudentWork = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => <span>{record.name}</span>,
+      render: (text, record) => <span>{record?.name}</span>,
     },
     {
       title: 'Percentage Result',
@@ -155,12 +154,12 @@ export const DetailStudentWork = () => {
               // hideLineNumbers={true}
               styles={newStyles}
               compareMethod={DiffMethod.WORDS}
-              leftTitle={data[0].author.name}
+              leftTitle={data[0]?.author?.name}
               rightTitle={student}
             />
             <Card title="Esprima Result" style={{ marginTop: '1rem' }}>
-              <Card type="inner" title={data[0].author.name}>
-                {data[0].esprimaCode.split('').map((v, i) => {
+              <Card type="inner" title={data[0]?.author?.name}>
+                {data[0]?.esprimaCode.split('').map((v, i) => {
                   return (
                     <span
                       className={
@@ -179,23 +178,24 @@ export const DetailStudentWork = () => {
                 type="inner"
                 title={student}
               >
-                {esprima.map((v, i) => {
-                  return (
-                    <span
-                      className={
-                        v === data[0].esprimaCode.split('')[i]
-                          ? 'text-red-500 mr-1'
-                          : 'mr-1'
-                      }
-                    >
-                      {v}
-                    </span>
-                  );
-                })}
+                {esprima?.length > 0 &&
+                  esprima.map((v, i) => {
+                    return (
+                      <span
+                        className={
+                          v === data[0]?.esprimaCode.split('')[i]
+                            ? 'text-red-500 mr-1'
+                            : 'mr-1'
+                        }
+                      >
+                        {v}
+                      </span>
+                    );
+                  })}
               </Card>
             </Card>
           </div>
-          <Table columns={columns} dataSource={data[0].similarityResult} />
+          <Table columns={columns} dataSource={data[0]?.similarityResult} />
         </div>
       )}
     </SidebarWithHeader>

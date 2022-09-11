@@ -18,12 +18,14 @@ export const Login = () => {
       username: username.current?.value,
       password: password.current?.value,
     };
-    login(data).then((res) => {
-      setToken(res.data.token);
-      localStorage.setItem('token', res.data.token);
-      navigate('/');
-      setIsLoading(false);
-    });
+    login(data)
+      .then((res) => {
+        setToken(res.data.token);
+        localStorage.setItem('token', res.data.token);
+        navigate('/');
+        setIsLoading(false);
+      })
+      .catch((err) => localStorage.removeItem('token'));
   };
 
   useEffect(() => {

@@ -74,7 +74,11 @@ export const Works = () => {
             colorScheme="whatsapp"
             size="sm"
             onClick={() =>
-              user.role === 'teacher' && navigate(`/work/${record._id}`)
+              user.role === 'teacher'
+                ? navigate(`/work/${record._id}`)
+                : navigate(
+                    `/detail-work/${record.workId._id}/student/${record.author}`
+                  )
             }
           >
             Detail
