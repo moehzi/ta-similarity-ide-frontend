@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider } from './hooks/useAuth';
 import { extendTheme } from '@chakra-ui/react';
+import { MultiSelectTheme } from 'chakra-multiselect';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,13 +16,16 @@ const theme = extendTheme({
     heading: `'Open Sans', sans-serif`,
     body: `'Poppins', sans-serif`,
   },
+  components: {
+    MultiSelect: MultiSelectTheme,
+  },
 });
 
 root.render(
   <ChakraProvider theme={theme}>
     <Router>
       <AuthProvider>
-          <App />
+        <App />
       </AuthProvider>
     </Router>
   </ChakraProvider>

@@ -62,7 +62,7 @@ export const CardCourse = ({
                 onClick={onOpen}
                 id={id}
               >
-                Join Course
+                Join Class
               </button>
               <ModalJoin
                 id={id}

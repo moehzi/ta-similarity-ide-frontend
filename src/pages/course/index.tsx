@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
+import { ListClassContext } from '../../context/ClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useCourse } from '../../hooks/useCourse';
@@ -12,6 +13,17 @@ import { joinCourse } from '../../services/course';
 import ModalAddCourse from './ModalAddCourse';
 
 interface courses {
+  _id: string;
+  name: string;
+  author: [
+    {
+      name: string;
+    }
+  ];
+  works: Works[];
+}
+
+interface classCourse {
   _id: string;
   name: string;
   author: [
@@ -41,6 +53,7 @@ export const Course = () => {
     loadingCourse,
   } = useCourse();
   const [myCourses, setMyCourses] = useState([]);
+  const { data }: any = useContext<any>(ListClassContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -88,7 +101,7 @@ export const Course = () => {
       }}
     >
       <div className="p-4">
-        {user.role === 'teacher' && (
+        {user?.role === 'teacher' && (
           <div className="flex justify-end">
             <Button
               leftIcon={<PlusSquareIcon />}
@@ -115,7 +128,7 @@ export const Course = () => {
                     total_assignment={v.works?.length}
                     works={v.works}
                     isMyCourses
-                    onClick={() => navigate(`/courses/${v._id}`)}
+                    onClick={() => navigate(`/courses/${v._id}/class`)}
                   />
                 );
               })}
@@ -123,11 +136,11 @@ export const Course = () => {
           </>
         )}
 
-        {user?.role === 'student' && courses?.length > 0 && (
+        {user?.role === 'student' && data?.length > 0 && (
           <>
-            <h1 className="mb-4 text-2xl font-bold">List of all course</h1>
+            <h1 className="mb-4 text-2xl font-bold">List of all class</h1>
             <div className="flex flex-wrap gap-y-8 gap-x-6">
-              {courses
+              {data
                 .filter(
                   (v: courses, i: number) =>
                     !myCourses?.some((v2: courses) => v._id === v2._id)
