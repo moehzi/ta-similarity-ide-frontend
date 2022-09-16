@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
@@ -28,22 +27,38 @@ const WebEditor = ({ workId }) => {
   const { token } = useAuth();
   const toast = useToast();
 
-  const onChangeHTML = useCallback((value, viewUpdate) => {
-    setHtml(value);
-  }, []);
+  const onChangeHTML = useCallback(
+    (value, viewUpdate) => {
+      setHtml(value);
+    },
+    [setHtml]
+  );
 
-  const onChangeCss = useCallback((value, viewUpdate) => {
-    setCss(value);
-  }, []);
+  const onChangeCss = useCallback(
+    (value, viewUpdate) => {
+      setCss(value);
+    },
+    [setCss]
+  );
 
-  const onChangeJs = useCallback((value, viewUpdate) => {
-    setJs(value);
-  }, []);
+  const onChangeJs = useCallback(
+    (value, viewUpdate) => {
+      setJs(value);
+    },
+    [setJs]
+  );
+
+  useEffect(() => {
+    console.log('ini jalan');
+  }, [onChangeCss, onChangeJs, onChangeHTML]);
 
   useEffect(() => {
     setJs('');
     setHtml('');
     setCss('');
+    setSrcDoc('');
+    setIsCorrect(false);
+    setResult('');
   }, []);
 
   const [loadingTest, setLoadingTest] = useState(false);

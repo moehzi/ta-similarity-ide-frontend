@@ -85,13 +85,13 @@ export const DetailStudentWork = () => {
   };
 
   const newStyles = {
-    // variables: {
-    //   light: {
-    //     codeFoldGutterBackground: "#6F767E",
-    //     codeFoldBackground: "#E2E4ED",
-    //     gutterColor: "black"
-    //   }
-    // },
+    variables: {
+      light: {
+        codeFoldGutterBackground: '#6F767E',
+        codeFoldBackground: '#E2E4ED',
+        gutterColor: 'black',
+      },
+    },
     diffRemoved: {
       color: '#e96868',
       background: 'white',
@@ -117,9 +117,9 @@ export const DetailStudentWork = () => {
       padding: '10px 2px',
       color: 'red',
     },
-    // emptyGutter: {
-    //   backgruond: "white"
-    // }
+    emptyGutter: {
+      backgruond: 'white',
+    },
   };
 
   if (loading) {

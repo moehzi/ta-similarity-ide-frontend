@@ -33,7 +33,7 @@ const useFetch = (url: string) => {
           setLoading(false);
         });
     }
-  }, []);
+  }, [token]);
 
   const refetch = () => {
     setLoading(true);

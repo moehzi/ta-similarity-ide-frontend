@@ -1,5 +1,13 @@
-import { Stack, Button } from '@chakra-ui/react';
-import React, { FormEvent, useRef, useEffect } from 'react';
+import {
+  Stack,
+  Button,
+  Alert,
+  AlertIcon,
+  Box,
+  AlertDescription,
+  AlertTitle,
+} from '@chakra-ui/react';
+import React, { FormEvent, useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { login } from '../services/auth';
@@ -7,6 +15,7 @@ import { login } from '../services/auth';
 export const Login = () => {
   const { token, setToken, isLoading, setIsLoading } = useAuth();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const username = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
@@ -23,9 +32,12 @@ export const Login = () => {
         setToken(res.data.token);
         localStorage.setItem('token', res.data.token);
         navigate('/');
-        setIsLoading(false);
       })
-      .catch((err) => localStorage.removeItem('token'));
+      .finally(() => setIsLoading(false))
+      .catch((err) => {
+        localStorage.removeItem('token');
+        setErrorMessage(err.response.data.data.message);
+      });
   };
 
   useEffect(() => {
@@ -45,6 +57,16 @@ export const Login = () => {
             </p>
           </div>
           <div className="m-7">
+            {errorMessage && (
+              <Alert status="error" className="mb-4">
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>Error!</AlertTitle>
+                  <AlertDescription>{errorMessage}</AlertDescription>
+                </Box>
+              </Alert>
+            )}
+
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label
@@ -70,12 +92,6 @@ export const Login = () => {
                   >
                     Password
                   </label>
-                  <a
-                    href="#!"
-                    className="text-sm text-gray-400 focus:outline-none focus:text-indigo-500 hover:text-indigo-500 dark:hover:text-indigo-300"
-                  >
-                    Forgot password?
-                  </a>
                 </div>
                 <input
                   type="password"

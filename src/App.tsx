@@ -32,55 +32,57 @@ export default function App() {
   }, [access_token, navigate, setToken]);
 
   return (
-    <CodeProvider>
-      <div>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/courses/:courseId"
-            element={
-              <DetailCourseProvider>
-                <Works />
-              </DetailCourseProvider>
-            }
-          />
-          <Route element={<RequireAuth />}>
-            <Route path="/" element={<Dashboard />} />
+    <UserProvider>
+      <CodeProvider>
+        <div>
+          <Routes>
+            <Route path="/login" element={<Login />} />
             <Route
-              path="/courses"
+              path="/courses/:courseId"
               element={
-                <CourseProvider>
-                  <Course />
-                </CourseProvider>
+                <DetailCourseProvider>
+                  <Works />
+                </DetailCourseProvider>
               }
             />
-            <Route
-              path="/work/:workId"
-              element={
-                <DetailWorkProvider>
-                  <DetailWork />
-                </DetailWorkProvider>
-              }
-            />
-            <Route
-              path="/text-editor/:workId"
-              element={
-                <DetailWorkProvider>
-                  <WorkArea />
-                </DetailWorkProvider>
-              }
-            />
-            <Route
-              path="/detail-work/:workId/student/:studentId"
-              element={
-                <DetailStudentWorkProvider>
-                  <DetailStudentWork />
-                </DetailStudentWorkProvider>
-              }
-            />
-          </Route>
-        </Routes>
-      </div>
-    </CodeProvider>
+            <Route element={<RequireAuth />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route
+                path="/courses"
+                element={
+                  <CourseProvider>
+                    <Course />
+                  </CourseProvider>
+                }
+              />
+              <Route
+                path="/work/:workId"
+                element={
+                  <DetailWorkProvider>
+                    <DetailWork />
+                  </DetailWorkProvider>
+                }
+              />
+              <Route
+                path="/text-editor/:workId"
+                element={
+                  <DetailWorkProvider>
+                    <WorkArea />
+                  </DetailWorkProvider>
+                }
+              />
+              <Route
+                path="/detail-work/:workId/student/:studentId"
+                element={
+                  <DetailStudentWorkProvider>
+                    <DetailStudentWork />
+                  </DetailStudentWorkProvider>
+                }
+              />
+            </Route>
+          </Routes>
+        </div>
+      </CodeProvider>
+    </UserProvider>
   );
 }
