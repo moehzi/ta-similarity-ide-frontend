@@ -10,4 +10,6 @@ export const createClass = async (token, payload, courseId) => {
   });
 };
 
+export const USER_CLASS = () => `${LOCAL_URL}my-class`;
+
 export const GET_LIST_ALL_CLASS = () => `${LOCAL_URL}class`;

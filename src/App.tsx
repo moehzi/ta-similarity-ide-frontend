@@ -19,6 +19,8 @@ import { DetailStudentWorkProvider } from './context/DetailStudentWorkContext';
 import { ClassProvider } from './context/ListClassCourse';
 import DetailCourse from './pages/DetailCourse';
 import { ListClassProvider } from './context/ClassContext';
+import { UserClassProvider } from './context/UserClassContext';
+import UserClass from './pages/course/UserClass';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -56,6 +58,18 @@ export default function App() {
                   <ListClassProvider>
                     <CourseProvider>
                       <Course />
+                    </CourseProvider>
+                  </ListClassProvider>
+                }
+              />
+              <Route
+                path="/classes"
+                element={
+                  <ListClassProvider>
+                    <CourseProvider>
+                      <UserClassProvider>
+                        <UserClass />
+                      </UserClassProvider>
                     </CourseProvider>
                   </ListClassProvider>
                 }

@@ -59,7 +59,9 @@ const DetailCourse = () => {
           })}
         </div>
       )}
-      <ModalAddClass isOpen={isOpen} onClose={onClose} refetch={refetch} />
+      {user?.role === 'teacher' && (
+        <ModalAddClass isOpen={isOpen} onClose={onClose} refetch={refetch} />
+      )}
     </SidebarWithHeader>
   );
 };

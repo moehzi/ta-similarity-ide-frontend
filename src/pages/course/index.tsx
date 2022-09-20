@@ -10,6 +10,7 @@ import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useCourse } from '../../hooks/useCourse';
 import { joinCourse } from '../../services/course';
+import ListClass from './ListClass';
 import ModalAddCourse from './ModalAddCourse';
 
 interface courses {
@@ -42,7 +43,7 @@ export interface Works {
 export const Course = () => {
   const { user } = useContext(UserContext);
   const { setToken, token } = useAuth();
-  const toast = useToast();
+
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     myCourse,
@@ -53,34 +54,11 @@ export const Course = () => {
     loadingCourse,
   } = useCourse();
   const [myCourses, setMyCourses] = useState([]);
-  const { data }: any = useContext<any>(ListClassContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.role === 'student') {
-      setMyCourses(myCourse?.courses);
-    }
-    if (user?.role === 'teacher') {
-      setMyCourses(myCourse);
-    }
+    setMyCourses(myCourse);
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
-
-  const handleJoinCourse = (e: React.MouseEvent) => {
-    const button = e.target as HTMLButtonElement;
-    joinCourse(token, button.id).then((res) => {
-      toast({
-        title: 'Join succesfully',
-        description: res.data.message,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      });
-
-      onClose();
-      refetch();
-      refetchMyCourse();
-    });
-  };
 
   if (loading) {
     return <Loader />;
@@ -132,36 +110,6 @@ export const Course = () => {
                   />
                 );
               })}
-            </div>
-          </>
-        )}
-
-        {user?.role === 'student' && data?.length > 0 && (
-          <>
-            <h1 className="mb-4 text-2xl font-bold">List of all class</h1>
-            <div className="flex flex-wrap gap-y-8 gap-x-6">
-              {data
-                .filter(
-                  (v: courses, i: number) =>
-                    !myCourses?.some((v2: courses) => v._id === v2._id)
-                )
-                .map((course: courses, i: number) => {
-                  return (
-                    <CardCourse
-                      onClose={onClose}
-                      isOpen={isOpen}
-                      onOpen={onOpen}
-                      id={course._id}
-                      key={`card-course-${i}`}
-                      onJoinCourse={handleJoinCourse}
-                      name={course.name}
-                      isMyCourses={false}
-                      author={course.author[0]?.name}
-                      total_assignment={course.works.length}
-                      works={[]}
-                    />
-                  );
-                })}
             </div>
           </>
         )}
