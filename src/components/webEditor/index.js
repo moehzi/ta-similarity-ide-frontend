@@ -103,7 +103,7 @@ const WebEditor = ({ workId }) => {
         isClosable: true,
       });
       setLoadingSubmit(false);
-      navigate(`/courses/${res.data.data.courseId}`);
+      navigate(`/courses/${res.data.data.classId}`);
     });
   };
 
