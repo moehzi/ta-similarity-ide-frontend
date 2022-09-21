@@ -27,6 +27,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const { token } = useAuth();
   const toast = useToast();
   //   const { refetchMyCourse } = useCourse();
+  const [isLoading, setIsLoading] = useState(false);
   const { courseId } = useParams();
   const workName = useRef();
   const expectedOutput = useRef();
@@ -48,6 +49,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   }, []);
 
   const handleCreate = () => {
+    setIsLoading(true);
     const payload = {
       name: workName.current?.value,
       description: workDesc,
@@ -55,17 +57,21 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
       expectedOutput: expectedOutput.current?.value,
     };
 
-    createWork(token, payload, courseId).then((res) => {
-      toast({
-        title: 'Sucessfully create work',
-        description: res.data.message,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+    createWork(token, payload, courseId)
+      .then((res) => {
+        toast({
+          title: 'Sucessfully create work',
+          description: res.data.message,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+      .finally(() => {
+        onClose();
+        refetch();
+        setIsLoading(false);
       });
-      onClose();
-      refetch();
-    });
   };
 
   return (
@@ -113,7 +119,12 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleCreate}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleCreate}
+            isLoading={isLoading}
+          >
             Create
           </Button>
           <Button onClick={onClose}>Cancel</Button>

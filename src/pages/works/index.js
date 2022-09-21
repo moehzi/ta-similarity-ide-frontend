@@ -18,6 +18,8 @@ export const Works = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
+  console.log(detailCourse);
+
   const columns = [
     {
       title: 'No. ',

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, ReactNode } from 'react';
+import React, { MouseEventHandler, ReactNode, useContext } from 'react';
 import {
   IconButton,
   Avatar,
@@ -35,19 +35,26 @@ import {
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 interface LinkItemProps {
   name: string;
   link?: string;
   icon: IconType;
 }
-const LinkItems: Array<LinkItemProps> = [
+const LinkItemsTeacher: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, link: '/' },
   { name: 'Courses', icon: FiBook, link: '/courses' },
   { name: 'Assignments', icon: FiFileText },
   { name: 'Settings', icon: FiSettings },
 ];
 
+const LinkItemsStudent: Array<LinkItemProps> = [
+  { name: 'Home', icon: FiHome, link: '/' },
+  { name: 'Classes', icon: FiBook, link: '/classes' },
+  { name: 'Assignments', icon: FiFileText },
+  { name: 'Settings', icon: FiSettings },
+];
 export default function SidebarWithHeader({
   children,
   name,
@@ -98,6 +105,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const { user } = useContext(UserContext);
   return (
     <Box
       transition="3s ease"
@@ -116,11 +124,17 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} link={link.link}>
-          {link.name}
-        </NavItem>
-      ))}
+      {user?.role === 'teacher'
+        ? LinkItemsTeacher.map((link) => (
+            <NavItem key={link.name} icon={link.icon} link={link.link}>
+              {link.name}
+            </NavItem>
+          ))
+        : LinkItemsStudent.map((link) => (
+            <NavItem key={link.name} icon={link.icon} link={link.link}>
+              {link.name}
+            </NavItem>
+          ))}
     </Box>
   );
 };
