@@ -14,6 +14,14 @@ export const testWork = (token, workId, payload) => {
   });
 };
 
+export const changeVisible = (token, workId) => {
+  return axios.post(
+    `${LOCAL_URL}works/${workId}/visible`,
+    {},
+    { headers: { Authorization: token } }
+  );
+};
+
 export const checkSimilarityStudent = (token, workId) => {
   return axios.post(
     `${LOCAL_URL}check-similarity/${workId}`,
