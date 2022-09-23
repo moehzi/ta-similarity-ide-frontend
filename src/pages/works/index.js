@@ -17,8 +17,10 @@ import { DetailCourseContext } from '../../context/DetailCourseContext';
 import ModalAddWork from './ModalAddWork';
 import { useNavigate } from 'react-router-dom';
 import { changeVisible } from '../../services/work';
+import moment from 'moment';
 
 export const Works = () => {
+  moment.locale('id');
   const { user } = useContext(UserContext);
   const { setToken, token } = useAuth();
   const { detailCourse, loadingDetailCourse, refetchDetailCourse } =
@@ -28,6 +30,8 @@ export const Works = () => {
   const toast = useToast();
   const [studentWork, setStudentWork] = useState([]);
   const [loading, setIsLoading] = useState(false);
+
+  const todayTimestamp = parseInt((new Date().getTime() / 1000).toFixed(0));
 
   const handleVisible = (workId) => {
     setIsLoading(true);
@@ -90,6 +94,16 @@ export const Works = () => {
       },
     },
     {
+      title: 'Deadline',
+      dataIndex: 'deadline',
+      key: 'deadline',
+      render: (text, record) => (
+        <span>
+          {moment.unix(record?.deadline).format('dddd, MMMM DD YYYY, HH:mm')}
+        </span>
+      ),
+    },
+    {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
@@ -113,7 +127,7 @@ export const Works = () => {
         <Switch
           loading={loading}
           onClick={() => handleVisible(record._id)}
-          defaultChecked={record.isVisible}
+          defaultChecked={record?.isVisible}
         />
       ),
     },
@@ -131,6 +145,7 @@ export const Works = () => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) =>
+        todayTimestamp < record?.workId?.deadline &&
         record.status === 'Not Completed' ? (
           <Link
             color="teal.500"
@@ -165,6 +180,24 @@ export const Works = () => {
       },
     },
     {
+      title: 'Deadline',
+      dataIndex: 'deadline',
+      key: 'deadline',
+      render: (text, record) => (
+        <span
+          style={
+            todayTimestamp > record?.workId?.deadline
+              ? { color: 'red' }
+              : { color: '' }
+          }
+        >
+          {moment
+            .unix(record?.workId?.deadline)
+            .format('dddd, MMMM DD YYYY, HH:mm')}
+        </span>
+      ),
+    },
+    {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
@@ -188,7 +221,9 @@ export const Works = () => {
 
   useEffect(() => {
     if (user?.role === 'student') {
-      const visibleWork = detailCourse?.works.filter((v) => v.workId.isVisible);
+      const visibleWork = detailCourse?.works.filter(
+        (v) => v.workId?.isVisible
+      );
       setStudentWork(visibleWork);
     }
   }, [detailCourse?.length, detailCourse?.works, user?.role]);

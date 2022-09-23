@@ -22,6 +22,7 @@ import { markdown } from '@codemirror/lang-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { createWork } from '../../services/course';
 import { useParams } from 'react-router-dom';
+import { SingleDatepicker } from 'chakra-dayzed-datepicker';
 
 const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const { token } = useAuth();
@@ -30,6 +31,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { courseId } = useParams();
   const workName = useRef();
+  const dateTime = useRef(new Date());
   const expectedOutput = useRef();
   const [workDesc, setWorkDesc] = useState();
   const [testCode, setTestCode] = useState(`describe('Masukkan judul test',()=>{
@@ -44,6 +46,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const onChange = useCallback((value, viewUpdate) => {
     setTestCode(value);
   }, []);
+
   const onChangeWork = useCallback((value, viewUpdate) => {
     setWorkDesc(value);
   }, []);
@@ -55,6 +58,9 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
       description: workDesc,
       codeTest: testCode,
       expectedOutput: expectedOutput.current?.value,
+      deadline: parseInt(
+        (new Date(dateTime.current?.value).getTime() / 1000).toFixed(0)
+      ),
     };
 
     createWork(token, payload, courseId)
@@ -114,6 +120,12 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
               onChange={onChange}
               minHeight={'400px'}
               className={'font-code mb-4'}
+            />
+            <FormLabel mt={8}>Deadline</FormLabel>
+            <Input
+              type="datetime-local"
+              placeholder="Select Date and Time"
+              ref={dateTime}
             />
           </FormControl>
         </ModalBody>
