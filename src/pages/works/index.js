@@ -18,6 +18,7 @@ import ModalAddWork from './ModalAddWork';
 import { useNavigate } from 'react-router-dom';
 import { changeVisible } from '../../services/work';
 import moment from 'moment';
+import ModalEditWork from './ModalEditWork';
 
 export const Works = () => {
   moment.locale('id');
@@ -26,10 +27,16 @@ export const Works = () => {
   const { detailCourse, loadingDetailCourse, refetchDetailCourse } =
     useContext(DetailCourseContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onClose: onCloseEdit,
+  } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
   const [studentWork, setStudentWork] = useState([]);
   const [loading, setIsLoading] = useState(false);
+  const [workId, setWorkId] = useState(null);
 
   const todayTimestamp = parseInt((new Date().getTime() / 1000).toFixed(0));
 
@@ -115,6 +122,17 @@ export const Works = () => {
           >
             Detail
           </Button>
+          <Button
+            disabled={record.status !== 'Not ready to review'}
+            colorScheme="telegram"
+            size="sm"
+            onClick={() => {
+              setWorkId(record?._id);
+              onOpenEdit();
+            }}
+          >
+            Edit
+          </Button>
           {/* <a>Delete</a> */}
         </Space>
       ),
@@ -126,7 +144,7 @@ export const Works = () => {
       render: (_, record) => (
         <Switch
           loading={loading}
-          onClick={() => handleVisible(record._id)}
+          onClick={() => handleVisible(record?._id)}
           defaultChecked={record?.isVisible}
         />
       ),
@@ -274,6 +292,12 @@ export const Works = () => {
         <ModalAddWork
           isOpen={isOpen}
           onClose={onClose}
+          refetch={refetchDetailCourse}
+        />
+        <ModalEditWork
+          isOpen={isOpenEdit}
+          onClose={onCloseEdit}
+          workId={workId}
           refetch={refetchDetailCourse}
         />
       </div>

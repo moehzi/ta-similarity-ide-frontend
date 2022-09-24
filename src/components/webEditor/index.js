@@ -4,12 +4,19 @@ import { CodeContext } from '../../context/CodeContext';
 import { javascript } from '@codemirror/lang-javascript';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
-import { Button, useToast } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Button,
+  useToast,
+} from '@chakra-ui/react';
 import { submitWork, testWork } from '../../services/work';
 import { useAuth } from '../../hooks/useAuth';
 
 import CodeEditor from '../codeEditor';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const WebEditor = ({ workId }) => {
   const {
@@ -63,6 +70,7 @@ const WebEditor = ({ workId }) => {
 
   const [loadingTest, setLoadingTest] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -94,21 +102,35 @@ const WebEditor = ({ workId }) => {
       htmlCode: HTML,
     };
     setLoadingSubmit(true);
-    submitWork(token, workId, payload).then((res) => {
-      toast({
-        title: 'Submit Work',
-        description: res.data.message,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+    submitWork(token, workId, payload)
+      .then((res) => {
+        toast({
+          title: 'Submit Work',
+          description: res.data.message,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+        setLoadingSubmit(false);
+        navigate(`/courses/${res.data.data.classId}`);
+      })
+      .catch((err) => {
+        setError(err.response.data);
+        setLoadingSubmit(false);
       });
-      setLoadingSubmit(false);
-      navigate(`/courses/${res.data.data.classId}`);
-    });
   };
 
   return (
     <div className="mt-4">
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>{error.status}</AlertTitle>
+          <AlertDescription>
+            {error.message} <Link to="/classes">Back to home</Link>
+          </AlertDescription>
+        </Alert>
+      )}
       <div className="flex gap-4 mb-4">
         <CodeEditor
           display={'HTML'}

@@ -29,3 +29,15 @@ export const checkSimilarityStudent = (token, workId) => {
     { headers: { Authorization: token } }
   );
 };
+
+export const editWork = async (token, workId, payload) => {
+  return await axios.put(`${LOCAL_URL}works/${workId}`, payload, {
+    headers: { Authorization: token },
+  });
+};
+
+export const getWorkById = async (token, workId) => {
+  return await axios.get(`${LOCAL_URL}works/${workId}`, {
+    headers: { Authorization: token },
+  });
+};

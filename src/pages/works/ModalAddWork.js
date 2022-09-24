@@ -22,7 +22,6 @@ import { markdown } from '@codemirror/lang-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { createWork } from '../../services/course';
 import { useParams } from 'react-router-dom';
-import { SingleDatepicker } from 'chakra-dayzed-datepicker';
 
 const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const { token } = useAuth();
