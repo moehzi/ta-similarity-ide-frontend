@@ -13,10 +13,12 @@ import {
   Button,
   Stack,
   Flex,
+  Link,
 } from '@chakra-ui/react';
 
 import { BsThreeDotsVertical, BsChatSquareQuote } from 'react-icons/bs';
 import { RiShutDownLine, RiRestartLine, RiFileShredLine } from 'react-icons/ri';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 interface CardCourseProps {
   id: string;
   name: string;
@@ -83,9 +85,10 @@ export const CardCourse = ({
                     <Button
                       w="194px"
                       variant="ghost"
-                      rightIcon={<BsChatSquareQuote />}
+                      rightIcon={<EditIcon />}
                       justifyContent="space-between"
                       fontWeight="normal"
+                      colorScheme="green"
                       fontSize="sm"
                     >
                       Edit
@@ -93,7 +96,7 @@ export const CardCourse = ({
                     <Button
                       w="194px"
                       variant="ghost"
-                      rightIcon={<RiFileShredLine />}
+                      rightIcon={<DeleteIcon />}
                       justifyContent="space-between"
                       fontWeight="normal"
                       colorScheme="red"
@@ -101,37 +104,17 @@ export const CardCourse = ({
                     >
                       Delete
                     </Button>
-                    <Button
-                      w="194px"
-                      variant="ghost"
-                      rightIcon={<RiRestartLine />}
-                      justifyContent="space-between"
-                      fontWeight="normal"
-                      colorScheme="red"
-                      fontSize="sm"
-                    >
-                      Restart Server
-                    </Button>
-                    <Button
-                      w="194px"
-                      variant="ghost"
-                      rightIcon={<RiShutDownLine />}
-                      justifyContent="space-between"
-                      fontWeight="normal"
-                      colorScheme="red"
-                      fontSize="sm"
-                    >
-                      Disable Server
-                    </Button>
                   </Stack>
                 </PopoverBody>
               </PopoverContent>
             </Popover>
           )}
           <div className="flex flex-col p-6 font-semibold ">
-            <Text noOfLines={1} fontSize="lg">
-              {name}
-            </Text>
+            <Link onClick={onClick}>
+              <Text noOfLines={1} fontSize="lg">
+                {name}
+              </Text>
+            </Link>
             <p className="my-2 text-xs font-light text-gray-400">
               Lecturer : {author}
             </p>
