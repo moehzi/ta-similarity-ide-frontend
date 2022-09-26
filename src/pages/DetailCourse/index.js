@@ -41,7 +41,7 @@ const DetailCourse = () => {
         </Button>
       </div>
       {data?.length > 0 && (
-        <div className="flex flex-wrap gap-8 mb-8">
+        <div className="flex flex-wrap gap-8 mt-8 mb-8">
           {data.map((v, i) => {
             return (
               <CardCourse

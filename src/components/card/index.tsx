@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Works } from '../../pages/course';
 import ModalJoin from './Modal';
 interface CardCourseProps {
@@ -16,6 +16,7 @@ interface CardCourseProps {
   onClose?: () => void;
   onOpen?: () => void;
   onClick?: () => void;
+  setSelectedId?: (classId: String) => void;
 }
 
 export const CardCourse = ({
@@ -31,8 +32,14 @@ export const CardCourse = ({
   onClose,
   isOpen,
   onOpen,
+  setSelectedId,
 }: CardCourseProps) => {
   const cancelRef = React.useRef();
+
+  const handleOpen = (classId: string) => {
+    onOpen?.();
+    setSelectedId?.(classId);
+  };
   return (
     <div onClick={onClick}>
       <div className="flex flex-col justify-between items-center overflow-hidden duration-200 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl w-[350px]">
@@ -59,7 +66,7 @@ export const CardCourse = ({
             <>
               <button
                 className="py-2 text-indigo-100 text-xs font-semibold duration-75 bg-indigo-600 rounded-md hover:bg-indigo-500 hover:shadow-md w-[100px] ml-auto mr-0"
-                onClick={onOpen}
+                onClick={() => handleOpen(id)}
                 id={id}
               >
                 Join Class

@@ -21,6 +21,7 @@ const UserClass = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [myCourses, setMyCourses] = useState([]);
   const { data: listClass } = useContext(ListClassContext);
+  const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
     setMyCourses(data?.classes);
@@ -30,20 +31,19 @@ const UserClass = () => {
     return <Loader />;
   }
 
-  const handleJoinCourse = (e) => {
-    const button = e.target.id;
-    joinCourse(token, button).then((res) => {
-      toast({
-        title: 'Join succesfully',
-        description: res.data?.message,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      });
-      refetch();
-      onClose();
-    });
-    refetch();
+  const handleJoinCourse = () => {
+    joinCourse(token, selectedId)
+      .then((res) => {
+        toast({
+          title: 'Join succesfully',
+          description: res.data?.message,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+      .finally(() => refetch());
+    onClose();
   };
 
   return (
@@ -76,6 +76,7 @@ const UserClass = () => {
         onClose={onClose}
         isOpen={isOpen}
         onOpen={onOpen}
+        setSelectedId={setSelectedId}
         handleJoinCourse={handleJoinCourse}
       />
     </>

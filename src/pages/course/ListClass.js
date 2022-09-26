@@ -7,6 +7,7 @@ const ListClass = ({
   isOpen,
   onOpen,
   handleJoinCourse,
+  setSelectedId,
 }) => {
   return (
     <>
@@ -17,6 +18,7 @@ const ListClass = ({
           ?.map((course, i) => {
             return (
               <CardCourse
+                setSelectedId={setSelectedId}
                 onClose={onClose}
                 isOpen={isOpen}
                 onOpen={onOpen}
