@@ -2,6 +2,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
+import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
 import { ListClassContext } from '../../context/ClassContext';
 import { UserContext } from '../../context/UserContext';
@@ -17,7 +18,7 @@ const UserClass = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const toast = useToast();
-  const { token } = useAuth();
+  const { token, setToken } = useAuth();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [myCourses, setMyCourses] = useState([]);
   const { data: listClass } = useContext(ListClassContext);
@@ -47,7 +48,15 @@ const UserClass = () => {
   };
 
   return (
-    <>
+    <SidebarWithHeader
+      name={user?.name}
+      role={user?.role}
+      handleLogout={(e) => {
+        e.preventDefault();
+        localStorage.clear();
+        setToken('');
+      }}
+    >
       <h1 className="mb-4 text-2xl font-bold">My Classes</h1>
       <div className="flex flex-wrap gap-8 mb-8">
         {data?.classes?.map((v, i) => {
@@ -79,7 +88,7 @@ const UserClass = () => {
         setSelectedId={setSelectedId}
         handleJoinCourse={handleJoinCourse}
       />
-    </>
+    </SidebarWithHeader>
   );
 };
 

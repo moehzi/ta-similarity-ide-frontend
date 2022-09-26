@@ -98,6 +98,7 @@ export const Course = () => {
               {myCourses.map((v: courses, i: number) => {
                 return (
                   <CardCourse
+                    isTeacher={user?.role}
                     id={v._id}
                     key={`card-course-${i}`}
                     name={v.name}
