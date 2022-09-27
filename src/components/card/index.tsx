@@ -65,7 +65,7 @@ export const CardCourse = ({
           className={
             isTeacher
               ? 'flex-row-reverse flex justify-between'
-              : 'flex justify-between'
+              : 'flex items-end'
           }
         >
           {isTeacher && (
@@ -129,26 +129,25 @@ export const CardCourse = ({
                 </p>
               </div>
             )}
-
-            {!isMyCourses && (
-              <>
-                <button
-                  className="py-2 text-indigo-100 text-xs font-semibold duration-75 bg-indigo-600 rounded-md hover:bg-indigo-500 hover:shadow-md w-[100px] ml-auto mr-0"
-                  onClick={() => handleOpen(id)}
-                  id={id}
-                >
-                  Join Class
-                </button>
-                <ModalJoin
-                  id={id}
-                  handleJoinCourse={onJoinCourse}
-                  isOpen={isOpen}
-                  cancelRef={cancelRef}
-                  onClose={onClose}
-                />
-              </>
-            )}
           </div>
+          {!isMyCourses && (
+            <div className="p-6">
+              <button
+                className="py-2 text-indigo-100 text-xs font-semibold duration-75 bg-indigo-600 rounded-md hover:bg-indigo-500 hover:shadow-md w-[100px] ml-auto mr-0"
+                onClick={() => handleOpen(id)}
+                id={id}
+              >
+                Join Class
+              </button>
+              <ModalJoin
+                id={id}
+                handleJoinCourse={onJoinCourse}
+                isOpen={isOpen}
+                cancelRef={cancelRef}
+                onClose={onClose}
+              />
+            </div>
+          )}
         </div>
         {isMyCourses && (
           <div className="w-full p-4 text-indigo-100 bg-[#1C3879]">

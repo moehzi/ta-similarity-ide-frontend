@@ -105,7 +105,11 @@ export const Works = () => {
       dataIndex: 'deadline',
       key: 'deadline',
       render: (text, record) => (
-        <span>
+        <span
+          style={
+            todayTimestamp > record?.deadline ? { color: 'red' } : { color: '' }
+          }
+        >
           {moment.unix(record?.deadline).format('dddd, MMMM DD YYYY, HH:mm')}
         </span>
       ),
