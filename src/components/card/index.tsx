@@ -16,9 +16,9 @@ import {
   Link,
 } from '@chakra-ui/react';
 
-import { BsThreeDotsVertical, BsChatSquareQuote } from 'react-icons/bs';
-import { RiShutDownLine, RiRestartLine, RiFileShredLine } from 'react-icons/ri';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import ModalEditCourse from '../../pages/course/ModalEditCourse';
 interface CardCourseProps {
   id: string;
   name: string;
@@ -33,7 +33,15 @@ interface CardCourseProps {
   onClose?: () => void;
   onOpen?: () => void;
   onClick?: () => void;
+  onOpenEdit?: () => void;
   setSelectedId?: (classId: String) => void;
+  setCourseId?: (classId: string) => void;
+  handleEditCourse?: () => void;
+  courseName?: string;
+  courseId?: string;
+  isOpenEdit?: boolean;
+  onCloseEdit?: () => void;
+  setCourseName?: (courseName: string) => void;
 }
 
 export const CardCourse = ({
@@ -50,13 +58,27 @@ export const CardCourse = ({
   onClose,
   isOpen,
   onOpen,
+  onOpenEdit,
   setSelectedId,
+  setCourseId,
+  handleEditCourse,
+  courseName,
+  isOpenEdit,
+  onCloseEdit,
+  courseId,
+  setCourseName,
 }: CardCourseProps) => {
   const cancelRef = React.useRef();
 
   const handleOpen = (classId: string) => {
     onOpen?.();
     setSelectedId?.(classId);
+  };
+
+  const handleEdit = (courseId: string) => {
+    onOpenEdit?.();
+    setCourseId?.(courseId);
+    handleEditCourse?.();
   };
   return (
     <div>
@@ -69,45 +91,48 @@ export const CardCourse = ({
           }
         >
           {isTeacher && (
-            <Popover placement="bottom" isLazy>
-              <PopoverTrigger>
-                <IconButton
-                  aria-label="More server options"
-                  icon={<BsThreeDotsVertical />}
-                  variant="ghost"
-                  w="fit-content"
-                />
-              </PopoverTrigger>
-              <PopoverContent w="fit-content" _focus={{ boxShadow: 'none' }}>
-                <PopoverArrow />
-                <PopoverBody>
-                  <Stack>
-                    <Button
-                      w="194px"
-                      variant="ghost"
-                      rightIcon={<EditIcon />}
-                      justifyContent="space-between"
-                      fontWeight="normal"
-                      colorScheme="green"
-                      fontSize="sm"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      w="194px"
-                      variant="ghost"
-                      rightIcon={<DeleteIcon />}
-                      justifyContent="space-between"
-                      fontWeight="normal"
-                      colorScheme="red"
-                      fontSize="sm"
-                    >
-                      Delete
-                    </Button>
-                  </Stack>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+            <>
+              <Popover placement="bottom" isLazy>
+                <PopoverTrigger>
+                  <IconButton
+                    aria-label="More server options"
+                    icon={<BsThreeDotsVertical />}
+                    variant="ghost"
+                    w="fit-content"
+                  />
+                </PopoverTrigger>
+                <PopoverContent w="fit-content" _focus={{ boxShadow: 'none' }}>
+                  <PopoverArrow />
+                  <PopoverBody>
+                    <Stack>
+                      <Button
+                        w="194px"
+                        variant="ghost"
+                        rightIcon={<EditIcon />}
+                        justifyContent="space-between"
+                        fontWeight="normal"
+                        colorScheme="green"
+                        fontSize="sm"
+                        onClick={() => handleEdit(id)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        w="194px"
+                        variant="ghost"
+                        rightIcon={<DeleteIcon />}
+                        justifyContent="space-between"
+                        fontWeight="normal"
+                        colorScheme="red"
+                        fontSize="sm"
+                      >
+                        Delete
+                      </Button>
+                    </Stack>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </>
           )}
           <div className="flex flex-col p-6 font-semibold ">
             <Link onClick={onClick}>

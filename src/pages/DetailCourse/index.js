@@ -1,6 +1,6 @@
 import { CheckCircleIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
@@ -16,10 +16,21 @@ const DetailCourse = () => {
   const { setToken } = useAuth();
   const { user } = useContext(UserContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onClose: onCloseEdit,
+  } = useDisclosure();
+
+
+  useEffect(()=>{
+	
+  },[])
 
   if (loading) {
     return <Loader />;
   }
+
   return (
     <SidebarWithHeader
       name={user?.name}
@@ -45,6 +56,9 @@ const DetailCourse = () => {
           {data.map((v, i) => {
             return (
               <CardCourse
+                isOpenEdit={isOpenEdit}
+                onOpenEdit={onOpenEdit}
+                onCloseEdit={onCloseEdit}
                 id={v._id}
                 key={`card-course-${i}`}
                 name={v.name}

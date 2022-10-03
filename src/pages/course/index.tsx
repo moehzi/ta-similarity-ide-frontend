@@ -1,6 +1,6 @@
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure, useToast } from '@chakra-ui/react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
@@ -9,9 +9,10 @@ import { ListClassContext } from '../../context/ClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useCourse } from '../../hooks/useCourse';
-import { joinCourse } from '../../services/course';
+import { getCourseById, joinCourse } from '../../services/course';
 import ListClass from './ListClass';
 import ModalAddCourse from './ModalAddCourse';
+import ModalEditCourse from './ModalEditCourse';
 
 interface courses {
   _id: string;
@@ -46,19 +47,33 @@ export const Course = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
-    myCourse,
-    courses,
-    refetch,
-    loading,
-    refetchMyCourse,
-    loadingCourse,
-  } = useCourse();
+    isOpen: isOpenEdit,
+    onClose: onCloseEdit,
+    onOpen: onOpenEdit,
+  } = useDisclosure();
+  const { myCourse, refetch, loading, refetchMyCourse, loadingCourse } =
+    useCourse();
   const [myCourses, setMyCourses] = useState([]);
+  const [courseId, setCourseId] = useState<string>('');
+  const [courseName, setCourseName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     setMyCourses(myCourse);
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
+
+  const handleCourseById = useMemo(() => {
+    const filtered = myCourses.find(
+      (course: courses) => course._id === courseId
+    );
+    if (filtered) {
+      setCourseName(filtered['name']);
+    }
+  }, [myCourses, courseId]);
+
+  useEffect(() => {
+    console.log('called');
+  }, [handleCourseById]);
 
   if (loading) {
     return <Loader />;
@@ -89,6 +104,13 @@ export const Course = () => {
               Add Course
             </Button>
             <ModalAddCourse isOpen={isOpen} onClose={onClose} />
+            <ModalEditCourse
+              setCourseName={setCourseName}
+              isOpen={isOpenEdit}
+              onClose={onCloseEdit}
+              courseId={courseId}
+              courseName={courseName}
+            />
           </div>
         )}
         {myCourses?.length > 0 && (
@@ -98,7 +120,14 @@ export const Course = () => {
               {myCourses.map((v: courses, i: number) => {
                 return (
                   <CardCourse
+                    setCourseName={setCourseId}
+                    courseName={courseName}
+                    setCourseId={setCourseId}
+                    courseId={courseId}
                     isTeacher={user?.role}
+                    isOpenEdit={isOpenEdit}
+                    onCloseEdit={onCloseEdit}
+                    onOpenEdit={onOpenEdit}
                     id={v._id}
                     key={`card-course-${i}`}
                     name={v.name}
