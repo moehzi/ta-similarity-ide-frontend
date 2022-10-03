@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -14,35 +14,37 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useAuth } from '../../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import { editCourse } from '../../services/course';
+import { useCourse } from '../../hooks/useCourse';
 import { MultiSelect } from 'chakra-multiselect';
-import { createClass } from '../../services/class';
+import { editClass } from '../../services/class';
+import { ClassContext } from '../../context/ListClassCourse';
 
-const ModalAddClass = ({
+const ModalEditClass = ({
   isOpen,
   onClose,
-  refetch,
-  options,
-  handleChange,
-  selected,
+  courseId,
+  className,
   value,
+  options,
+  setClassName,
+  handleChangeSelect,
+  selected,
 }) => {
   const { token } = useAuth();
   const toast = useToast();
   //   const { refetchMyCourse } = useCourse();
-
-  const { courseId } = useParams();
-  const className = useRef();
+  const { refetch } = useContext(ClassContext);
 
   const handleCreate = () => {
     const payload = {
-      name: className.current?.value,
+      name: className,
       author: selected,
     };
 
-    createClass(token, payload, courseId).then((res) => {
+    editClass(token, payload, courseId).then((res) => {
       toast({
-        title: 'Sucessfully create work',
+        title: 'Update Course',
         description: res.data.message,
         status: 'success',
         duration: 9000,
@@ -53,28 +55,36 @@ const ModalAddClass = ({
     });
   };
 
+  const handleChange = (e) => {
+    setClassName(e.target.value);
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create assignment</ModalHeader>
+        <ModalHeader>Edit Course</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>
             <FormLabel>Name</FormLabel>
-            <Input mb={4} ref={className} placeholder="Enter your work name" />
+            <Input
+              value={className}
+              onChange={handleChange}
+              placeholder="First name"
+            />
+            <MultiSelect
+              options={options}
+              value={value}
+              label="Choose the lecturer"
+              onChange={handleChangeSelect}
+            />
           </FormControl>
-          <MultiSelect
-            options={options}
-            value={value}
-            label="Choose the lecturer"
-            onChange={handleChange}
-          />
         </ModalBody>
 
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={handleCreate}>
-            Create
+            Edit
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
@@ -83,4 +93,4 @@ const ModalAddClass = ({
   );
 };
 
-export default ModalAddClass;
+export default ModalEditClass;

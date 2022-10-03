@@ -1,6 +1,6 @@
 import { CheckCircleIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure } from '@chakra-ui/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
@@ -9,11 +9,13 @@ import { ClassContext } from '../../context/ListClassCourse';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import useFetch from '../../hooks/useFetch';
+import { getTeacher } from '../../services/user';
 import ModalAddClass from './ModalAddClass';
+import ModalEditClass from './ModalEditClass';
 const DetailCourse = () => {
   const { data, loading, refetch } = useContext(ClassContext);
   const navigate = useNavigate();
-  const { setToken } = useAuth();
+  const { setToken, token } = useAuth();
   const { user } = useContext(UserContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -21,11 +23,47 @@ const DetailCourse = () => {
     onOpen: onOpenEdit,
     onClose: onCloseEdit,
   } = useDisclosure();
+  const [classId, setClassId] = useState('');
+  const [name, setClassName] = useState('');
+  const [options, setOptions] = useState([]);
+  const [listTeacher, setListTeacher] = useState([]);
+  const [value, setValue] = useState([]);
+  const [selected, setSelected] = useState([]);
 
+  const handleChange = (value2) => {
+    console.log(`selected ${value2}`);
+    setValue(value2);
+    const selectedTeacher = listTeacher.filter((teacher) =>
+      value2.includes(teacher.name)
+    );
 
-  useEffect(()=>{
-	
-  },[])
+    const selectedId = selectedTeacher.map((v) => v._id);
+
+    setSelected(selectedId);
+  };
+
+  const handleCourseById = useMemo(() => {
+    const filtered = data?.find((item) => item._id === classId);
+
+    if (filtered) {
+      setClassName(filtered.name);
+      const teacherName = filtered.author.map((v) => v.name);
+      setValue(teacherName);
+    }
+    console.log(filtered);
+  }, [data, classId]);
+
+  useEffect(() => {
+    console.log('class called');
+  }, [handleCourseById]);
+
+  useEffect(() => {
+    getTeacher(token).then((res) => {
+      const teacherName = res?.data?.map((v) => v.name);
+      setOptions(teacherName);
+      setListTeacher(res.data);
+    });
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -56,6 +94,9 @@ const DetailCourse = () => {
           {data.map((v, i) => {
             return (
               <CardCourse
+                setCourseId={setClassId}
+                courseId={classId}
+                isTeacher
                 isOpenEdit={isOpenEdit}
                 onOpenEdit={onOpenEdit}
                 onCloseEdit={onCloseEdit}
@@ -74,7 +115,28 @@ const DetailCourse = () => {
         </div>
       )}
       {user?.role === 'teacher' && (
-        <ModalAddClass isOpen={isOpen} onClose={onClose} refetch={refetch} />
+        <>
+          <ModalAddClass
+            isOpen={isOpen}
+            onClose={onClose}
+            refetch={refetch}
+            options={options}
+            selected={selected}
+            value={value}
+            handleChange={handleChange}
+          />
+          <ModalEditClass
+            courseId={classId}
+            isOpen={isOpenEdit}
+            onClose={onCloseEdit}
+            className={name}
+            setClassName={setClassName}
+            value={value}
+            options={options}
+            handleChangeSelect={handleChange}
+            selected={selected}
+          />
+        </>
       )}
     </SidebarWithHeader>
   );

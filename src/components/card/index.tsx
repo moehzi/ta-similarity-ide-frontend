@@ -80,6 +80,7 @@ export const CardCourse = ({
     setCourseId?.(courseId);
     handleEditCourse?.();
   };
+
   return (
     <div>
       <div className="flex flex-col justify-between overflow-hidden duration-200 bg-white shadow-md rounded-xl hover:scale-105 hover:shadow-xl w-[350px]">
