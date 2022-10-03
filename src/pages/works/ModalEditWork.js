@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  useContext,
+} from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -22,10 +28,13 @@ import { markdown } from '@codemirror/lang-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { editWork, getWorkById } from '../../services/work';
 import moment from 'moment';
+import { DetailCourseContext } from '../../context/DetailCourseContext';
 
 const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
   const { token } = useAuth();
   const toast = useToast();
+  const { detailCourse, loadingDetailCourse, refetchDetailCourse } =
+    useContext(DetailCourseContext);
   const [isLoading, setIsLoading] = useState(false);
   const [workName, setWorkName] = useState(null);
   const [dateTime, setDateTime] = useState(null);
@@ -49,21 +58,20 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
     setDateTime(e.target.value);
   }, []);
 
-  useEffect(() => {
-    if (workId) {
-      setIsLoading(true);
-      getWorkById(token, workId)
-        .then((res) => {
-          const works = res.data.data;
-          setWorkName(works.name);
+  const handleWorkById = useMemo(() => {
+    const filtered = detailCourse?.works?.find((works) => works._id === workId);
+    if (filtered) {
+      setWorkName(filtered.name);
 
-          setWorkDesc(works.description);
-          setTestCode(works.codeTest);
-          setDateTime(moment.unix(works?.deadline).format('yyyy-MM-DDTHH:mm'));
-        })
-        .finally(setIsLoading(false));
+      setWorkDesc(filtered.description);
+      setTestCode(filtered.codeTest);
+      setDateTime(moment.unix(filtered?.deadline).format('yyyy-MM-DDTHH:mm'));
     }
-  }, [token, workId]);
+  }, [detailCourse?.works, workId]);
+
+  useEffect(() => {
+    console.log('called');
+  }, [handleWorkById]);
 
   const handleEdit = () => {
     setIsLoading(true);
@@ -77,7 +85,7 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
     editWork(token, workId, payload)
       .then((res) => {
         toast({
-          title: 'Sucessfully create work',
+          title: 'Update Work',
           description: res.data.message,
           status: 'success',
           duration: 9000,

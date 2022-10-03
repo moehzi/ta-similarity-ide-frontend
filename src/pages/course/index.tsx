@@ -63,7 +63,7 @@ export const Course = () => {
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
 
   const handleCourseById = useMemo(() => {
-    const filtered = myCourses.find(
+    const filtered = myCourses?.find(
       (course: courses) => course._id === courseId
     );
     if (filtered) {
