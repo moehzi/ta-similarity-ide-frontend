@@ -112,7 +112,7 @@ const WebEditor = ({ workId }) => {
           isClosable: true,
         });
         setLoadingSubmit(false);
-        navigate(`/courses/${res.data.data.classId}`);
+        navigate(`/classes`);
       })
       .catch((err) => {
         setError(err.response.data);

@@ -74,8 +74,8 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
       })
       .finally(() => {
         onClose();
-        refetch();
         setIsLoading(false);
+        refetch();
       });
   };
 

@@ -105,9 +105,11 @@ export const DetailWork = () => {
           duration: 9000,
           isClosable: true,
         });
-        refetchDetailWork();
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        refetchDetailWork();
+        setIsLoading(false);
+      });
   };
 
   const color = () => {

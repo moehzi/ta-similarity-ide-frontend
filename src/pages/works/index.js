@@ -43,16 +43,18 @@ export const Works = () => {
   const handleVisible = (workId) => {
     setIsLoading(true);
     changeVisible(token, workId)
-      .then((res) =>
+      .then((res) => {
         toast({
           title: 'Sucessfully change visible work',
           description: res.data.message,
           status: 'success',
           duration: 2000,
           isClosable: true,
-        })
-      )
-      .finally(setIsLoading(false));
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const columnsTeacher = [
@@ -127,7 +129,9 @@ export const Works = () => {
             Detail
           </Button>
           <Button
-            disabled={record.status !== 'Not ready to review'}
+            disabled={
+              record.status !== 'Not ready to review' || !record?.isVisible
+            }
             colorScheme="telegram"
             size="sm"
             onClick={() => {
