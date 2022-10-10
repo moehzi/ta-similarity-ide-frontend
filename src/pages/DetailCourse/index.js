@@ -1,4 +1,4 @@
-import { CheckCircleIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import { PlusSquareIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +8,9 @@ import { Loader } from '../../components/spinner';
 import { ClassContext } from '../../context/ListClassCourse';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import useFetch from '../../hooks/useFetch';
 import { getTeacher } from '../../services/user';
 import ModalAddClass from './ModalAddClass';
+import ModalDeleteClass from './ModalDeleteClass';
 import ModalEditClass from './ModalEditClass';
 const DetailCourse = () => {
   const { data, loading, refetch } = useContext(ClassContext);
@@ -22,6 +22,11 @@ const DetailCourse = () => {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
     onClose: onCloseEdit,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
   } = useDisclosure();
   const [classId, setClassId] = useState('');
   const [name, setClassName] = useState('');
@@ -99,6 +104,7 @@ const DetailCourse = () => {
                 isTeacher
                 isOpenEdit={isOpenEdit}
                 onOpenEdit={onOpenEdit}
+                onOpenDelete={onOpenDelete}
                 onCloseEdit={onCloseEdit}
                 id={v._id}
                 key={`card-course-${i}`}
@@ -135,6 +141,12 @@ const DetailCourse = () => {
             options={options}
             handleChangeSelect={handleChange}
             selected={selected}
+          />
+          <ModalDeleteClass
+            isOpenDelete={isOpenDelete}
+            onCloseDelete={onCloseDelete}
+            classId={classId}
+            refetch={refetch}
           />
         </>
       )}

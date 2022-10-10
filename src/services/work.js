@@ -39,3 +39,9 @@ export const getWorkById = async (token, workId) => {
     headers: { Authorization: token },
   });
 };
+
+export const deleteWork = async (token, workId) => {
+  return await axios.delete(`${LOCAL_URL}works/${workId}`, {
+    headers: { Authorization: token },
+  });
+};

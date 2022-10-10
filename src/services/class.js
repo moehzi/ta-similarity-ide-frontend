@@ -19,3 +19,9 @@ export const editClass = async (token, payload, classId) => {
     headers: { Authorization: token },
   });
 };
+
+export const deleteClass = async (token, classId) => {
+  return await axios.delete(`${LOCAL_URL}class/${classId}`, {
+    headers: { Authorization: token },
+  });
+};

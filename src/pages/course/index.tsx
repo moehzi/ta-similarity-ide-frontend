@@ -1,32 +1,18 @@
 import { PlusSquareIcon } from '@chakra-ui/icons';
-import { Button, useDisclosure, useToast } from '@chakra-ui/react';
+import { Button, useDisclosure } from '@chakra-ui/react';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
-import { ListClassContext } from '../../context/ClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useCourse } from '../../hooks/useCourse';
-import { getCourseById, joinCourse } from '../../services/course';
-import ListClass from './ListClass';
 import ModalAddCourse from './ModalAddCourse';
 import ModalDeleteCourse from './ModalDeleteCourse';
 import ModalEditCourse from './ModalEditCourse';
 
 interface courses {
-  _id: string;
-  name: string;
-  author: [
-    {
-      name: string;
-    }
-  ];
-  works: Works[];
-}
-
-interface classCourse {
   _id: string;
   name: string;
   author: [
@@ -44,7 +30,7 @@ export interface Works {
 
 export const Course = () => {
   const { user } = useContext(UserContext);
-  const { setToken, token } = useAuth();
+  const { setToken } = useAuth();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {

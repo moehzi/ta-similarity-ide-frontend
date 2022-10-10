@@ -3,23 +3,16 @@ import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 import { Space, Table, Tag } from 'antd';
-import {
-  Button,
-  Heading,
-  Text,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Heading, Text, useDisclosure } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
-import { checkSimilarityStudent } from '../../services/work';
 import ModalSimilarity from './ModalSimilarity';
 
 export const DetailWork = () => {
   const { user } = useContext(UserContext);
-  const { setToken, token } = useAuth();
+  const { setToken } = useAuth();
   const { detailWork, loadingDetailWork, refetchDetailWork } =
     useContext(DetailWorkContext);
   const { workId } = useParams();

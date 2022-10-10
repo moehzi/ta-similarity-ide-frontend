@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { changeVisible } from '../../services/work';
 import moment from 'moment';
 import ModalEditWork from './ModalEditWork';
+import ModalDeleteWork from './ModalDeleteWork';
 
 export const Works = () => {
   moment.locale('id');
@@ -31,6 +32,11 @@ export const Works = () => {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
     onClose: onCloseEdit,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
   } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
@@ -141,7 +147,16 @@ export const Works = () => {
           >
             Edit
           </Button>
-          {/* <a>Delete</a> */}
+          <Button
+            colorScheme="red"
+            size="sm"
+            onClick={() => {
+              setWorkId(record?._id);
+              onOpenDelete();
+            }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -305,6 +320,12 @@ export const Works = () => {
         <ModalEditWork
           isOpen={isOpenEdit}
           onClose={onCloseEdit}
+          workId={workId}
+          refetch={refetchDetailCourse}
+        />
+        <ModalDeleteWork
+          isOpenDelete={isOpenDelete}
+          onCloseDelete={onCloseDelete}
           workId={workId}
           refetch={refetchDetailCourse}
         />
