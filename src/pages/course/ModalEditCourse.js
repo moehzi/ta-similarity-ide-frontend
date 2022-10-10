@@ -28,7 +28,7 @@ const ModalEditCourse = ({
   const toast = useToast();
   const { refetchMyCourse } = useCourse();
 
-  const handleCreate = () => {
+  const handleEdit = () => {
     const payload = {
       name: courseName,
     };
@@ -68,7 +68,7 @@ const ModalEditCourse = ({
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleCreate}>
+          <Button colorScheme="blue" mr={3} onClick={handleEdit}>
             Edit
           </Button>
           <Button onClick={onClose}>Cancel</Button>

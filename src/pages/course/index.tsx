@@ -12,6 +12,7 @@ import { useCourse } from '../../hooks/useCourse';
 import { getCourseById, joinCourse } from '../../services/course';
 import ListClass from './ListClass';
 import ModalAddCourse from './ModalAddCourse';
+import ModalDeleteCourse from './ModalDeleteCourse';
 import ModalEditCourse from './ModalEditCourse';
 
 interface courses {
@@ -50,6 +51,11 @@ export const Course = () => {
     isOpen: isOpenEdit,
     onClose: onCloseEdit,
     onOpen: onOpenEdit,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDelete,
+    onClose: onCloseDelete,
+    onOpen: onOpenDelete,
   } = useDisclosure();
   const { myCourse, refetch, loading, refetchMyCourse, loadingCourse } =
     useCourse();
@@ -111,6 +117,12 @@ export const Course = () => {
               courseId={courseId}
               courseName={courseName}
             />
+            <ModalDeleteCourse
+              isOpenDelete={isOpenDelete}
+              onCloseDelete={onCloseDelete}
+              onClose={onCloseDelete}
+              courseId={courseId}
+            />
           </div>
         )}
         {myCourses?.length > 0 && (
@@ -125,8 +137,7 @@ export const Course = () => {
                     setCourseId={setCourseId}
                     courseId={courseId}
                     isTeacher={user?.role}
-                    isOpenEdit={isOpenEdit}
-                    onCloseEdit={onCloseEdit}
+                    onOpenDelete={onOpenDelete}
                     onOpenEdit={onOpenEdit}
                     id={v._id}
                     key={`card-course-${i}`}

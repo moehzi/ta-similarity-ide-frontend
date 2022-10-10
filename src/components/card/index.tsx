@@ -42,6 +42,8 @@ interface CardCourseProps {
   isOpenEdit?: boolean;
   onCloseEdit?: () => void;
   setCourseName?: (courseName: string) => void;
+  handleDeleteCourse?: () => void;
+  onOpenDelete?: () => void;
 }
 
 export const CardCourse = ({
@@ -62,11 +64,8 @@ export const CardCourse = ({
   setSelectedId,
   setCourseId,
   handleEditCourse,
-  courseName,
-  isOpenEdit,
-  onCloseEdit,
-  courseId,
-  setCourseName,
+  handleDeleteCourse,
+  onOpenDelete,
 }: CardCourseProps) => {
   const cancelRef = React.useRef();
 
@@ -79,6 +78,12 @@ export const CardCourse = ({
     onOpenEdit?.();
     setCourseId?.(courseId);
     handleEditCourse?.();
+  };
+
+  const handleDelete = (id: string) => {
+    onOpenDelete?.();
+    setCourseId?.(id);
+    handleDeleteCourse?.();
   };
 
   return (
@@ -126,6 +131,7 @@ export const CardCourse = ({
                         fontWeight="normal"
                         colorScheme="red"
                         fontSize="sm"
+                        onClick={() => handleDelete(id)}
                       >
                         Delete
                       </Button>

@@ -39,6 +39,12 @@ export const editCourse = async (
   });
 };
 
+export const deleteCourse = async (token: string, courseId: string) => {
+  return await axios.delete(`${LOCAL_URL}courses/${courseId}`, {
+    headers: { Authorization: token },
+  });
+};
+
 export const joinCourse = async (token: string, classId: string) => {
   return axios.post(
     `${LOCAL_URL}join-class/${classId}`,
