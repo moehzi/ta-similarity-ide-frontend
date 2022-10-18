@@ -107,13 +107,14 @@ const DetailCourse = () => {
                 onOpenDelete={onOpenDelete}
                 onCloseEdit={onCloseEdit}
                 id={v._id}
+                isMyClass
                 key={`card-course-${i}`}
                 name={v.name}
                 recent_assignment={v.works[v.works.length - 1]?.name}
                 author={v.author[0]?.name}
                 total_assignment={v.works?.length}
                 works={v.works}
-                isMyCourses
+                isMyCourses={false}
                 onClick={() => navigate(`/courses/${v._id}`)}
               />
             );

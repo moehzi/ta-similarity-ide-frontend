@@ -26,7 +26,9 @@ interface CardCourseProps {
   author: string;
   total_assignment: number;
   recent_assignment?: string;
+  isMyClass: boolean;
   works: Works[];
+  total_class: number;
   isMyCourses: boolean;
   onJoinCourse?: (e: React.MouseEvent) => void;
   isOpen?: boolean;
@@ -55,6 +57,8 @@ export const CardCourse = ({
   works,
   onClick,
   isMyCourses,
+  total_class,
+  isMyClass,
   onJoinCourse,
   isTeacher,
   onClose,
@@ -157,12 +161,23 @@ export const CardCourse = ({
                 <p className="mt-2 font-semibold text-md">
                   {recent_assignment?.length
                     ? recent_assignment
+                    : 'No recent class'}
+                </p>
+              </div>
+            )}
+
+            {isMyClass && (
+              <div className="mt-4">
+                <p className="text-xs">Most Recent</p>
+                <p className="mt-2 font-semibold text-md">
+                  {recent_assignment?.length
+                    ? recent_assignment
                     : 'No recent assignment'}
                 </p>
               </div>
             )}
           </div>
-          {!isMyCourses && (
+          {!isMyCourses && !isMyClass && (
             <div className="p-6">
               <button
                 className="py-2 text-indigo-100 text-xs font-semibold duration-75 bg-indigo-600 rounded-md hover:bg-indigo-500 hover:shadow-md w-[100px] ml-auto mr-0"
@@ -181,11 +196,18 @@ export const CardCourse = ({
             </div>
           )}
         </div>
-        {isMyCourses && (
+        {isMyClass && (
           <div className="w-full p-4 text-indigo-100 bg-[#1C3879]">
             <p>
               {total_assignment}{' '}
               {total_assignment > 1 ? 'assignments' : 'assignment'}
+            </p>
+          </div>
+        )}
+        {isMyCourses && (
+          <div className="w-full p-4 text-indigo-100 bg-[#1C3879]">
+            <p>
+              {total_class} {total_class > 1 ? 'classes' : 'class'}
             </p>
           </div>
         )}

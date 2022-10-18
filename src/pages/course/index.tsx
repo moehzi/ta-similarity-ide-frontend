@@ -118,6 +118,7 @@ export const Course = () => {
               {myCourses.map((v: courses, i: number) => {
                 return (
                   <CardCourse
+                    total_class={0}
                     setCourseName={setCourseId}
                     courseName={courseName}
                     setCourseId={setCourseId}
@@ -133,6 +134,7 @@ export const Course = () => {
                     total_assignment={v.works?.length}
                     works={v.works}
                     isMyCourses
+                    isMyClass={false}
                     onClick={() => navigate(`/courses/${v._id}/class`)}
                   />
                 );
