@@ -6,14 +6,18 @@ import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
 import { ClassContext } from '../../context/ListClassCourse';
+import { UserClassContext } from '../../context/UserClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
+import useFetch from '../../hooks/useFetch';
+import { USER_CLASS } from '../../services/class';
 import { getTeacher } from '../../services/user';
+import UserClass from '../course/UserClass';
 import ModalAddClass from './ModalAddClass';
 import ModalDeleteClass from './ModalDeleteClass';
 import ModalEditClass from './ModalEditClass';
 const DetailCourse = () => {
-  const { data, loading, refetch } = useContext(ClassContext);
+  const { data, loading, refetch } = useFetch(USER_CLASS());
   const navigate = useNavigate();
   const { setToken, token } = useAuth();
   const { user } = useContext(UserContext);
@@ -48,9 +52,9 @@ const DetailCourse = () => {
   };
 
   const handleCourseById = useMemo(() => {
-    const filtered = data?.find((item) => item._id === classId);
+    const filtered = data?.classes?.find((item) => item._id === classId);
 
-    if (filtered) {
+    if (filtered?.length) {
       setClassName(filtered.name);
       const teacherName = filtered.author.map((v) => v.name);
       setValue(teacherName);
@@ -94,9 +98,9 @@ const DetailCourse = () => {
           Add new class
         </Button>
       </div>
-      {data?.length > 0 && (
+      {data?.classes?.length > 0 && (
         <div className="flex flex-wrap gap-8 mt-8 mb-8">
-          {data.map((v, i) => {
+          {data?.classes?.map((v, i) => {
             return (
               <CardCourse
                 setCourseId={setClassId}

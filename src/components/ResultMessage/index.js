@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-
 import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
 import { Text } from '@chakra-ui/react';

@@ -61,7 +61,7 @@ const WebEditor = ({ workId }) => {
 
   useEffect(() => {
     setJs('');
-    setHtml('');
+    setHtml(``);
     setCss('');
     setSrcDoc('');
     setIsCorrect(false);
@@ -76,7 +76,8 @@ const WebEditor = ({ workId }) => {
 
   const runCode = () => {
     const payload = {
-      jsCode: `${js}`,
+      jsCode: js,
+      htmlCode: html,
     };
     setLoadingTest(true);
     testWork(token, workId, payload)

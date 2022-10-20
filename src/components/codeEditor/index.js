@@ -4,7 +4,7 @@ import { Text } from '@chakra-ui/react';
 
 const CodeEditor = ({ value, onChange, language, display }) => {
   return (
-    <div className="flex-1">
+    <div className="flex-1 max-w-[485px]">
       <Text fontSize="2xl" fontWeight={'semibold'}>
         {display}
       </Text>

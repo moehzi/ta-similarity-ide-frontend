@@ -21,6 +21,7 @@ import DetailCourse from './pages/DetailCourse';
 import { ListClassProvider } from './context/ClassContext';
 import { UserClassProvider } from './context/UserClassContext';
 import UserClass from './pages/course/UserClass';
+import { Register } from './pages/Register';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -42,6 +43,7 @@ export default function App() {
         <div>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route
               path="/courses/:courseId"
               element={
@@ -102,7 +104,9 @@ export default function App() {
                 path="/courses/:courseId/class"
                 element={
                   <ClassProvider>
-                    <DetailCourse />
+                    <UserClassProvider>
+                      <DetailCourse />
+                    </UserClassProvider>
                   </ClassProvider>
                 }
               />
