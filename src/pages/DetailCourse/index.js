@@ -17,7 +17,7 @@ import ModalAddClass from './ModalAddClass';
 import ModalDeleteClass from './ModalDeleteClass';
 import ModalEditClass from './ModalEditClass';
 const DetailCourse = () => {
-  const { data, loading, refetch } = useFetch(USER_CLASS());
+  const { data, loading, refetch } = useContext(ClassContext);
   const navigate = useNavigate();
   const { setToken, token } = useAuth();
   const { user } = useContext(UserContext);
@@ -52,7 +52,7 @@ const DetailCourse = () => {
   };
 
   const handleCourseById = useMemo(() => {
-    const filtered = data?.classes?.find((item) => item._id === classId);
+    const filtered = data?.find((item) => item._id === classId);
 
     if (filtered?.length) {
       setClassName(filtered.name);
@@ -98,9 +98,9 @@ const DetailCourse = () => {
           Add new class
         </Button>
       </div>
-      {data?.classes?.length > 0 && (
+      {data?.length > 0 && (
         <div className="flex flex-wrap gap-8 mt-8 mb-8">
-          {data?.classes?.map((v, i) => {
+          {data?.map((v, i) => {
             return (
               <CardCourse
                 setCourseId={setClassId}
