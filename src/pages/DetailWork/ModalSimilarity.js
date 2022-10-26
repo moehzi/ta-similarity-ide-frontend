@@ -10,6 +10,8 @@ import {
   Button,
   Flex,
   useToast,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react';
 import { checkSimilarityStudent } from '../../services/work';
 import { useAuth } from '../../hooks/useAuth';
@@ -22,10 +24,15 @@ const ModalSimilarity = ({
   workId,
 }) => {
   const [selected, setSelected] = useState('RabinKarp');
+  const [classCategory, setClassCategory] = useState('one-class');
   const { token } = useAuth();
   const handleButton = (e) => {
     setSelected(e.target.id);
     console.log(e.target.id);
+  };
+
+  const handleAllClass = (e) => {
+    setClassCategory(e.target.id);
   };
   const toast = useToast();
 
@@ -33,6 +40,7 @@ const ModalSimilarity = ({
     setIsLoading(true);
     const payload = {
       algorithm: selected,
+      categoryClass: classCategory,
     };
     checkSimilarityStudent(token, workId, payload)
       .then((res) => {
@@ -55,7 +63,7 @@ const ModalSimilarity = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Choose the algorithm :</ModalHeader>
+        <ModalHeader>Check Similarity</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex gap={4}>
@@ -76,6 +84,24 @@ const ModalSimilarity = ({
               Jaro Winkler
             </Button>
           </Flex>
+          <Flex gap={4} mt={4}>
+            <Button
+              colorScheme={classCategory === 'one-class' && 'telegram'}
+              id="one-class"
+              onClick={handleAllClass}
+              variant={classCategory !== 'one-class' ? 'outline' : 'solid'}
+            >
+              Only this class
+            </Button>
+            <Button
+              colorScheme={classCategory === 'all-class' && 'telegram'}
+              id="all-class"
+              variant={classCategory !== 'all-class' ? 'outline' : 'solid'}
+              onClick={handleAllClass}
+            >
+              All Class
+            </Button>
+          </Flex>
         </ModalBody>
 
         <ModalFooter>
@@ -92,7 +118,7 @@ const ModalSimilarity = ({
             colorScheme={'telegram'}
             onClick={checkSimilarity}
           >
-            Check Similarity
+            Check
           </Button>
         </ModalFooter>
       </ModalContent>
