@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { Works } from '../../pages/course';
+import React, { useEffect, useState } from 'react';
 import ModalJoin from './Modal';
 import {
   Popover,
@@ -27,7 +26,6 @@ interface CardCourseProps {
   total_assignment: number;
   recent_assignment?: string;
   isMyClass: boolean;
-  works: Works[];
   total_class: number;
   isMyCourses: boolean;
   onJoinCourse?: (e: React.MouseEvent) => void;
@@ -54,7 +52,6 @@ export const CardCourse = ({
   author,
   total_assignment,
   recent_assignment,
-  works,
   onClick,
   isMyCourses,
   total_class,
@@ -90,6 +87,10 @@ export const CardCourse = ({
     setCourseId?.(id);
     handleDeleteCourse?.();
   };
+
+  useEffect(() => {
+    console.log(recent_assignment);
+  }, [recent_assignment]);
 
   return (
     <div>
