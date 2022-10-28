@@ -36,7 +36,7 @@ const ModalJoin = ({ isOpen, cancelRef, onClose, handleJoinCourse, id }) => {
               ml={3}
               id={id}
             >
-              Join Course
+              Join Class
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

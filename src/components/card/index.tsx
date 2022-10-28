@@ -76,6 +76,7 @@ export const CardCourse = ({
   const handleOpen = (classId: string) => {
     onOpen?.();
     setSelectedId?.(classId);
+    console.log('ini jalan');
   };
 
   const handleEdit = (courseId: string) => {
@@ -186,13 +187,6 @@ export const CardCourse = ({
               >
                 Join Class
               </button>
-              <ModalJoin
-                id={id}
-                handleJoinCourse={onJoinCourse}
-                isOpen={isOpen}
-                cancelRef={cancelRef}
-                onClose={onClose}
-              />
             </div>
           )}
         </div>
