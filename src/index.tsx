@@ -19,6 +19,8 @@ const theme = extendTheme({
   components: {
     MultiSelect: MultiSelectTheme,
   },
+  initialColorMode: 'system',
+  useSystemColorMode: true,
 });
 
 root.render(

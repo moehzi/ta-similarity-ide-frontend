@@ -6,16 +6,19 @@ import {
   Box,
   AlertDescription,
   AlertTitle,
+  Select,
+  useDisclosure,
+  CloseButton,
 } from '@chakra-ui/react';
 import React, { FormEvent, useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../services/auth';
 
 export const Register = () => {
-  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
 
-  const username = useRef();
+  const fullName = useRef();
   const password = useRef();
   const registrationNumber = useRef();
   const email = useRef();
@@ -23,8 +26,10 @@ export const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setMessage('');
+    setErrorMessage('');
     const data = {
-      name: username.current?.value,
+      name: fullName.current?.value,
       password: password.current?.value,
       registrationNumber: registrationNumber.current?.value,
       email: email.current?.value,
@@ -32,7 +37,8 @@ export const Register = () => {
     };
     register(data)
       .then((res) => {
-        navigate('/');
+        setMessage(res.message);
+        e.target.reset();
       })
       .catch((err) => {
         setErrorMessage(err.response.data.data.message);
@@ -40,16 +46,14 @@ export const Register = () => {
   };
 
   return (
-    <div className="flex items-center min-h-screen bg-white dark:bg-gray-900">
+    <div className="flex items-center min-h-screen bg-white">
       <div className="container mx-auto">
         <div className="max-w-md mx-auto my-10">
           <div className="text-center">
-            <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">
-              Sign in
+            <h1 className="my-3 text-3xl font-semibold text-gray-700">
+              Sign up
             </h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              Sign in to access your account
-            </p>
+            <p className="text-gray-500 ">Sign up to register your account</p>
           </div>
           <div className="m-7">
             {errorMessage && (
@@ -61,12 +65,18 @@ export const Register = () => {
                 </Box>
               </Alert>
             )}
+            {message && (
+              <Alert status="success" className="mb-7">
+                <AlertIcon />
+                {message}
+              </Alert>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="block mb-2 text-sm text-gray-600"
                 >
                   Name
                 </label>
@@ -74,17 +84,14 @@ export const Register = () => {
                   type="text"
                   name="username"
                   id="username"
-                  ref={username}
+                  ref={fullName}
                   placeholder="D1211"
-                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 "
                 />
               </div>
               <div className="mb-6">
                 <div className="flex justify-between mb-2">
-                  <label
-                    htmlFor="password"
-                    className="text-sm text-gray-600 dark:text-gray-400"
-                  >
+                  <label htmlFor="password" className="text-sm text-gray-600 ">
                     Password
                   </label>
                 </div>
@@ -94,13 +101,13 @@ export const Register = () => {
                   id="password"
                   ref={password}
                   placeholder="Your Password"
-                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 />
               </div>
               <div className="mb-6">
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="block mb-2 text-sm text-gray-600"
                 >
                   NIM/NIM
                 </label>
@@ -110,13 +117,13 @@ export const Register = () => {
                   id="registrationNumber"
                   ref={registrationNumber}
                   placeholder="D1211"
-                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 "
                 />
               </div>
               <div className="mb-6">
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm text-gray-600 dark:text-gray-400"
+                  className="block mb-2 text-sm text-gray-600 "
                 >
                   Email
                 </label>
@@ -126,9 +133,22 @@ export const Register = () => {
                   id="email"
                   ref={email}
                   placeholder="dewa@gmail.com"
-                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                  className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 />
               </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="role"
+                  className="block mb-2 text-sm text-gray-600"
+                >
+                  Role
+                </label>
+                <Select placeholder="Select option" ref={role}>
+                  <option value="teacher">Dosen</option>
+                  <option value="student">Mahasiswa</option>
+                </Select>
+              </div>
+
               <div className="w-full mb-6">
                 <Stack direction="row" className="w-full">
                   <Button
