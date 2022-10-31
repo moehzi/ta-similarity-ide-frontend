@@ -69,10 +69,6 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
     }
   }, [detailCourse?.works, workId]);
 
-  useEffect(() => {
-    console.log('called');
-  }, [handleWorkById]);
-
   const handleEdit = () => {
     setIsLoading(true);
     const payload = {

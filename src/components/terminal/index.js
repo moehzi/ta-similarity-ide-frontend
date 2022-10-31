@@ -11,26 +11,6 @@ const Terminal = ({ expectedOutput }) => {
   const { result } = useContext(CodeContext);
   const terminal = useRef();
 
-  //     let resultA = '';
-  //     try {
-  //       resultA = `${eval(result)}`;
-  //     } catch (error) {
-  //       resultA = `${error}`;
-  //     }
-  //     console.log(resultA);
-  //     return resultA;
-  //   };
-
-  //   //   const getTestValue = () => {
-  //   //     let resultA = '';
-  //   //     try {
-  //   //       resultA = `${eval(testCode)}`;
-  //   //     } catch (error) {
-  //   //       resultA = `${error}`;
-  //   //     }
-  //   //     return resultA;
-  //   //   };
-
   const myTheme = createTheme({
     settings: {
       background: '#ffffff',

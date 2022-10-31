@@ -56,10 +56,6 @@ const WebEditor = ({ workId }) => {
   );
 
   useEffect(() => {
-    console.log('ini jalan');
-  }, [onChangeCss, onChangeJs, onChangeHTML]);
-
-  useEffect(() => {
     setJs('');
     setHtml(``);
     setCss('');

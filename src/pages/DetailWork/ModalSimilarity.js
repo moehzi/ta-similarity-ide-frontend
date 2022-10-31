@@ -29,7 +29,6 @@ const ModalSimilarity = ({
   const { token } = useAuth();
   const handleButton = (e) => {
     setSelected(e.target.id);
-    console.log(e.target.id);
   };
 
   const handleAllClass = (e) => {

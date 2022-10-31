@@ -73,7 +73,6 @@ export const CardCourse = ({
   const handleOpen = (classId: string) => {
     onOpen?.();
     setSelectedId?.(classId);
-    console.log('ini jalan');
   };
 
   const handleEdit = (courseId: string) => {
@@ -87,10 +86,6 @@ export const CardCourse = ({
     setCourseId?.(id);
     handleDeleteCourse?.();
   };
-
-  useEffect(() => {
-    console.log(recent_assignment);
-  }, [recent_assignment]);
 
   return (
     <div>

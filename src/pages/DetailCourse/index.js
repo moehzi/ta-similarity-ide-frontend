@@ -40,7 +40,6 @@ const DetailCourse = () => {
   const [selected, setSelected] = useState([]);
 
   const handleChange = (value2) => {
-    console.log(`selected ${value2}`);
     setValue(value2);
     const selectedTeacher = listTeacher.filter((teacher) =>
       value2.includes(teacher.name)
@@ -59,12 +58,7 @@ const DetailCourse = () => {
       const teacherName = filtered.author.map((v) => v.name);
       setValue(teacherName);
     }
-    console.log(filtered);
   }, [data, classId]);
-
-  useEffect(() => {
-    console.log('class called');
-  }, [handleCourseById]);
 
   useEffect(() => {
     getTeacher(token).then((res) => {

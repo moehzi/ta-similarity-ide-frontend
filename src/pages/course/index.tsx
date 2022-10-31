@@ -53,11 +53,7 @@ export const Course = () => {
     }
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
 
-  useEffect(() => {
-    console.log(myCourses);
-  }, [myCourses.length]);
-
-  const handleCourseById = useMemo(() => {
+  useMemo(() => {
     const filtered = myCourses?.find(
       (course: courses) => course._id === courseId
     );
@@ -65,10 +61,6 @@ export const Course = () => {
       setCourseName(filtered['name']);
     }
   }, [myCourses, courseId]);
-
-  useEffect(() => {
-    console.log('called');
-  }, [handleCourseById]);
 
   if (loading) {
     return <Loader />;
