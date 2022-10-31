@@ -15,7 +15,12 @@ const WorkDescription = ({ source }) => {
 
   return (
     <div className="flex-[0.75]">
-      <MarkdownPreview source={source} />
+      <MarkdownPreview
+        source={source}
+        warpperElement={{
+          'data-color-mode': 'light',
+        }}
+      />
     </div>
   );
 };

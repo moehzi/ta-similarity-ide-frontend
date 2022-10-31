@@ -20,6 +20,7 @@ const ModalSimilarity = ({
   isOpen,
   onClose,
   setIsLoading,
+  isLoading,
   refetchDetailWork,
   workId,
 }) => {
@@ -116,6 +117,7 @@ const ModalSimilarity = ({
           <Button
             variant="solid"
             colorScheme={'telegram'}
+            isLoading={isLoading}
             onClick={checkSimilarity}
           >
             Check

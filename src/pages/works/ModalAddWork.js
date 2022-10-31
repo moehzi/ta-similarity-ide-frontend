@@ -93,7 +93,12 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
             <FormLabel mt={4}>Description</FormLabel>
             <Link onClick={() => setPreview(!preview)}>Preview</Link>
             {preview ? (
-              <MarkdownPreview source={workDesc} />
+              <MarkdownPreview
+                source={workDesc}
+                warpperElement={{
+                  'data-color-mode': 'light',
+                }}
+              />
             ) : (
               <CodeMirror
                 value={workDesc}

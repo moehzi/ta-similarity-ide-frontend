@@ -32,7 +32,6 @@ const Terminal = ({ expectedOutput }) => {
   //   //   };
 
   const myTheme = createTheme({
-    theme: 'light',
     settings: {
       background: '#ffffff',
       foreground: '#0e141e',
