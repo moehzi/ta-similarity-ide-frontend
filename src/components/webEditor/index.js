@@ -73,7 +73,7 @@ const WebEditor = ({ workId }) => {
   const runCode = () => {
     const payload = {
       jsCode: js,
-      htmlCode: html,
+      htmlCode: HTML,
     };
     setLoadingTest(true);
     testWork(token, workId, payload)
