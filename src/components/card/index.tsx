@@ -144,24 +144,13 @@ export const CardCourse = ({
           )}
           <div className="flex flex-col p-6 font-semibold ">
             <Link onClick={onClick}>
-              <Text noOfLines={1} fontSize="lg">
+              <Text noOfLines={2} fontSize="md">
                 {name}
               </Text>
             </Link>
             <p className="my-2 text-xs font-light text-gray-400">
               Lecturer : {author}
             </p>
-
-            {isMyCourses && (
-              <div className="mt-4">
-                <p className="text-xs">Most Recent</p>
-                <p className="mt-2 font-semibold text-md">
-                  {recent_assignment?.length
-                    ? recent_assignment
-                    : 'No recent class'}
-                </p>
-              </div>
-            )}
 
             {isMyClass && (
               <div className="mt-4">

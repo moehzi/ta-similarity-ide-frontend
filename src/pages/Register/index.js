@@ -12,11 +12,13 @@ import {
 } from '@chakra-ui/react';
 import React, { FormEvent, useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import { register } from '../../services/auth';
 
 export const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [message, setMessage] = useState('');
+  const { token } = useAuth();
 
   const fullName = useRef();
   const password = useRef();
@@ -35,7 +37,7 @@ export const Register = () => {
       email: email.current?.value,
       role: role.current?.value,
     };
-    register(data)
+    register(data, token)
       .then((res) => {
         setMessage(res.message);
         e.target.reset();
