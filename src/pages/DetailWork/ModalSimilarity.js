@@ -20,6 +20,7 @@ const ModalSimilarity = ({
   isOpen,
   onClose,
   setIsLoading,
+  isLoading,
   refetchDetailWork,
   workId,
 }) => {
@@ -28,7 +29,6 @@ const ModalSimilarity = ({
   const { token } = useAuth();
   const handleButton = (e) => {
     setSelected(e.target.id);
-    console.log(e.target.id);
   };
 
   const handleAllClass = (e) => {
@@ -116,6 +116,7 @@ const ModalSimilarity = ({
           <Button
             variant="solid"
             colorScheme={'telegram'}
+            isLoading={isLoading}
             onClick={checkSimilarity}
           >
             Check

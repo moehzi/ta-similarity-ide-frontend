@@ -43,7 +43,7 @@ export default function App() {
         <div>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/users/register" element={<Register />} />
             <Route
               path="/courses/:courseId"
               element={

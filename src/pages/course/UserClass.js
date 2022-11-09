@@ -1,7 +1,8 @@
 import { useDisclosure, useToast } from '@chakra-ui/react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardCourse } from '../../components/card';
+import ModalJoin from '../../components/card/Modal';
 import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
 import { ListClassContext } from '../../context/ClassContext';
@@ -20,6 +21,12 @@ const UserClass = () => {
   const toast = useToast();
   const { token, setToken } = useAuth();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const cancelRef = useRef();
+  const {
+    isOpen: isOpenJoin,
+    onClose: onCloseJoin,
+    onOpen: onOpenJoin,
+  } = useDisclosure();
   const [myCourses, setMyCourses] = useState([]);
   const { data: listClass } = useContext(ListClassContext);
   const [selectedId, setSelectedId] = useState();
@@ -43,8 +50,10 @@ const UserClass = () => {
           isClosable: true,
         });
       })
-      .finally(() => refetch());
-    onClose();
+      .finally(() => {
+        refetch();
+        onCloseJoin();
+      });
   };
 
   return (
@@ -82,11 +91,18 @@ const UserClass = () => {
       <ListClass
         data={listClass}
         myCourses={myCourses}
-        onClose={onClose}
-        isOpen={isOpen}
-        onOpen={onOpen}
+        onClose={onCloseJoin}
+        isOpen={isOpenJoin}
+        onOpen={onOpenJoin}
         setSelectedId={setSelectedId}
         handleJoinCourse={handleJoinCourse}
+      />
+      <ModalJoin
+        id={selectedId}
+        handleJoinCourse={handleJoinCourse}
+        isOpen={isOpenJoin}
+        cancelRef={cancelRef}
+        onClose={onCloseJoin}
       />
     </SidebarWithHeader>
   );

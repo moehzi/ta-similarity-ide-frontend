@@ -63,21 +63,18 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
       ),
     };
 
-    createWork(token, payload, courseId)
-      .then((res) => {
-        toast({
-          title: 'Sucessfully create work',
-          description: res.data.message,
-          status: 'success',
-          duration: 9000,
-          isClosable: true,
-        });
-      })
-      .finally(() => {
-        onClose();
-        setIsLoading(false);
-        refetch();
+    createWork(token, payload, courseId).then((res) => {
+      toast({
+        title: 'Sucessfully create work',
+        description: res.data.message,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
       });
+      onClose();
+      refetch();
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -93,7 +90,12 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
             <FormLabel mt={4}>Description</FormLabel>
             <Link onClick={() => setPreview(!preview)}>Preview</Link>
             {preview ? (
-              <MarkdownPreview source={workDesc} />
+              <MarkdownPreview
+                source={workDesc}
+                warpperElement={{
+                  'data-color-mode': 'light',
+                }}
+              />
             ) : (
               <CodeMirror
                 value={workDesc}

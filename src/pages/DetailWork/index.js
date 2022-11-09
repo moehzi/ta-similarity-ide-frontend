@@ -140,6 +140,7 @@ export const DetailWork = () => {
         <ModalSimilarity
           isOpen={isOpen}
           onClose={onClose}
+          isLoading={isLoading}
           setIsLoading={setIsLoading}
           refetchDetailWork={refetchDetailWork}
           workId={workId}

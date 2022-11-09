@@ -8,7 +8,6 @@ import { tags as t } from '@lezer/highlight';
 const ResultMessage = ({ value, display }) => {
   const terminal = useRef();
   const myTheme = createTheme({
-    theme: 'light',
     settings: {
       background: '#ffffff',
       foreground: '#0e141e',

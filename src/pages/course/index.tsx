@@ -20,14 +20,11 @@ interface courses {
       name: string;
     }
   ];
-  works: Works[];
+  classes: Classes[];
 }
-
-export interface Works {
+interface Classes {
   name: string;
-  description: string;
 }
-
 export const Course = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
@@ -51,10 +48,12 @@ export const Course = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setMyCourses(myCourse);
+    if (myCourse?.length > 0) {
+      setMyCourses(myCourse);
+    }
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
 
-  const handleCourseById = useMemo(() => {
+  useMemo(() => {
     const filtered = myCourses?.find(
       (course: courses) => course._id === courseId
     );
@@ -62,10 +61,6 @@ export const Course = () => {
       setCourseName(filtered['name']);
     }
   }, [myCourses, courseId]);
-
-  useEffect(() => {
-    console.log('called');
-  }, [handleCourseById]);
 
   if (loading) {
     return <Loader />;
@@ -111,14 +106,15 @@ export const Course = () => {
             />
           </div>
         )}
-        {myCourses?.length > 0 && (
+        {myCourses.length > 0 && (
           <>
             <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
             <div className="flex flex-wrap gap-8 mb-8">
               {myCourses.map((v: courses, i: number) => {
                 return (
                   <CardCourse
-                    total_class={0}
+                    total_assignment={0}
+                    total_class={v.classes?.length}
                     setCourseName={setCourseId}
                     courseName={courseName}
                     setCourseId={setCourseId}
@@ -129,10 +125,8 @@ export const Course = () => {
                     id={v._id}
                     key={`card-course-${i}`}
                     name={v.name}
-                    recent_assignment={v.works[v.works.length - 1]?.name}
+                    recent_assignment={v.classes[v.classes.length]?.name}
                     author={v.author[0]?.name}
-                    total_assignment={v.works?.length}
-                    works={v.works}
                     isMyCourses
                     isMyClass={false}
                     onClick={() => navigate(`/courses/${v._id}/class`)}

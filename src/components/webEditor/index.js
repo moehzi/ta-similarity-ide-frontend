@@ -56,10 +56,6 @@ const WebEditor = ({ workId }) => {
   );
 
   useEffect(() => {
-    console.log('ini jalan');
-  }, [onChangeCss, onChangeJs, onChangeHTML]);
-
-  useEffect(() => {
     setJs('');
     setHtml(``);
     setCss('');
@@ -77,7 +73,7 @@ const WebEditor = ({ workId }) => {
   const runCode = () => {
     const payload = {
       jsCode: js,
-      htmlCode: html,
+      htmlCode: HTML,
     };
     setLoadingTest(true);
     testWork(token, workId, payload)
