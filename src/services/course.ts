@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const LOCAL_URL = `http://localhost:8080/`;
+export const LOCAL_URL = process.env.API_URL;
 
 export const getAllCourse = async (token: string) => {
   const res = await axios.get(`${LOCAL_URL}courses`, {
