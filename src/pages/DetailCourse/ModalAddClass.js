@@ -57,7 +57,7 @@ const ModalAddClass = ({
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create assignment</ModalHeader>
+        <ModalHeader>Create Class</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <FormControl>

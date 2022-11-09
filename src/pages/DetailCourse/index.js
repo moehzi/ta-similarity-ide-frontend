@@ -50,7 +50,7 @@ const DetailCourse = () => {
     setSelected(selectedId);
   };
 
-  const handleCourseById = useMemo(() => {
+  useMemo(() => {
     const filtered = data?.find((item) => item._id === classId);
 
     if (filtered?.length) {
