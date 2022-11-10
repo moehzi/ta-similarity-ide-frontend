@@ -2,7 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { Space, Table, Tag, Switch } from 'antd';
+import Switch from 'antd/es/switch';
+import Space from 'antd/es/space';
+import Table from 'antd/es/table';
+import Tag from 'antd/es/tag';
 import {
   Button,
   Heading,
