@@ -42,7 +42,7 @@ export const Course = () => {
   } = useDisclosure();
   const { myCourse, refetch, loading, refetchMyCourse, loadingCourse } =
     useCourse();
-  const [myCourses, setMyCourses] = useState([]);
+  const [myCourses, setMyCourses] = useState<courses[]>([]);
   const [courseId, setCourseId] = useState<string>('');
   const [courseName, setCourseName] = useState('');
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ export const Course = () => {
                     id={v._id}
                     key={`card-course-${i}`}
                     name={v.name}
-                    recent_assignment={v.classes[v.classes.length]?.name}
+                    recent_assignment={v.classes[v.classes?.length - 1]?.name}
                     author={v.author[0]?.name}
                     isMyCourses
                     isMyClass={false}

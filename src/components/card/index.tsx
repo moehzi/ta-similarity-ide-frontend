@@ -152,6 +152,17 @@ export const CardCourse = ({
               Lecturer : {author}
             </p>
 
+            {isMyCourses && (
+              <div className="mt-4">
+                <p className="text-xs">Most Recent</p>
+                <p className="mt-2 font-semibold text-md">
+                  {recent_assignment?.length
+                    ? recent_assignment
+                    : 'No recent class'}
+                </p>
+              </div>
+            )}
+
             {isMyClass && (
               <div className="mt-4">
                 <p className="text-xs">Most Recent</p>

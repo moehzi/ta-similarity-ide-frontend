@@ -12,13 +12,13 @@ const ListClass = ({
 }) => {
   return (
     <>
-      {data
-        ?.filter((v, i) => !myCourses?.some((v2) => v._id === v2._id))
-        ?.map((course, i) => {
-          return (
-            <>
-              <h1 className="mb-4 text-2xl font-bold">List of all class</h1>
-              <div className="flex flex-wrap gap-y-8 gap-x-6">
+      <h1 className="mb-4 text-2xl font-bold">List of all class</h1>
+      <div className="flex flex-wrap gap-y-8 gap-x-6">
+        {data
+          ?.filter((v, i) => !myCourses?.some((v2) => v._id === v2._id))
+          ?.map((course, i) => {
+            return (
+              <>
                 <CardCourse
                   setSelectedId={setSelectedId}
                   onClose={onClose}
@@ -33,10 +33,10 @@ const ListClass = ({
                   total_assignment={course.works.length}
                   works={[]}
                 />
-              </div>
-            </>
-          );
-        })}
+              </>
+            );
+          })}
+      </div>
     </>
   );
 };

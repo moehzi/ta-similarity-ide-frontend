@@ -66,11 +66,11 @@ const UserClass = () => {
         setToken('');
       }}
     >
-      {data?.classes?.map((v, i) => {
-        return (
-          <>
-            <h1 className="mb-4 text-2xl font-bold">My Classes</h1>
-            <div className="flex flex-wrap gap-8 mb-8">
+      <h1 className="mb-4 text-2xl font-bold">My Classes</h1>
+      <div className="flex flex-wrap gap-8 mb-8">
+        {data?.classes?.map((v, i) => {
+          return (
+            <>
               <CardCourse
                 id={v._id}
                 key={`card-course-${i}`}
@@ -79,17 +79,17 @@ const UserClass = () => {
                 author={v.author[0]?.name}
                 total_assignment={v.works?.length}
                 works={v.works}
-                isMyCourses
+                isMyClass
                 onClick={
                   user.role === 'teacher'
                     ? () => navigate(`/courses/${v._id}/class`)
                     : () => navigate(`/courses/${v._id}`)
                 }
               />
-            </div>
-          </>
-        );
-      })}
+            </>
+          );
+        })}
+      </div>
 
       <ListClass
         data={listClass}
