@@ -1,11 +1,11 @@
-import { useContext } from 'react';
+import { useContext, lazy } from 'react';
 import { Loader } from '../../components/spinner';
 import { UserContext } from '../../context/UserContext';
-import { DashboardStudent } from './DashboardStudent';
 
-import { DashboardTeacher } from './DashboardTeacher';
+const DashboardStudent = lazy(() => import('./DashboardStudent'));
+const DashboardTeacher = lazy(() => import('./DashboardTeacher'));
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const { user, loading } = useContext(UserContext);
 
   if (loading) {
@@ -19,3 +19,5 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+export default Dashboard;

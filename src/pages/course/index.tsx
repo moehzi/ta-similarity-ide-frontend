@@ -25,7 +25,7 @@ interface courses {
 interface Classes {
   name: string;
 }
-export const Course = () => {
+const Course = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
 
@@ -139,3 +139,5 @@ export const Course = () => {
     </SidebarWithHeader>
   );
 };
+
+export default Course;

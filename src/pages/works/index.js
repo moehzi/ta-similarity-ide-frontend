@@ -24,7 +24,7 @@ import moment from 'moment';
 import ModalEditWork from './ModalEditWork';
 import ModalDeleteWork from './ModalDeleteWork';
 
-export const Works = () => {
+const Works = () => {
   moment.locale('id');
   const { user } = useContext(UserContext);
   const { setToken, token } = useAuth();
@@ -336,3 +336,5 @@ export const Works = () => {
     </SidebarWithHeader>
   );
 };
+
+export default Works;

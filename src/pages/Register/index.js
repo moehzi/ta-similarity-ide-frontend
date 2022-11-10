@@ -12,7 +12,7 @@ import React, { useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { register } from '../../services/auth';
 
-export const Register = () => {
+const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [message, setMessage] = useState('');
   const { token } = useAuth();
@@ -167,3 +167,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;

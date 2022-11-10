@@ -9,7 +9,7 @@ import WorkDescription from '../../components/WorkDescription';
 import { CodeContext } from '../../context/CodeContext';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
 
-export const WorkArea = () => {
+const WorkArea = () => {
   const { result, isCorrect } = useContext(CodeContext);
   const { detailWork, loadingDetailWork } = useContext(DetailWorkContext);
   const { workId } = useParams();
@@ -48,3 +48,5 @@ export const WorkArea = () => {
     )
   );
 };
+
+export default WorkArea;

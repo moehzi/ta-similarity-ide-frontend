@@ -11,7 +11,7 @@ import { Loader } from '../../components/spinner';
 import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
-export const DetailStudentWork = () => {
+const DetailStudentWork = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
   const { data, loading } = useContext(DetailStudentWorkContext);
@@ -204,3 +204,5 @@ export const DetailStudentWork = () => {
     </SidebarWithHeader>
   );
 };
+
+export default DetailStudentWork;

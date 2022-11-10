@@ -12,7 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
 import ModalSimilarity from './ModalSimilarity';
 
-export const DetailWork = () => {
+const DetailWork = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
   const { detailWork, loadingDetailWork, refetchDetailWork } =
@@ -151,3 +151,5 @@ export const DetailWork = () => {
     </SidebarWithHeader>
   );
 };
+
+export default DetailWork;

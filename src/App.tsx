@@ -1,28 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import RequireAuth from './components/ProtectedRoutes';
 import { UserProvider } from './context/UserContext';
 import { useAuth } from './hooks/useAuth';
-import { Course } from './pages/course';
-import { Dashboard } from './pages/dashboard';
-import { Login } from './pages/Login';
 import { CourseProvider } from './hooks/useCourse';
-import { WorkArea } from './pages/workarea';
 import { CodeProvider } from './context/CodeContext';
-import { Works } from './pages/works';
 import { DetailCourseProvider } from './context/DetailCourseContext';
 import 'antd/dist/antd.min.css';
 import { DetailWorkProvider } from './context/DetailWorkContext';
-import { DetailWork } from './pages/DetailWork';
-import { DetailStudentWork } from './pages/DetailStudentWork';
 import { DetailStudentWorkProvider } from './context/DetailStudentWorkContext';
 import { ClassProvider } from './context/ListClassCourse';
-import DetailCourse from './pages/DetailCourse';
 import { ListClassProvider } from './context/ClassContext';
 import { UserClassProvider } from './context/UserClassContext';
-import UserClass from './pages/course/UserClass';
-import { Register } from './pages/Register';
-import NotFound from './pages/404';
+import { Loader } from './components/spinner';
+
+// Lazy load for performance purpose
+const Login = lazy(() => import('./pages/Login'));
+const Course = lazy(() => import('./pages/course'));
+const Dashboard = lazy(() => import('./pages/dashboard'));
+const WorkArea = lazy(() => import('./pages/workarea'));
+const Works = lazy(() => import('./pages/works'));
+const DetailWork = lazy(() => import('./pages/DetailWork'));
+const DetailStudentWork = lazy(() => import('./pages/DetailStudentWork'));
+const DetailCourse = lazy(() => import('./pages/DetailCourse'));
+const UserClass = lazy(() => import('./pages/course/UserClass'));
+const Register = lazy(() => import('./pages/Register'));
+const NotFound = lazy(() => import('./pages/404'));
 
 export default function App() {
   const { setToken } = useAuth();
@@ -39,20 +42,12 @@ export default function App() {
   }, [access_token, navigate, setToken]);
 
   return (
-    <UserProvider>
-      <CodeProvider>
-        <div>
+    <Suspense fallback={<Loader />}>
+      <UserProvider>
+        <CodeProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/users/register" element={<Register />} />
-            <Route
-              path="/courses/:courseId"
-              element={
-                <DetailCourseProvider>
-                  <Works />
-                </DetailCourseProvider>
-              }
-            />
             <Route element={<RequireAuth />}>
               <Route path="/" element={<Dashboard />} />
               <Route
@@ -112,10 +107,18 @@ export default function App() {
                 }
               />
             </Route>
+            <Route
+              path="/courses/:courseId"
+              element={
+                <DetailCourseProvider>
+                  <Works />
+                </DetailCourseProvider>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </div>
-      </CodeProvider>
-    </UserProvider>
+        </CodeProvider>
+      </UserProvider>
+    </Suspense>
   );
 }
