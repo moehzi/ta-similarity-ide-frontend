@@ -6,13 +6,9 @@ import { CardCourse } from '../../components/card';
 import SidebarWithHeader from '../../components/Sidebar';
 import { Loader } from '../../components/spinner';
 import { ClassContext } from '../../context/ListClassCourse';
-import { UserClassContext } from '../../context/UserClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import useFetch from '../../hooks/useFetch';
-import { USER_CLASS } from '../../services/class';
 import { getTeacher } from '../../services/user';
-import UserClass from '../course/UserClass';
 import ModalAddClass from './ModalAddClass';
 import ModalDeleteClass from './ModalDeleteClass';
 import ModalEditClass from './ModalEditClass';
@@ -66,7 +62,7 @@ const DetailCourse = () => {
       setOptions(teacherName);
       setListTeacher(res.data);
     });
-  }, []);
+  }, [token]);
 
   if (loading) {
     return <Loader />;

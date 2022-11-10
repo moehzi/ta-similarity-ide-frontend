@@ -8,7 +8,6 @@ import { Loader } from '../../components/spinner';
 import { ListClassContext } from '../../context/ClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { useCourse } from '../../hooks/useCourse';
 import useFetch from '../../hooks/useFetch';
 import { USER_CLASS } from '../../services/class';
 import { joinCourse } from '../../services/course';
@@ -20,7 +19,6 @@ const UserClass = () => {
   const { user } = useContext(UserContext);
   const toast = useToast();
   const { token, setToken } = useAuth();
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const cancelRef = useRef();
   const {
     isOpen: isOpenJoin,

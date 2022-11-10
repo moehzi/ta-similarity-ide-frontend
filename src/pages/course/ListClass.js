@@ -1,6 +1,5 @@
 import React from 'react';
 import { CardCourse } from '../../components/card';
-import ModalJoin from '../../components/card/Modal';
 const ListClass = ({
   data,
   myCourses,

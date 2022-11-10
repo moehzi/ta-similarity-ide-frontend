@@ -7,11 +7,8 @@ import {
   AlertDescription,
   AlertTitle,
   Select,
-  useDisclosure,
-  CloseButton,
 } from '@chakra-ui/react';
-import React, { FormEvent, useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { register } from '../../services/auth';
 

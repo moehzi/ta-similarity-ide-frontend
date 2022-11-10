@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useMemo,
-  useContext,
-} from 'react';
+import React, { useCallback, useState, useMemo, useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -26,15 +20,14 @@ import { dracula } from '@uiw/codemirror-theme-dracula';
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { editWork, getWorkById } from '../../services/work';
+import { editWork } from '../../services/work';
 import moment from 'moment';
 import { DetailCourseContext } from '../../context/DetailCourseContext';
 
 const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
   const { token } = useAuth();
   const toast = useToast();
-  const { detailCourse, loadingDetailCourse, refetchDetailCourse } =
-    useContext(DetailCourseContext);
+  const { detailCourse } = useContext(DetailCourseContext);
   const [isLoading, setIsLoading] = useState(false);
   const [workName, setWorkName] = useState(null);
   const [dateTime, setDateTime] = useState(null);
@@ -58,7 +51,7 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
     setDateTime(e.target.value);
   }, []);
 
-  const handleWorkById = useMemo(() => {
+  useMemo(() => {
     const filtered = detailCourse?.works?.find((works) => works._id === workId);
     if (filtered) {
       setWorkName(filtered.name);
