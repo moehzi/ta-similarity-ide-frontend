@@ -22,6 +22,7 @@ import { ListClassProvider } from './context/ClassContext';
 import { UserClassProvider } from './context/UserClassContext';
 import UserClass from './pages/course/UserClass';
 import { Register } from './pages/Register';
+import NotFound from './pages/404';
 
 export default function App() {
   const { setToken } = useAuth();
@@ -111,6 +112,7 @@ export default function App() {
                 }
               />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </CodeProvider>

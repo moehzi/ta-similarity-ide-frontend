@@ -48,9 +48,7 @@ export const Course = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (myCourse?.length > 0) {
-      setMyCourses(myCourse);
-    }
+    setMyCourses(myCourse);
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
 
   useMemo(() => {
@@ -103,10 +101,11 @@ export const Course = () => {
               onCloseDelete={onCloseDelete}
               onClose={onCloseDelete}
               courseId={courseId}
+              refetch={refetchMyCourse}
             />
           </div>
         )}
-        {myCourses.length > 0 && (
+        {myCourses?.length > 0 && (
           <>
             <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
             <div className="flex flex-wrap gap-8 mb-8">

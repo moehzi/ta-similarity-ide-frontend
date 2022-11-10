@@ -19,25 +19,22 @@ const ModalDeleteCourse = ({
   onCloseDelete,
   courseId,
   onClose,
+  refetch,
 }) => {
   const toast = useToast();
   const { token } = useAuth();
-  const { refetchMyCourse } = useCourse();
   const handleDelete = () => {
-    deleteCourse(token, courseId)
-      .then((res) => {
-        toast({
-          title: 'Delete course',
-          description: res.data.message,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
-      })
-      .finally(() => {
-        onClose();
-        refetchMyCourse();
+    deleteCourse(token, courseId).then((res) => {
+      toast({
+        title: 'Delete course',
+        description: res.data.message,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
       });
+      onClose();
+      refetch();
+    });
   };
   return (
     <Modal isOpen={isOpenDelete} onClose={onCloseDelete}>

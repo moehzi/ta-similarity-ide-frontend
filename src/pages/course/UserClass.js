@@ -66,28 +66,31 @@ const UserClass = () => {
         setToken('');
       }}
     >
-      <h1 className="mb-4 text-2xl font-bold">My Classes</h1>
-      <div className="flex flex-wrap gap-8 mb-8">
-        {data?.classes?.map((v, i) => {
-          return (
-            <CardCourse
-              id={v._id}
-              key={`card-course-${i}`}
-              name={v.name}
-              recent_assignment={v.works[v.works.length - 1]?.name}
-              author={v.author[0]?.name}
-              total_assignment={v.works?.length}
-              works={v.works}
-              isMyCourses
-              onClick={
-                user.role === 'teacher'
-                  ? () => navigate(`/courses/${v._id}/class`)
-                  : () => navigate(`/courses/${v._id}`)
-              }
-            />
-          );
-        })}
-      </div>
+      {data?.classes?.map((v, i) => {
+        return (
+          <>
+            <h1 className="mb-4 text-2xl font-bold">My Classes</h1>
+            <div className="flex flex-wrap gap-8 mb-8">
+              <CardCourse
+                id={v._id}
+                key={`card-course-${i}`}
+                name={v.name}
+                recent_assignment={v.works[v.works.length - 1]?.name}
+                author={v.author[0]?.name}
+                total_assignment={v.works?.length}
+                works={v.works}
+                isMyCourses
+                onClick={
+                  user.role === 'teacher'
+                    ? () => navigate(`/courses/${v._id}/class`)
+                    : () => navigate(`/courses/${v._id}`)
+                }
+              />
+            </div>
+          </>
+        );
+      })}
+
       <ListClass
         data={listClass}
         myCourses={myCourses}
