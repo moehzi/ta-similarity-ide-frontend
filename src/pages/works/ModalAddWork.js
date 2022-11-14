@@ -14,9 +14,12 @@ import {
   useToast,
   Link,
 } from '@chakra-ui/react';
+import Switch from 'antd/es/switch';
 import { useAuth } from '../../hooks/useAuth';
 import CodeMirror from '@uiw/react-codemirror';
 import { dracula } from '@uiw/codemirror-theme-dracula';
+import { html } from '@codemirror/lang-html';
+import { css } from '@codemirror/lang-css';
 import { javascript } from '@codemirror/lang-javascript';
 import { markdown } from '@codemirror/lang-markdown';
 import MarkdownPreview from '@uiw/react-markdown-preview';
@@ -30,8 +33,25 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { courseId } = useParams();
   const workName = useRef();
+  const [htmlStarter, setHtmlStarter] = useState(`<html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <title>Document</title>
+  </head>
+  <body>
+	  
+  </body>
+  </html>`);
+  const [cssStarter, setCassStarter] = useState(`body {
+	font-size:14px;
+}`);
+  const [jsStarter, setJsStarter] = useState(`function init(){
+	// your code here
+  }`);
   const dateTime = useRef(new Date());
-  const expectedOutput = useRef();
+  const [isStarter, setIsStarter] = useState(false);
   const [workDesc, setWorkDesc] = useState();
   const [testCode, setTestCode] = useState(`describe('Masukkan judul test',()=>{
 
@@ -51,13 +71,27 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
     setWorkDesc(value);
   }, []);
 
+  const onChangeHTML = useCallback((value, viewUpdate) => {
+    setHtmlStarter(value);
+  }, []);
+
+  const onChangeCss = useCallback((value, viewUpdate) => {
+    setCassStarter(value);
+  }, []);
+
+  const onChangeJs = useCallback((value, viewUpdate) => {
+    setJsStarter(value);
+  }, []);
+
   const handleCreate = () => {
     setIsLoading(true);
     const payload = {
       name: workName.current?.value,
       description: workDesc,
       codeTest: testCode,
-      expectedOutput: expectedOutput.current?.value,
+      htmlStarter: isStarter ? htmlStarter : '',
+      cssStarter: isStarter ? cssStarter : '',
+      jsStarter: isStarter ? jsStarter : '',
       deadline: parseInt(
         (new Date(dateTime.current?.value).getTime() / 1000).toFixed(0)
       ),
@@ -110,7 +144,51 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
                 className={'font-code mb-4'}
               />
             )}
-
+            <FormLabel>Set starter code</FormLabel>
+            <Switch
+              defaultChecked={isStarter}
+              onClick={() => setIsStarter(!isStarter)}
+            />
+            {isStarter && (
+              <>
+                <FormLabel mt={8}>HTML Starter</FormLabel>
+                <CodeMirror
+                  value={htmlStarter}
+                  basicSetup={{
+                    defaultKeymap: true,
+                  }}
+                  extensions={[html()]}
+                  theme={dracula}
+                  onChange={onChangeHTML}
+                  minHeight={'400px'}
+                  className={'font-code mb-4'}
+                />
+                <FormLabel mt={8}>CSS Starter</FormLabel>
+                <CodeMirror
+                  value={cssStarter}
+                  basicSetup={{
+                    defaultKeymap: true,
+                  }}
+                  extensions={[css()]}
+                  theme={dracula}
+                  onChange={onChangeCss}
+                  minHeight={'400px'}
+                  className={'font-code mb-4'}
+                />
+                <FormLabel mt={8}>JS Starter</FormLabel>
+                <CodeMirror
+                  value={jsStarter}
+                  basicSetup={{
+                    defaultKeymap: true,
+                  }}
+                  extensions={[javascript()]}
+                  theme={dracula}
+                  onChange={onChangeJs}
+                  minHeight={'400px'}
+                  className={'font-code mb-4'}
+                />
+              </>
+            )}
             <FormLabel mt={8}>Code Test</FormLabel>
             <CodeMirror
               value={testCode}

@@ -9,14 +9,11 @@ import {
   Select,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import { register } from '../../services/auth';
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [message, setMessage] = useState('');
-  const { token } = useAuth();
-
   const fullName = useRef();
   const password = useRef();
   const registrationNumber = useRef();

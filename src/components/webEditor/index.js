@@ -17,6 +17,8 @@ import { useAuth } from '../../hooks/useAuth';
 
 import CodeEditor from '../codeEditor';
 import { Link, useNavigate } from 'react-router-dom';
+import { DetailWorkContext } from '../../context/DetailWorkContext';
+import { Loader } from '../spinner';
 
 const WebEditor = ({ workId }) => {
   const {
@@ -33,6 +35,7 @@ const WebEditor = ({ workId }) => {
   } = useContext(CodeContext);
   const { token } = useAuth();
   const toast = useToast();
+  const { detailWork, loadingDetailWork } = useContext(DetailWorkContext);
 
   const onChangeHTML = useCallback(
     (value, viewUpdate) => {
@@ -56,9 +59,9 @@ const WebEditor = ({ workId }) => {
   );
 
   useEffect(() => {
-    setJs('');
-    setHtml(``);
-    setCss('');
+    setJs(detailWork?.jsStarter);
+    setHtml(detailWork?.htmlStarter);
+    setCss(detailWork?.cssStarter);
     setSrcDoc('');
     setIsCorrect(false);
     setResult('');
@@ -116,6 +119,10 @@ const WebEditor = ({ workId }) => {
         setLoadingSubmit(false);
       });
   };
+
+  if (loadingDetailWork) {
+    return <Loader />;
+  }
 
   return (
     <div className="mt-4">
