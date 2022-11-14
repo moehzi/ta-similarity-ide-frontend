@@ -25,7 +25,7 @@ interface courses {
 interface Classes {
   name: string;
 }
-export const Course = () => {
+const Course = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
 
@@ -42,15 +42,13 @@ export const Course = () => {
   } = useDisclosure();
   const { myCourse, refetch, loading, refetchMyCourse, loadingCourse } =
     useCourse();
-  const [myCourses, setMyCourses] = useState([]);
+  const [myCourses, setMyCourses] = useState<courses[]>([]);
   const [courseId, setCourseId] = useState<string>('');
   const [courseName, setCourseName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (myCourse?.length > 0) {
-      setMyCourses(myCourse);
-    }
+    setMyCourses(myCourse);
   }, [myCourse, user?.role, refetch, refetchMyCourse]);
 
   useMemo(() => {
@@ -103,10 +101,11 @@ export const Course = () => {
               onCloseDelete={onCloseDelete}
               onClose={onCloseDelete}
               courseId={courseId}
+              refetch={refetchMyCourse}
             />
           </div>
         )}
-        {myCourses.length > 0 && (
+        {myCourses?.length > 0 && (
           <>
             <h1 className="mb-4 text-2xl font-bold">My Courses</h1>
             <div className="flex flex-wrap gap-8 mb-8">
@@ -125,7 +124,7 @@ export const Course = () => {
                     id={v._id}
                     key={`card-course-${i}`}
                     name={v.name}
-                    recent_assignment={v.classes[v.classes.length]?.name}
+                    recent_assignment={v.classes[v.classes?.length - 1]?.name}
                     author={v.author[0]?.name}
                     isMyCourses
                     isMyClass={false}
@@ -140,3 +139,5 @@ export const Course = () => {
     </SidebarWithHeader>
   );
 };
+
+export default Course;

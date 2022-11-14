@@ -13,7 +13,9 @@ export const login = async (payload: loginPayload) => {
   return res.data;
 };
 
-export const register = async (payload: any) => {
-  const res = await axios.post(`${LOCAL_URL}register`, payload);
+export const register = async (payload: any, token: string) => {
+  const res = await axios.post(`${LOCAL_URL}register`, payload, {
+    headers: { Authorization: token },
+  });
   return res.data;
 };

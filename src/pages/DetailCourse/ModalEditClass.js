@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -14,8 +14,6 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useAuth } from '../../hooks/useAuth';
-import { editCourse } from '../../services/course';
-import { useCourse } from '../../hooks/useCourse';
 import { MultiSelect } from 'chakra-multiselect';
 import { editClass } from '../../services/class';
 import { ClassContext } from '../../context/ListClassCourse';

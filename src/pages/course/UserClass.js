@@ -8,7 +8,6 @@ import { Loader } from '../../components/spinner';
 import { ListClassContext } from '../../context/ClassContext';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { useCourse } from '../../hooks/useCourse';
 import useFetch from '../../hooks/useFetch';
 import { USER_CLASS } from '../../services/class';
 import { joinCourse } from '../../services/course';
@@ -20,7 +19,6 @@ const UserClass = () => {
   const { user } = useContext(UserContext);
   const toast = useToast();
   const { token, setToken } = useAuth();
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const cancelRef = useRef();
   const {
     isOpen: isOpenJoin,
@@ -70,24 +68,27 @@ const UserClass = () => {
       <div className="flex flex-wrap gap-8 mb-8">
         {data?.classes?.map((v, i) => {
           return (
-            <CardCourse
-              id={v._id}
-              key={`card-course-${i}`}
-              name={v.name}
-              recent_assignment={v.works[v.works.length - 1]?.name}
-              author={v.author[0]?.name}
-              total_assignment={v.works?.length}
-              works={v.works}
-              isMyCourses
-              onClick={
-                user.role === 'teacher'
-                  ? () => navigate(`/courses/${v._id}/class`)
-                  : () => navigate(`/courses/${v._id}`)
-              }
-            />
+            <>
+              <CardCourse
+                id={v._id}
+                key={`card-course-${i}`}
+                name={v.name}
+                recent_assignment={v.works[v.works.length - 1]?.name}
+                author={v.author[0]?.name}
+                total_assignment={v.works?.length}
+                works={v.works}
+                isMyClass
+                onClick={
+                  user.role === 'teacher'
+                    ? () => navigate(`/courses/${v._id}/class`)
+                    : () => navigate(`/courses/${v._id}`)
+                }
+              />
+            </>
           );
         })}
       </div>
+
       <ListClass
         data={listClass}
         myCourses={myCourses}

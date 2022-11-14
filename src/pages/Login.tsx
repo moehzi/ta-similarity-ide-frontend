@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { login } from '../services/auth';
 
-export const Login = () => {
+const Login = () => {
   const { token, setToken, isLoading, setIsLoading } = useAuth();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
@@ -127,3 +127,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

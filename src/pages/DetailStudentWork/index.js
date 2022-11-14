@@ -2,13 +2,16 @@ import { useContext, useEffect, useState } from 'react';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { Card, Space, Table, Tag } from 'antd';
+import Card from 'antd/es/card';
+import Space from 'antd/es/space';
+import Table from 'antd/es/table';
+import Tag from 'antd/es/tag';
 import { Button, Heading, Text } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
-export const DetailStudentWork = () => {
+const DetailStudentWork = () => {
   const { user } = useContext(UserContext);
   const { setToken } = useAuth();
   const { data, loading } = useContext(DetailStudentWorkContext);
@@ -201,3 +204,5 @@ export const DetailStudentWork = () => {
     </SidebarWithHeader>
   );
 };
+
+export default DetailStudentWork;

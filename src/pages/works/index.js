@@ -2,7 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
-import { Space, Table, Tag, Switch } from 'antd';
+import Switch from 'antd/es/switch';
+import Space from 'antd/es/space';
+import Table from 'antd/es/table';
+import Tag from 'antd/es/tag';
 import {
   Button,
   Heading,
@@ -21,7 +24,7 @@ import moment from 'moment';
 import ModalEditWork from './ModalEditWork';
 import ModalDeleteWork from './ModalDeleteWork';
 
-export const Works = () => {
+const Works = () => {
   moment.locale('id');
   const { user } = useContext(UserContext);
   const { setToken, token } = useAuth();
@@ -333,3 +336,5 @@ export const Works = () => {
     </SidebarWithHeader>
   );
 };
+
+export default Works;

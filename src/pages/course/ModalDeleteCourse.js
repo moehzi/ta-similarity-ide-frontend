@@ -12,32 +12,28 @@ import {
 } from '@chakra-ui/react';
 import { deleteCourse } from '../../services/course';
 import { useAuth } from '../../hooks/useAuth';
-import { useCourse } from '../../hooks/useCourse';
 
 const ModalDeleteCourse = ({
   isOpenDelete,
   onCloseDelete,
   courseId,
   onClose,
+  refetch,
 }) => {
   const toast = useToast();
   const { token } = useAuth();
-  const { refetchMyCourse } = useCourse();
   const handleDelete = () => {
-    deleteCourse(token, courseId)
-      .then((res) => {
-        toast({
-          title: 'Delete course',
-          description: res.data.message,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
-      })
-      .finally(() => {
-        onClose();
-        refetchMyCourse();
+    deleteCourse(token, courseId).then((res) => {
+      toast({
+        title: 'Delete course',
+        description: res.data.message,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
       });
+      onClose();
+      refetch();
+    });
   };
   return (
     <Modal isOpen={isOpenDelete} onClose={onCloseDelete}>

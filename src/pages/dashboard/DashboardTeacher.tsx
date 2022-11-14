@@ -4,7 +4,7 @@ import SidebarWithHeader from '../../components/Sidebar';
 import { UserContext } from '../../context/UserContext';
 import { useAuth } from '../../hooks/useAuth';
 
-export const DashboardTeacher = () => {
+const DashboardTeacher = () => {
   const { user, isLoading } = useContext(UserContext);
   const { setToken } = useAuth();
   return (
@@ -21,3 +21,5 @@ export const DashboardTeacher = () => {
     </SidebarWithHeader>
   );
 };
+
+export default DashboardTeacher;

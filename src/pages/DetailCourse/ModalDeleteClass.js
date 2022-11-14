@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { deleteClass } from '../../services/class';
 import { useAuth } from '../../hooks/useAuth';
-import { useCourse } from '../../hooks/useCourse';
 
 const ModalDeleteClass = ({
   isOpenDelete,

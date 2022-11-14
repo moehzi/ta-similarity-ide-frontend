@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Text } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import ModalJoin from './Modal';
+import React from 'react';
 import {
   Popover,
   PopoverTrigger,
@@ -11,13 +10,11 @@ import {
   IconButton,
   Button,
   Stack,
-  Flex,
   Link,
 } from '@chakra-ui/react';
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import ModalEditCourse from '../../pages/course/ModalEditCourse';
 interface CardCourseProps {
   id: string;
   name: string;
@@ -68,8 +65,6 @@ export const CardCourse = ({
   handleDeleteCourse,
   onOpenDelete,
 }: CardCourseProps) => {
-  const cancelRef = React.useRef();
-
   const handleOpen = (classId: string) => {
     onOpen?.();
     setSelectedId?.(classId);
@@ -144,7 +139,7 @@ export const CardCourse = ({
           )}
           <div className="flex flex-col p-6 font-semibold ">
             <Link onClick={onClick}>
-              <Text noOfLines={1} fontSize="lg">
+              <Text noOfLines={2} fontSize="md">
                 {name}
               </Text>
             </Link>

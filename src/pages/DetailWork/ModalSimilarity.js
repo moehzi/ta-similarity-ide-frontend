@@ -10,8 +10,6 @@ import {
   Button,
   Flex,
   useToast,
-  FormControl,
-  FormLabel,
 } from '@chakra-ui/react';
 import { checkSimilarityStudent } from '../../services/work';
 import { useAuth } from '../../hooks/useAuth';
