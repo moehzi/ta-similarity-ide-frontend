@@ -32,9 +32,9 @@ export default function App() {
     if (access_token) {
       setToken(access_token);
     }
-    if (!access_token) {
-      navigate('/login');
-    }
+    // if (!access_token) {
+    //   navigate('/login');
+    // }
   }, [access_token, navigate, setToken]);
 
   return (
