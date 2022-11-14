@@ -34,7 +34,7 @@ const Register = () => {
       email: email.current?.value,
       role: role.current?.value,
     };
-    register(data, token)
+    register(data)
       .then((res) => {
         setMessage(res.message);
         e.target.reset();
