@@ -33,7 +33,8 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { courseId } = useParams();
   const workName = useRef();
-  const [htmlStarter, setHtmlStarter] = useState(`<html lang="en">
+
+  const htmlStarter = useRef(`<html lang="en">
   <head>
 	  <meta charset="UTF-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,15 +45,19 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
 	  
   </body>
   </html>`);
-  const [cssStarter, setCassStarter] = useState(`body {
+
+  const cssStarter = useRef(`body {
 	font-size:14px;
 }`);
-  const [jsStarter, setJsStarter] = useState(`function init(){
+
+  const jsStarter = useRef(`function init(){
 	// your code here
   }`);
+
+  const workDesc = useRef();
+
   const dateTime = useRef(new Date());
   const [isStarter, setIsStarter] = useState(false);
-  const [workDesc, setWorkDesc] = useState();
   const [testCode, setTestCode] = useState(`describe('Masukkan judul test',()=>{
 
 	it('Masukkan spesifik test',()=>{
@@ -68,30 +73,30 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   }, []);
 
   const onChangeWork = useCallback((value, viewUpdate) => {
-    setWorkDesc(value);
+    workDesc.current = value;
   }, []);
 
   const onChangeHTML = useCallback((value, viewUpdate) => {
-    setHtmlStarter(value);
+    htmlStarter.current = value;
   }, []);
 
   const onChangeCss = useCallback((value, viewUpdate) => {
-    setCassStarter(value);
+    cssStarter.current = value;
   }, []);
 
   const onChangeJs = useCallback((value, viewUpdate) => {
-    setJsStarter(value);
+    jsStarter.current = value;
   }, []);
 
   const handleCreate = () => {
     setIsLoading(true);
     const payload = {
       name: workName.current?.value,
-      description: workDesc,
+      description: workDesc.current,
       codeTest: testCode,
-      htmlStarter: isStarter ? htmlStarter : '',
-      cssStarter: isStarter ? cssStarter : '',
-      jsStarter: isStarter ? jsStarter : '',
+      htmlStarter: isStarter ? htmlStarter.current : '',
+      cssStarter: isStarter ? cssStarter.current : '',
+      jsStarter: isStarter ? jsStarter.current : '',
       deadline: parseInt(
         (new Date(dateTime.current?.value).getTime() / 1000).toFixed(0)
       ),
@@ -125,14 +130,14 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
             <Link onClick={() => setPreview(!preview)}>Preview</Link>
             {preview ? (
               <MarkdownPreview
-                source={workDesc}
+                source={workDesc.current}
                 warpperElement={{
                   'data-color-mode': 'light',
                 }}
               />
             ) : (
               <CodeMirror
-                value={workDesc}
+                value={workDesc.current}
                 basicSetup={{
                   defaultKeymap: true,
                   lineNumbers: false,
@@ -153,7 +158,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
               <>
                 <FormLabel mt={8}>HTML Starter</FormLabel>
                 <CodeMirror
-                  value={htmlStarter}
+                  value={htmlStarter.current}
                   basicSetup={{
                     defaultKeymap: true,
                   }}
@@ -165,7 +170,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
                 />
                 <FormLabel mt={8}>CSS Starter</FormLabel>
                 <CodeMirror
-                  value={cssStarter}
+                  value={cssStarter.current}
                   basicSetup={{
                     defaultKeymap: true,
                   }}
@@ -177,7 +182,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
                 />
                 <FormLabel mt={8}>JS Starter</FormLabel>
                 <CodeMirror
-                  value={jsStarter}
+                  value={jsStarter.current}
                   basicSetup={{
                     defaultKeymap: true,
                   }}

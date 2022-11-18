@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { CodeContext } from '../../context/CodeContext';
 import { javascript } from '@codemirror/lang-javascript';
@@ -21,47 +21,32 @@ import { DetailWorkContext } from '../../context/DetailWorkContext';
 import { Loader } from '../spinner';
 
 const WebEditor = ({ workId }) => {
-  const {
-    setHtml,
-    setCss,
-    setJs,
-    js,
-    css: CSS,
-    html: HTML,
-    setResult,
-    isCorrect,
-    setSrcDoc,
-    setIsCorrect,
-  } = useContext(CodeContext);
+  const { setResult, isCorrect, setSrcDoc, setIsCorrect } =
+    useContext(CodeContext);
   const { token } = useAuth();
   const toast = useToast();
   const { detailWork, loadingDetailWork } = useContext(DetailWorkContext);
 
-  const onChangeHTML = useCallback(
-    (value, viewUpdate) => {
-      setHtml(value);
-    },
-    [setHtml]
-  );
+  const HTML = useRef('');
+  const CSS = useRef('');
+  const js = useRef('');
 
-  const onChangeCss = useCallback(
-    (value, viewUpdate) => {
-      setCss(value);
-    },
-    [setCss]
-  );
+  const onChangeHTML = useCallback((value, viewUpdate) => {
+    HTML.current = value;
+  }, []);
 
-  const onChangeJs = useCallback(
-    (value, viewUpdate) => {
-      setJs(value);
-    },
-    [setJs]
-  );
+  const onChangeCss = useCallback((value, viewUpdate) => {
+    CSS.current = value;
+  }, []);
+
+  const onChangeJs = useCallback((value, viewUpdate) => {
+    js.current = value;
+  }, []);
 
   useEffect(() => {
-    setJs(detailWork?.jsStarter);
-    setHtml(detailWork?.htmlStarter);
-    setCss(detailWork?.cssStarter);
+    js.current = detailWork?.jsStarter;
+    HTML.current = detailWork?.htmlStarter;
+    CSS.current = detailWork?.cssStarter;
     setSrcDoc('');
     setIsCorrect(false);
     setResult('');
@@ -75,8 +60,8 @@ const WebEditor = ({ workId }) => {
 
   const runCode = () => {
     const payload = {
-      jsCode: js,
-      htmlCode: HTML,
+      jsCode: js.current,
+      htmlCode: HTML.current,
     };
     setLoadingTest(true);
     testWork(token, workId, payload)
@@ -89,17 +74,17 @@ const WebEditor = ({ workId }) => {
 
     setSrcDoc(`
 	<html>
-	<body>${HTML}</body>
-	<style>${CSS}</style>
-	<script>${js}</script>
+	<body>${HTML.current}</body>
+	<style>${CSS.current}</style>
+	<script>${js.current}</script>
 	</html>`);
   };
 
   const submitCode = () => {
     const payload = {
-      jsCode: js,
-      cssCode: CSS,
-      htmlCode: HTML,
+      jsCode: js.current,
+      cssCode: CSS.current,
+      htmlCode: HTML.current,
     };
     setLoadingSubmit(true);
     submitWork(token, workId, payload)
@@ -138,19 +123,19 @@ const WebEditor = ({ workId }) => {
       <div className="flex gap-4 mb-4">
         <CodeEditor
           display={'HTML'}
-          value={HTML}
+          value={HTML.current}
           language={html()}
           onChange={onChangeHTML}
         />
         <CodeEditor
           display={'CSS'}
-          value={CSS}
+          value={CSS.current}
           language={css()}
           onChange={onChangeCss}
         />
         <CodeEditor
           display={'JavaScript'}
-          value={js}
+          value={js.current}
           language={javascript()}
           onChange={onChangeJs}
         />
