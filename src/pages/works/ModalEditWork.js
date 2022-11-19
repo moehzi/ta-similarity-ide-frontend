@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  useMemo,
-  useContext,
-  useRef,
-} from 'react';
+import React, { useCallback, useState, useMemo, useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -35,49 +29,46 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
   const toast = useToast();
   const { detailCourse } = useContext(DetailCourseContext);
   const [isLoading, setIsLoading] = useState(false);
-  const workName = useRef();
-  const dateTime = useRef();
-  const workDesc = useRef();
-  const testCode = useRef();
+  const [workName, setWorkName] = useState(null);
+  const [dateTime, setDateTime] = useState(null);
+  const [workDesc, setWorkDesc] = useState();
+  const [testCode, setTestCode] = useState();
   const [preview, setPreview] = useState(false);
 
   const onChange = useCallback((value, viewUpdate) => {
-    testCode.current = value;
+    setTestCode(value);
   }, []);
 
   const onChangeWork = useCallback((value, viewUpdate) => {
-    workDesc.current = value;
+    setWorkDesc(value);
   }, []);
 
   const onChangeName = useCallback((e) => {
-    workName.current = e.target.value;
+    setWorkName(e.target.value);
   }, []);
 
   const onChangeDate = useCallback((e) => {
-    dateTime.current = e.target.value;
+    setDateTime(e.target.value);
   }, []);
 
   useMemo(() => {
     const filtered = detailCourse?.works?.find((works) => works._id === workId);
     if (filtered) {
-      workName.current = filtered.name;
-      workDesc.current = filtered.description;
-      testCode.current = filtered.codeTest;
-      dateTime.current = moment
-        .unix(filtered?.deadline)
-        .format('yyyy-MM-DDTHH:mm');
+      setWorkName(filtered.name);
+
+      setWorkDesc(filtered.description);
+      setTestCode(filtered.codeTest);
+      setDateTime(moment.unix(filtered?.deadline).format('yyyy-MM-DDTHH:mm'));
     }
   }, [detailCourse?.works, workId]);
 
   const handleEdit = () => {
     setIsLoading(true);
     const payload = {
-      name: workName.current,
-      description: workDesc.current,
-      codeTest: testCode.current,
-      deadline: parseInt(
-        (new Date(dateTime.current).getTime() / 1000).toFixed(0)
-      ),
+      name: workName,
+      description: workDesc,
+      codeTest: testCode,
+      deadline: parseInt((new Date(dateTime).getTime() / 1000).toFixed(0)),
     };
 
     editWork(token, workId, payload)
@@ -109,7 +100,7 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
               <FormControl>
                 <FormLabel>Name</FormLabel>
                 <Input
-                  value={workName.current}
+                  value={workName}
                   onChange={onChangeName}
                   placeholder="Enter your work name"
                 />
@@ -117,14 +108,14 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
                 <Link onClick={() => setPreview(!preview)}>Preview</Link>
                 {preview ? (
                   <MarkdownPreview
-                    source={workDesc.current}
+                    source={workDesc}
                     warpperElement={{
                       'data-color-mode': 'light',
                     }}
                   />
                 ) : (
                   <CodeMirror
-                    value={workDesc.current}
+                    value={workDesc}
                     basicSetup={{
                       defaultKeymap: true,
                       lineNumbers: false,
@@ -139,7 +130,7 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
 
                 <FormLabel mt={8}>Code Test</FormLabel>
                 <CodeMirror
-                  value={testCode.current}
+                  value={testCode}
                   basicSetup={{
                     defaultKeymap: true,
                   }}
@@ -154,7 +145,7 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
                   type="datetime-local"
                   placeholder="Select Date and Time"
                   onChange={onChangeDate}
-                  value={dateTime.current}
+                  value={dateTime}
                 />
               </FormControl>
             </ModalBody>
