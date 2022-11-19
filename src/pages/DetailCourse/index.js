@@ -47,12 +47,19 @@ const DetailCourse = () => {
   };
 
   useMemo(() => {
-    const filtered = data?.find((item) => item._id === classId);
+    const filtered = data?.filter((item) => item._id === classId);
 
     if (filtered?.length) {
-      setClassName(filtered.name);
-      const teacherName = filtered.author.map((v) => v.name);
+      setClassName(filtered[0].name);
+      const teacherName = filtered[0].author.map((v) => v.name);
       setValue(teacherName);
+      const selectedTeacher = listTeacher.filter((teacher) =>
+        teacherName.includes(teacher.name)
+      );
+
+      const selectedId = selectedTeacher.map((v) => v._id);
+
+      setSelected(selectedId);
     }
   }, [data, classId]);
 
