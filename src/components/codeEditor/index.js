@@ -3,7 +3,13 @@ import { dracula } from '@uiw/codemirror-theme-dracula';
 import { Text } from '@chakra-ui/react';
 import { EditorView } from '@codemirror/view';
 
-const CodeEditor = ({ value, onChange, language, display }) => {
+const CodeEditor = ({
+  value,
+  onChange,
+  language,
+  display,
+  readOnly = false,
+}) => {
   return (
     <div className="flex-1 max-w-[485px]">
       <Text fontSize="2xl" fontWeight={'semibold'}>
@@ -32,6 +38,7 @@ const CodeEditor = ({ value, onChange, language, display }) => {
         theme={dracula}
         onChange={onChange}
         className={'font-code'}
+        readOnly={readOnly}
       />
     </div>
   );

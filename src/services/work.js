@@ -34,11 +34,7 @@ export const editWork = async (token, workId, payload) => {
   });
 };
 
-export const getWorkById = async (token, workId) => {
-  return await axios.get(`${LOCAL_URL}works/${workId}`, {
-    headers: { Authorization: token },
-  });
-};
+export const GET_WORK_BY_ID = (workId) => `${LOCAL_URL}works/${workId}`;
 
 export const deleteWork = async (token, workId) => {
   return await axios.delete(`${LOCAL_URL}works/${workId}`, {

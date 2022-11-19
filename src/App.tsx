@@ -13,6 +13,7 @@ import { ClassProvider } from './context/ListClassCourse';
 import { ListClassProvider } from './context/ClassContext';
 import { UserClassProvider } from './context/UserClassContext';
 import { Loader } from './components/spinner';
+import ReviewWorks from './pages/ReviewWorks';
 
 // Lazy load for performance purpose
 const Login = lazy(() => import('./pages/Login'));
@@ -107,6 +108,10 @@ export default function App() {
                 }
               />
             </Route>
+            <Route
+              path="/works/:workId/review"
+              element={<ReviewWorks />}
+            ></Route>
             <Route
               path="/courses/:courseId"
               element={

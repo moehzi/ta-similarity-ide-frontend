@@ -7,7 +7,7 @@ import Table from 'antd/es/table';
 import Tag from 'antd/es/tag';
 import { Button, Heading, Text, useDisclosure } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
-import { CheckCircleIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, StarIcon } from '@chakra-ui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
 import ModalSimilarity from './ModalSimilarity';
@@ -92,6 +92,10 @@ const DetailWork = () => {
     },
   ];
 
+  const handleReview = () => {
+    navigate(`/works/${workId}/review`);
+  };
+
   if (loadingDetailWork) {
     return <Loader />;
   }
@@ -128,14 +132,23 @@ const DetailWork = () => {
             <Tag color={color()}>{detailWork?.status}</Tag>
           </div>
           {detailWork?.status !== 'Not ready to review' && (
-            <Button
-              leftIcon={<CheckCircleIcon />}
-              isLoading={isLoading}
-              colorScheme="facebook"
-              onClick={onOpen}
-            >
-              Check similarity
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                leftIcon={<CheckCircleIcon />}
+                isLoading={isLoading}
+                colorScheme="facebook"
+                onClick={onOpen}
+              >
+                Check similarity
+              </Button>
+              <Button
+                leftIcon={<StarIcon />}
+                colorScheme="whatsapp"
+                onClick={handleReview}
+              >
+                Review
+              </Button>
+            </div>
           )}
         </div>
         <Table columns={columns} dataSource={detailWork?.code} />
