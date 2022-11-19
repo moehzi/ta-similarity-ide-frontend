@@ -9,7 +9,6 @@ import Tag from 'antd/es/tag';
 import {
   Button,
   Heading,
-  Input,
   NumberInput,
   NumberInputField,
   Text,
@@ -17,11 +16,8 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
-import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
-import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
-import { useNavigate, useParams } from 'react-router-dom';
-import { editWork, getWorkById, GET_WORK_BY_ID } from '../../services/work';
-import CodeMirror from '@uiw/react-codemirror';
+import { useParams } from 'react-router-dom';
+import { GET_WORK_BY_ID } from '../../services/work';
 import CodeEditor from '../../components/codeEditor';
 import { css } from '@codemirror/lang-css';
 import { html } from '@codemirror/lang-html';
@@ -39,6 +35,8 @@ import { updateScore } from '../../services/code';
 import { Pane } from '../../components/pane';
 import { CodeContext } from '../../context/CodeContext';
 import useFetch from '../../hooks/useFetch';
+import { CSVLink } from 'react-csv';
+import { DownloadIcon } from '@chakra-ui/icons';
 
 const ReviewWorks = () => {
   const { user } = useContext(UserContext);
@@ -51,6 +49,7 @@ const ReviewWorks = () => {
   const score = useRef();
   const toast = useToast();
   const { data, refetch, loading } = useFetch(GET_WORK_BY_ID(workId));
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     if (data?.code) {
@@ -143,6 +142,20 @@ const ReviewWorks = () => {
     },
   ];
 
+  const handleDownload = () => {
+    const table = [['No', 'Name', 'Score', 'Similarity']];
+    codes.forEach((v, index) => {
+      table.push([
+        `${(index + 1).toString()}`,
+        `${v.author.name}`,
+        `${v.score}`,
+        `${v.highestPercentage}`,
+      ]);
+    });
+
+    setTableData(table);
+  };
+
   return (
     <SidebarWithHeader
       name={user?.name}
@@ -174,6 +187,19 @@ const ReviewWorks = () => {
           suffix="/ 100 %"
           style={{ marginBottom: '1rem' }}
         />
+        <div className="flex justify-end mb-4">
+          <CSVLink data={tableData} filename="SCORE_STUDENT">
+            <Button
+              leftIcon={<DownloadIcon />}
+              className="absolute right-0"
+              colorScheme={'telegram'}
+              onClick={handleDownload}
+            >
+              Export to CSV
+            </Button>
+          </CSVLink>
+        </div>
+        <Table columns={columnsTables} dataSource={codes} />
         <div className="flex gap-4 mb-4">
           <CodeEditor
             display={'HTML'}
@@ -198,7 +224,6 @@ const ReviewWorks = () => {
           Run Code
         </Button>
         <Pane />
-        <Table columns={columnsTables} dataSource={codes} />
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
