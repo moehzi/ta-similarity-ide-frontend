@@ -60,10 +60,9 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
   useMemo(() => {
     const filtered = detailCourse?.works?.find((works) => works._id === workId);
     if (filtered) {
-      workName.current(filtered.name);
-      workDesc.current(filtered.description);
-      testCode.current(filtered.codeTest);
-
+      workName.current = filtered.name;
+      workDesc.current = filtered.description;
+      testCode.current = filtered.codeTest;
       dateTime.current = moment
         .unix(filtered?.deadline)
         .format('yyyy-MM-DDTHH:mm');
