@@ -10,6 +10,7 @@ import { Button, Heading, Text } from '@chakra-ui/react';
 import { Loader } from '../../components/spinner';
 import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
+import { useNavigate } from 'react-router-dom';
 
 const DetailStudentWork = () => {
   const { user } = useContext(UserContext);
@@ -19,6 +20,7 @@ const DetailStudentWork = () => {
   const [code, setCode] = useState('');
   const [esprima, setEsprima] = useState([]);
   const [isUpdated, setIsUpdated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsUpdated(false);

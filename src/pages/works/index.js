@@ -283,6 +283,7 @@ const Works = () => {
       handleLogout={(e) => {
         e.preventDefault();
         localStorage.clear();
+        navigate('/login');
         setToken('');
       }}
     >
@@ -293,7 +294,7 @@ const Works = () => {
               {detailCourse?.name}
             </Heading>
             <Text mb={4} opacity={'70%'}>
-              Lecturer :{' '}
+              Lecturer :
               {user?.role === 'teacher'
                 ? detailCourse?.author[0]?.name
                 : detailCourse?.author}

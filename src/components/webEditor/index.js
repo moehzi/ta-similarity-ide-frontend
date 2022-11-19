@@ -27,9 +27,9 @@ const WebEditor = ({ workId }) => {
   const toast = useToast();
   const { detailWork, loadingDetailWork } = useContext(DetailWorkContext);
 
-  const HTML = useRef('');
-  const CSS = useRef('');
-  const js = useRef('');
+  const HTML = useRef(detailWork?.htmlStarter);
+  const CSS = useRef(detailWork?.cssStarter);
+  const js = useRef(detailWork?.jsStarter);
 
   const onChangeHTML = useCallback((value, viewUpdate) => {
     HTML.current = value;
@@ -44,9 +44,6 @@ const WebEditor = ({ workId }) => {
   }, []);
 
   useEffect(() => {
-    js.current = detailWork?.jsStarter;
-    HTML.current = detailWork?.htmlStarter;
-    CSS.current = detailWork?.cssStarter;
     setSrcDoc('');
     setIsCorrect(false);
     setResult('');

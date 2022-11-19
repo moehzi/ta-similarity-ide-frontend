@@ -6,6 +6,7 @@ import { javascript } from '@codemirror/lang-javascript';
 import { Text } from '@chakra-ui/react';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
+import { EditorView } from '@codemirror/view';
 
 const Terminal = ({ expectedOutput }) => {
   const { result } = useContext(CodeContext);
@@ -56,7 +57,16 @@ const Terminal = ({ expectedOutput }) => {
           }}
           ref={terminal}
           editable={false}
-          extensions={[javascript()]}
+          extensions={[
+            javascript(),
+            EditorView.theme({
+              '&': { fontSize: '14px' },
+              '.cm-scroller': {
+                overflow: 'auto',
+                maxHeight: '400px',
+              },
+            }),
+          ]}
           theme={myTheme}
           //   minHeight={'100vh'}
           className={'font-code text'}
@@ -72,7 +82,16 @@ const Terminal = ({ expectedOutput }) => {
           }}
           ref={terminal}
           editable={false}
-          extensions={[javascript()]}
+          extensions={[
+            javascript(),
+            EditorView.theme({
+              '&': { fontSize: '14px' },
+              '.cm-scroller': {
+                overflow: 'auto',
+                maxHeight: '400px',
+              },
+            }),
+          ]}
           theme={myTheme}
           //   minHeight={'100vh'}
           className={'font-code text-lg'}

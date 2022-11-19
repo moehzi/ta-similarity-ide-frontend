@@ -7,8 +7,11 @@ import {
   AlertDescription,
   AlertTitle,
   Select,
+  Text,
+  Link,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { register } from '../../services/auth';
 
 const Register = () => {
@@ -19,6 +22,7 @@ const Register = () => {
   const registrationNumber = useRef();
   const email = useRef();
   const role = useRef();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +39,7 @@ const Register = () => {
       .then((res) => {
         setMessage(res.message);
         e.target.reset();
+        navigate('/login');
       })
       .catch((err) => {
         setErrorMessage(err.response.data.data.message);
@@ -81,7 +86,7 @@ const Register = () => {
                   name="username"
                   id="username"
                   ref={fullName}
-                  placeholder="D1211"
+                  placeholder="Input your fullname"
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 "
                 />
               </div>
@@ -96,7 +101,7 @@ const Register = () => {
                   name="password"
                   id="password"
                   ref={password}
-                  placeholder="Your Password"
+                  placeholder="Input your Password"
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 />
               </div>
@@ -105,14 +110,14 @@ const Register = () => {
                   htmlFor="username"
                   className="block mb-2 text-sm text-gray-600"
                 >
-                  NIM/NIM
+                  NIM/NIP
                 </label>
                 <input
                   type="text"
                   name="registrationNumber"
                   id="registrationNumber"
                   ref={registrationNumber}
-                  placeholder="D1211"
+                  placeholder="Input your NIM/NIP"
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 "
                 />
               </div>
@@ -128,7 +133,7 @@ const Register = () => {
                   name="email"
                   id="email"
                   ref={email}
-                  placeholder="dewa@gmail.com"
+                  placeholder="Input your email"
                   className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
                 />
               </div>

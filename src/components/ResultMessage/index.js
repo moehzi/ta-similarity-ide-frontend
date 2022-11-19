@@ -4,6 +4,7 @@ import { html } from '@codemirror/lang-html';
 import { Text } from '@chakra-ui/react';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
+import { EditorView } from '@codemirror/view';
 
 const ResultMessage = ({ value, display }) => {
   const terminal = useRef();
@@ -49,7 +50,16 @@ const ResultMessage = ({ value, display }) => {
         }}
         ref={terminal}
         editable={false}
-        extensions={[html()]}
+        extensions={
+          ([html()],
+          EditorView.theme({
+            '&': { fontSize: '14px' },
+            '.cm-scroller': {
+              overflow: 'auto',
+              maxHeight: '400px',
+            },
+          }))
+        }
         theme={myTheme}
         //   minHeight={'100vh'}
         className="mt-2 text-xl text-red-400 font-code"

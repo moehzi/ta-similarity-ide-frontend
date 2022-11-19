@@ -58,7 +58,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
 
   const dateTime = useRef(new Date());
   const [isStarter, setIsStarter] = useState(false);
-  const [testCode, setTestCode] = useState(`describe('Masukkan judul test',()=>{
+  const testCode = useRef(`describe('Masukkan judul test',()=>{
 
 	it('Masukkan spesifik test',()=>{
 	  // Tuliskan testnya disini
@@ -69,7 +69,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
   const [preview, setPreview] = useState(false);
 
   const onChange = useCallback((value, viewUpdate) => {
-    setTestCode(value);
+    testCode.current = value;
   }, []);
 
   const onChangeWork = useCallback((value, viewUpdate) => {
@@ -93,7 +93,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
     const payload = {
       name: workName.current?.value,
       description: workDesc.current,
-      codeTest: testCode,
+      codeTest: testCode.current,
       htmlStarter: isStarter ? htmlStarter.current : '',
       cssStarter: isStarter ? cssStarter.current : '',
       jsStarter: isStarter ? jsStarter.current : '',
@@ -196,7 +196,7 @@ const ModalAddWork = ({ isOpen, onClose, refetch }) => {
             )}
             <FormLabel mt={8}>Code Test</FormLabel>
             <CodeMirror
-              value={testCode}
+              value={testCode.current}
               basicSetup={{
                 defaultKeymap: true,
               }}
