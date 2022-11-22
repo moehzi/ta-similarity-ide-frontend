@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useMemo, useContext } from 'react';
+import React, {
+  useCallback,
+  useState,
+  useMemo,
+  useContext,
+  useRef,
+} from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -23,6 +29,8 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import { editWork } from '../../services/work';
 import moment from 'moment';
 import { DetailCourseContext } from '../../context/DetailCourseContext';
+import { html } from '@codemirror/lang-html';
+import { css } from '@codemirror/lang-css';
 
 const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
   const { token } = useAuth();
@@ -33,6 +41,9 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
   const [dateTime, setDateTime] = useState(null);
   const [workDesc, setWorkDesc] = useState();
   const [testCode, setTestCode] = useState();
+  const htmlStarter = useRef('');
+  const cssStarter = useRef('');
+  const jsStarter = useRef('');
   const [preview, setPreview] = useState(false);
 
   const onChange = useCallback((value, viewUpdate) => {
@@ -55,12 +66,26 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
     const filtered = detailCourse?.works?.find((works) => works._id === workId);
     if (filtered) {
       setWorkName(filtered.name);
-
+      htmlStarter.current = filtered.htmlStarter;
+      cssStarter.current = filtered.cssStarter;
+      jsStarter.current = filtered.jsStarter;
       setWorkDesc(filtered.description);
       setTestCode(filtered.codeTest);
       setDateTime(moment.unix(filtered?.deadline).format('yyyy-MM-DDTHH:mm'));
     }
   }, [detailCourse?.works, workId]);
+
+  const onChangeHTML = useCallback((value, viewUpdate) => {
+    htmlStarter.current = value;
+  }, []);
+
+  const onChangeCss = useCallback((value, viewUpdate) => {
+    cssStarter.current = value;
+  }, []);
+
+  const onChangeJs = useCallback((value, viewUpdate) => {
+    jsStarter.current = value;
+  }, []);
 
   const handleEdit = () => {
     setIsLoading(true);
@@ -69,6 +94,9 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
       description: workDesc,
       codeTest: testCode,
       deadline: parseInt((new Date(dateTime).getTime() / 1000).toFixed(0)),
+      htmlStarter: htmlStarter.current,
+      cssStarter: cssStarter.current,
+      jsStarter: jsStarter.current,
     };
 
     editWork(token, workId, payload)
@@ -148,6 +176,42 @@ const ModalEditWork = ({ isOpen, onClose, refetch, workId }) => {
                   value={dateTime}
                 />
               </FormControl>
+              <FormLabel mt={8}>HTML Starter</FormLabel>
+              <CodeMirror
+                value={htmlStarter.current}
+                basicSetup={{
+                  defaultKeymap: true,
+                }}
+                extensions={[html()]}
+                theme={dracula}
+                onChange={onChangeHTML}
+                minHeight={'400px'}
+                className={'font-code mb-4'}
+              />
+              <FormLabel mt={8}>CSS Starter</FormLabel>
+              <CodeMirror
+                value={cssStarter.current}
+                basicSetup={{
+                  defaultKeymap: true,
+                }}
+                extensions={[css()]}
+                theme={dracula}
+                onChange={onChangeCss}
+                minHeight={'400px'}
+                className={'font-code mb-4'}
+              />
+              <FormLabel mt={8}>JS Starter</FormLabel>
+              <CodeMirror
+                value={jsStarter.current}
+                basicSetup={{
+                  defaultKeymap: true,
+                }}
+                extensions={[javascript()]}
+                theme={dracula}
+                onChange={onChangeJs}
+                minHeight={'400px'}
+                className={'font-code mb-4'}
+              />
             </ModalBody>
 
             <ModalFooter>
