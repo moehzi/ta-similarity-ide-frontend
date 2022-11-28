@@ -24,10 +24,12 @@ const useFetch = (url: string) => {
         })
         .catch((err) => {
           setError(err);
-          if (err.response.data.data.message === 'jwt expired') {
-            localStorage.removeItem('token');
-            navigate('/login');
-          }
+          //   if (err.response.data.data.message === 'jwt expired') {
+          //     localStorage.removeItem('token');
+          //     navigate('/login');
+          //   }
+          localStorage.removeItem('token');
+          navigate('/login');
         })
         .finally(() => {
           setLoading(false);
@@ -49,6 +51,8 @@ const useFetch = (url: string) => {
         })
         .catch((err) => {
           setError(err);
+          localStorage.removeItem('token');
+          navigate('/login');
         })
         .finally(() => {
           setLoading(false);
