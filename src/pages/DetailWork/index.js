@@ -73,22 +73,6 @@ const DetailWork = () => {
       },
     },
     {
-      title: 'Submitted Date',
-      key: 'updatedAt',
-      dataIndex: 'updatedAt',
-      render: (_, record) => {
-        if (record.updatedAt !== record.createdAt) {
-          return (
-            <Text key={record?.updatedAt}>
-              {moment(record?.updatedAt).format('dddd, MMMM DD YYYY, HH:mm')}
-            </Text>
-          );
-        }
-
-        return <Text color="red">Not Completed</Text>;
-      },
-    },
-    {
       title: 'Action',
       key: 'action',
       render: (_, record) => (

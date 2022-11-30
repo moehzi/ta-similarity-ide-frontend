@@ -20,6 +20,7 @@ const DetailStudentWork = () => {
   const [student, setStudent] = useState('');
   const [code, setCode] = useState('');
   const [esprima, setEsprima] = useState([]);
+  const [similarityResult, setSimilarityResult] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
   const navigate = useNavigate();
 
@@ -32,8 +33,9 @@ const DetailStudentWork = () => {
       setCode(data[0]?.similarityResult[0]?.jsCode);
       setStudent(data[0]?.similarityResult[0]?.name);
       setEsprima(data[0]?.similarityResult[0]?.esprimaCode?.split(''));
+      setSimilarityResult(data[0]?.similarityResult[0]?.percentage);
     }
-  }, [data, data?.length]);
+  }, [data?.length]);
 
   const columns = [
     {
@@ -73,7 +75,12 @@ const DetailStudentWork = () => {
             colorScheme="whatsapp"
             size="sm"
             onClick={() =>
-              handleClick(record?.name, record?.jsCode, record?.esprimaCode)
+              handleClick(
+                record?.name,
+                record?.jsCode,
+                record?.esprimaCode,
+                record?.percentage
+              )
             }
           >
             Compare
@@ -83,10 +90,16 @@ const DetailStudentWork = () => {
     },
   ];
 
-  const handleClick = (newStudent, newCode, newEsprima) => {
+  const handleClick = (
+    newStudent,
+    newCode,
+    newEsprima,
+    newSimilarityResult
+  ) => {
     setStudent(newStudent);
     setCode(newCode);
     setEsprima(newEsprima.split(''));
+    setSimilarityResult(newSimilarityResult);
     setIsUpdated(true);
   };
 
@@ -151,14 +164,8 @@ const DetailStudentWork = () => {
               </Heading>
             </div>
             <Statistic
-              title="Score"
-              value={data[0]?.score}
-              suffix="/ 100"
-              style={{ marginBottom: '1rem' }}
-            />
-            <Statistic
               title="Similarity Result"
-              value={data[0]?.highestPercentage}
+              value={similarityResult}
               suffix="/ 100 %"
               style={{ marginBottom: '1rem' }}
             />
