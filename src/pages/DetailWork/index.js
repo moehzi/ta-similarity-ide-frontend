@@ -11,6 +11,7 @@ import { CheckCircleIcon, StarIcon } from '@chakra-ui/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DetailWorkContext } from '../../context/DetailWorkContext';
 import ModalSimilarity from './ModalSimilarity';
+import moment from 'moment';
 
 const DetailWork = () => {
   const { user } = useContext(UserContext);
@@ -69,6 +70,22 @@ const DetailWork = () => {
             {record?.highestPercentage} %
           </Tag>
         );
+      },
+    },
+    {
+      title: 'Submitted Date',
+      key: 'updatedAt',
+      dataIndex: 'updatedAt',
+      render: (_, record) => {
+        if (record.updatedAt !== record.createdAt) {
+          return (
+            <Text key={record?.updatedAt}>
+              {moment(record?.updatedAt).format('dddd, MMMM DD YYYY, HH:mm')}
+            </Text>
+          );
+        }
+
+        return <Text color="red">Not Completed</Text>;
       },
     },
     {

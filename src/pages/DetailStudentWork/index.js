@@ -11,6 +11,7 @@ import { Loader } from '../../components/spinner';
 import { DetailStudentWorkContext } from '../../context/DetailStudentWorkContext';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 import { useNavigate } from 'react-router-dom';
+import Statistic from 'antd/es/statistic';
 
 const DetailStudentWork = () => {
   const { user } = useContext(UserContext);
@@ -149,6 +150,18 @@ const DetailStudentWork = () => {
                 {data[0]?.author?.name}'s Similarity Report
               </Heading>
             </div>
+            <Statistic
+              title="Score"
+              value={data[0]?.score}
+              suffix="/ 100"
+              style={{ marginBottom: '1rem' }}
+            />
+            <Statistic
+              title="Similarity Result"
+              value={data[0]?.highestPercentage}
+              suffix="/ 100 %"
+              style={{ marginBottom: '1rem' }}
+            />
             <ReactDiffViewer
               disableWordDiff={false}
               oldValue={data[0].jsCode}
