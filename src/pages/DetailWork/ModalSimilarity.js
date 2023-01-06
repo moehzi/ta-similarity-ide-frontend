@@ -10,6 +10,9 @@ import {
   Button,
   Flex,
   useToast,
+  Text,
+  Heading,
+  Stack,
 } from '@chakra-ui/react';
 import { checkSimilarityStudent } from '../../services/work';
 import { useAuth } from '../../hooks/useAuth';
@@ -24,6 +27,8 @@ const ModalSimilarity = ({
 }) => {
   const [selected, setSelected] = useState('RabinKarp');
   const [classCategory, setClassCategory] = useState('one-class');
+  const [kGram, setKgram] = useState('3');
+
   const { token } = useAuth();
   const handleButton = (e) => {
     setSelected(e.target.id);
@@ -32,6 +37,10 @@ const ModalSimilarity = ({
   const handleAllClass = (e) => {
     setClassCategory(e.target.id);
   };
+
+  const handleKGram = (e) => {
+    setKgram(e.target.id);
+  };
   const toast = useToast();
 
   const checkSimilarity = () => {
@@ -39,6 +48,7 @@ const ModalSimilarity = ({
     const payload = {
       algorithm: selected,
       categoryClass: classCategory,
+      kGram: Number(kGram),
     };
     checkSimilarityStudent(token, workId, payload)
       .then((res) => {
@@ -82,6 +92,36 @@ const ModalSimilarity = ({
               Jaro Winkler
             </Button>
           </Flex>
+
+          <Stack mt="4">
+            <Heading size="sm">Kgram :</Heading>
+            <Flex gap={4} mt={4} alignItems={'center'}>
+              <Button
+                colorScheme={kGram === '3' && 'telegram'}
+                id="3"
+                onClick={handleKGram}
+                variant={kGram !== '3' ? 'outline' : 'solid'}
+              >
+                3
+              </Button>
+              <Button
+                colorScheme={kGram === '5' && 'telegram'}
+                id="5"
+                variant={kGram !== '5' ? 'outline' : 'solid'}
+                onClick={handleKGram}
+              >
+                5
+              </Button>
+              <Button
+                colorScheme={kGram === '7' && 'telegram'}
+                id="7"
+                variant={kGram !== '7' ? 'outline' : 'solid'}
+                onClick={handleKGram}
+              >
+                7
+              </Button>
+            </Flex>
+          </Stack>
           <Flex gap={4} mt={4}>
             <Button
               colorScheme={classCategory === 'one-class' && 'telegram'}
